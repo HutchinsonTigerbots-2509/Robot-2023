@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -35,6 +36,15 @@ public class Drivetrain extends SubsystemBase {
   private double speedValue = opConstants.kHighSpeed;
   private double speedValueStrafe = opConstants.kHighSpeedStrafe;
 
+  // ***** NavX ***** //
+  AHRS NavX = new AHRS();
+  float DisplacementX = NavX.getDisplacementX();
+  float DisplacementY = NavX.getDisplacementY();
+  float DisplacementZ = NavX.getDisplacementZ();
+  float DisplacementRoll = NavX.getRoll();
+  float DisplacementPitch = NavX.getPitch();
+  float DisplacementYaw = NavX.getYaw();
+
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
@@ -52,11 +62,19 @@ public class Drivetrain extends SubsystemBase {
 
     GearUp();
 
+    NavX.calibrate();
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    DisplacementX = NavX.getDisplacementX();
+    DisplacementY = NavX.getDisplacementY();
+    DisplacementZ = NavX.getDisplacementZ();
+    DisplacementRoll = NavX.getRoll();
+    DisplacementPitch = NavX.getPitch();
+    DisplacementYaw = NavX.getYaw();
   }
 
   /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
@@ -66,6 +84,10 @@ public class Drivetrain extends SubsystemBase {
       stick.getRawAxis(ctrlConstants.kXboxRightJoystickX) * speedValue,
       stick.getRawAxis(ctrlConstants.kXboxLeftJoystickX) * speedValue
       );
+  }
+
+  public void OrientDrive(double y, double x, double z) {
+    drivetrain.driveCartesian(y, x, z, NavX.getRotation2d());
   }
   
   public void TeleMecDrive(double y, double x, double z) {

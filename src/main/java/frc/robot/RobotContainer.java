@@ -24,6 +24,7 @@ import frc.robot.commands.AutoDriveVision;
 import frc.robot.commands.Drive;
 import frc.robot.commands.DriveTele;
 import frc.robot.commands.DriveVision;
+import frc.robot.commands.OrientalDrive;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
@@ -34,6 +35,8 @@ import frc.robot.Constants.ctrlConstants;
 import frc.robot.Constants.opConstants;
 
 import java.util.ResourceBundle.Control;
+
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 
@@ -51,9 +54,10 @@ public class RobotContainer {
 
 
   // ***** Nav X ***** //
-  //AHRS NavX;
+  //AHRS NavX = new AHRS();
   //float DisplacementX = NavX.getDisplacementX();
   //float DisplacementY = NavX.getDisplacementY();
+  //float DisplacementZ = NavX.getDisplacementZ();
   
   // ***** Subsystems ***** //
   private Drivetrain sDrivetrain = new Drivetrain();
@@ -225,7 +229,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    sDrivetrain.setDefaultCommand(new DriveTele(controller, sDrivetrain));
+    sDrivetrain.setDefaultCommand(new OrientalDrive(controller, sDrivetrain));
 
     AutoSelect.setDefaultOption("Right3", Double);
     AutoSelect.addOption("Middle2", Middle);
