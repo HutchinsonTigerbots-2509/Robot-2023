@@ -13,11 +13,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -36,10 +32,6 @@ public class Robot extends TimedRobot {
 
   // ***** Subsystems ***** //
   private Drivetrain sDrivetrain;
-  private Intake sIntake;
-  private Shooter sShooter;
-  private Conveyor sConveyor;
-  private Climb sClimb;
 
   // ***** Joysticks ***** //
   private Joystick stick;
@@ -56,10 +48,6 @@ public class Robot extends TimedRobot {
     mRobotContainer = new RobotContainer();
 
     sDrivetrain = mRobotContainer.getDrivetrain();
-    sIntake = mRobotContainer.getIntake();
-    sShooter = mRobotContainer.getShooter();
-    sConveyor = mRobotContainer.getConveyor();
-    sClimb = mRobotContainer.getClimb();
 
     stick = mRobotContainer.getStick();
     controller = mRobotContainer.getController();
@@ -90,7 +78,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    sIntake.IntakeSolenoid.set(Value.kForward);
     m_autonomousCommand = mRobotContainer.getAutonomousCommand();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

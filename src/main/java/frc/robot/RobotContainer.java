@@ -22,13 +22,9 @@ import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.auto.Rightsingle;
+import frc.robot.commands.auto.*;
 import frc.robot.commands.drivetrain.RotateToAngle;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.*;
 import frc.robot.subsystems.Vision.LimeLight;
 import frc.robot.Constants.ctrlConstants;
 import frc.robot.Constants.opConstants;
@@ -49,18 +45,22 @@ public class RobotContainer {
   // ***** Select Auto ***** //
   SendableChooser<Command> AutoSelect = new SendableChooser<>();
 
+  /** Autos **/
+  private Potato cmdPotato = new Potato();
+  private LeftSingle cmdLeftSing = new LeftSingle();
+  private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger();
+  private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger();
+  private RightSingle cmdRightSing = new RightSingle();
+  private RightSingleCharge cmdRightCharge = new RightSingleCharge();
 
-  // ***** Nav X ***** //
+
+  /** Nav-X **/
   //AHRS NavX;
   //float DisplacementX = NavX.getDisplacementX();
   //float DisplacementY = NavX.getDisplacementY();
   
-  // ***** Subsystems ***** //
+  /** Subsystems **/
   private Drivetrain sDrivetrain = new Drivetrain();
-  private Intake sIntake = new Intake();
-  private Shooter sShooter = new Shooter();
-  private Conveyor sConveyor = new Conveyor();
-  private Climb sClimb = new Climb();
   private LimeLight sLimeLight = new LimeLight();
 
   // TODO Add in vision subsystems
@@ -75,14 +75,12 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    // AutoSelect.setDefaultOption("Right3", Rightsingle );
-    // AutoSelect.addOption("Middle2", Middle);
-    // AutoSelect.addOption("Right2", Right);
-    // AutoSelect.addOption("Left2", Left);
-    // AutoSelect.addOption("Middle4", MiddleFar);
-    // AutoSelect.addOption("Potato", Potato);
-    // SmartDashboard.putData(AutoSelect);
+    AutoSelect.setDefaultOption("Potato", cmdPotato);
+    AutoSelect.addOption("Left Single", cmdLeftSing);
+    AutoSelect.addOption("Left Charge", cmdLeftCharge);
+    AutoSelect.addOption("Mid Charge", cmdMidCharge);
+    AutoSelect.addOption("Right Single", cmdRightCharge);
+    AutoSelect.addOption("Right Charge", cmdRightCharge);
     
     // Configure the button bindings
     configureButtonBindings();
@@ -108,23 +106,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return AutoSelect.getSelected();
-      /* switch(mAutoCommands2) {
-        case RIGHT2:
-          return Right;
-        case MIDDLE2:
-          return Middle;
-        case LEFT2:
-          return Left;
-        case POTATO:
-          return Potato;
-        case RIGHT3:
-          return Double;
-        case MIDDLE4:
-          return MiddleFar;
-        default:
-          return Right;
-     } */
-  }
+       }
 
   public Command getAutCommand(){
     return AutoSelect.getSelected();
@@ -133,10 +115,6 @@ public class RobotContainer {
   // Getter Methods
 
   public Drivetrain getDrivetrain() { return sDrivetrain; }
-  public Intake getIntake() { return sIntake; }
-  public Shooter getShooter() { return sShooter; }
-  public Conveyor getConveyor() { return sConveyor; }
-  public Climb getClimb() { return sClimb; }
   public LimeLight getLimeLight() { return sLimeLight; }
 
   public Joystick getStick() { return stick; }
