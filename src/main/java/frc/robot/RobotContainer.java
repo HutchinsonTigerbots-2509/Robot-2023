@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -32,7 +38,9 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision.LimeLight;
 import frc.robot.Constants.ctrlConstants;
 import frc.robot.Constants.opConstants;
+import frc.robot.Constants.camConstants;
 
+import java.util.List;
 import java.util.ResourceBundle.Control;
 
 import edu.wpi.first.wpilibj.SPI;
@@ -46,6 +54,16 @@ import edu.wpi.first.wpilibj.SPI;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
+  public static AprilTagFieldLayout tagPlayground = new AprilTagFieldLayout(
+    
+  
+  List.of(
+    new AprilTag(5, new Pose3d(Units.inchesToMeters(14.25), Units.inchesToMeters(265.74), Units.inchesToMeters(27.38), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(180)))),
+    new AprilTag(6, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(147.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(180)))),
+    new AprilTag(7, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(108.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(180)))),
+    new AprilTag(8, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(180))))
+  ), camConstants.kFieldLength, camConstants.kFieldWidth);
+
   // ***** Select Auto ***** //
   SendableChooser<Command> AutoSelect = new SendableChooser<>();
 

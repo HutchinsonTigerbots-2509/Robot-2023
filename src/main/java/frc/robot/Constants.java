@@ -102,15 +102,16 @@ public final class Constants {
 
         // Constants for April Tags using PhotonVision below
 
-        private static final double kFieldLength = Units.inchesToMeters(651.2);
-        private static final double kFieldWidth = Units.inchesToMeters(315.75);
+        public static final double kFieldLength = Units.inchesToMeters(327.4);
+        public static final double kFieldWidth = Units.inchesToMeters(315.75);
 
         public static final double camFOV = 0; // needs to be replaced with what's in http://photonvision:5800 settings
         public static final int camResWidth = 0; // "
         public static final int camResHeight = 0; // "
         public static final double minClosestTargetDistance = 0; // Set this to what we plan on using, probably should play around with a good distance. Goes by meters
 
-        public static final AprilTagFieldLayout tagPlayground = new AprilTagFieldLayout(null, kFieldLength, kFieldWidth);
+        // public static final AprilTagFieldLayout tagPlayground = new AprilTagFieldLayout(null, kFieldLength, kFieldWidth); // MOVED TO ROBOT CONTAINER
+
         
         public static Transform3d robotToCamera = new Transform3d(
             new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0)
