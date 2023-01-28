@@ -14,6 +14,9 @@ import frc.robot.Constants.camConstants;
 
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.EstimatedRobotPose;
+
+import java.util.Optional;
+
 import org.ejml.equation.Variable;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -26,6 +29,10 @@ public class PhotonVision {
   // right now, camera server below should work.
 
   PhotonCamera camera = new PhotonCamera(camConstants.kLimelightNetworkID);
+  private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
+  private  Optional<EstimatedRobotPose> getPose;
+
+  private Boolean _hasPose;
 
   // private NetworkTableEntry result = PhotonVision.getEntry("PipelineIndex");
   // double photonresult = result.getDouble(0);
@@ -41,5 +48,35 @@ public class PhotonVision {
   // Sets the pose that you want to be refered to
   public void setReferencePose(Pose2d pose) {
     estimatePose.setReferencePose(pose);
+  }
+
+  public Optional<EstimatedRobotPose> currentPose() {
+    return poseOnField;
+  }
+
+  public void PoseEstimating() {
+    Optional<EstimatedRobotPose> getPose = estimatePose.update();
+
+    if (_hasPose == true){
+      poseOnField = getPose;
+    } else if (_hasPose == false) {
+      poseOnField = Optional.empty();
+    } else {
+      poseOnField = Optional.empty();
+      System.out.println("break in estimating pose, ln 60");
+    }
+    
+
+  }
+
+  public Boolean HasPose(){
+
+    if (getPose.isPresent()) {
+      _hasPose = true;
+    } else {
+      _hasPose = false;
+    }
+
+    return _hasPose;
   }
 }
