@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -75,6 +76,10 @@ public class Drivetrain extends SubsystemBase {
 
   public void ArcadeDrive(double forward, double rotation){
     drivetrain.driveCartesian(0, forward, rotation);
+  }
+
+  public void MecanumDrive(double x,double y, double z){
+    drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(GetAngle()));
   }
 
   public void StopDrive(){drivetrain.stopMotor();}

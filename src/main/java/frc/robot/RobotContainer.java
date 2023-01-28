@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.auto.*;
+import frc.robot.commands.drivetrain.OperatorDrive;
 import frc.robot.commands.drivetrain.RotateToAngle;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.Vision.LimeLight;
@@ -84,7 +85,8 @@ public class RobotContainer {
     
     // Configure the button bindings
     configureButtonBindings();
-
+        
+    sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, stick));
   }
 
   /**
