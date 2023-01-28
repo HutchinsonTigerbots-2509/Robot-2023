@@ -63,7 +63,6 @@ public class PhotonVision {
       poseOnField = Optional.empty();
     } else {
       poseOnField = Optional.empty();
-      System.out.println("break in estimating pose, ln 60");
     }
     
 
