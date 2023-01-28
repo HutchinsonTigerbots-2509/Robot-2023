@@ -4,33 +4,48 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.lang.annotation.Target;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class RotateToAngle extends PIDCommand {
+  static final double kP = 0.03;
+  static final double kI = 0.00;
+  static final double kD = 0.00;
+  static final double kF = 0.00;
+
+
   /** Creates a new RotateToAngle. */
-  public RotateToAngle() {
+  public RotateToAngle(double TargetAngle, Drivetrain drive) {
     super(
         // The controller that the command will use
-        new PIDController(0, 0, 0),
+        new PIDController(kP, kI, kD),
         // This should return the measurement
-        () -> 0,
-        // This should return the setpoint (can also be a constant)
-        () -> 0,
+        drive::GetAngle,
+        // This should retuPrn the setpoint (can also be a constant)
+        TargetAngle,
         // This uses the output
-        output -> {
-          // Use the output here
-        });
+        output -> {drive.ArcadeDrive(0, output);},
+        drive);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
+        getController().enableContinuousInput(-180.0,180.0);
+        getController().setTolerance(2.0f);
+        
+        
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    System.out.println(getController().atSetpoint());
+    return getController().atSetpoint();
   }
+
+
 }

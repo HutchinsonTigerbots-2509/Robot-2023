@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -31,6 +32,9 @@ public class Drivetrain extends SubsystemBase {
   //Putting all the motors into a Drivetrain
   public MecanumDrive drivetrain = new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 
+  // Nav-X
+  public AHRS navx = new AHRS();
+
   //Setting the start gear to highgear
   private double speedValue = opConstants.kHighSpeed;
   private double speedValueStrafe = opConstants.kHighSpeedStrafe;
@@ -50,77 +54,32 @@ public class Drivetrain extends SubsystemBase {
     rearRightMotor.setNeutralMode(NeutralMode.Brake);
     rearLeftMotor.setNeutralMode(NeutralMode.Brake);
 
-    GearUp();
+    navx.reset();
 
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Yaw",navx.getYaw());
+    SmartDashboard.updateValues();
   }
 
-  /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
-  public void MecDrive(Joystick stick) {
-    drivetrain.driveCartesian(
-      -stick.getRawAxis(ctrlConstants.kXboxLeftJoystickY) * speedValue,
-      stick.getRawAxis(ctrlConstants.kXboxRightJoystickX) * speedValue,
-      stick.getRawAxis(ctrlConstants.kXboxLeftJoystickX) * speedValue
-      );
+  /**
+   * Returns the current heading of the robot.
+   * @return value from -180 to 180 degrees.
+   */
+  public double GetAngle(){
+    return navx.getYaw();
   }
+
+  public void ArcadeDrive(double forward, double rotation){
+    drivetrain.driveCartesian(0, forward, rotation);
+  }
+
+  public void StopDrive(){drivetrain.stopMotor();}
+
   
-  public void TeleMecDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(
-      y * speedValue,
-      x * speedValueStrafe,
-      z * speedValue
-      );
-  }
 
-  /** Drives the autonomous with the speed put into the AutoDrive */
-  public void AutoDrive(double xSpeed, double ySpeed, double zSpeed) {
-    drivetrain.driveCartesian(xSpeed, ySpeed, zSpeed);
-  }
-
-  /** Puts the gear down to be able to slow down driving */
-  public void GearDown() {
-    speedValue = opConstants.kLowSpeed;
-    return;
-  }
-  
-  /** Puts the gear up to be able speed up driving */
-  public void GearUp() {
-    speedValue = opConstants.kHighSpeed;
-    return;
-  }
-
-  /** Toggles the gear */
-  public void Gear() {
-    if (speedValue > .5) {
-      speedValue = opConstants.kLowSpeed;
-      speedValueStrafe = opConstants.kLowSpeedStrafe;
-    }
-    else {
-      speedValue = opConstants.kHighSpeed;
-      speedValueStrafe = opConstants.kHighSpeedStrafe;
-    }
-    return;
-  }
-
-  public double GetSpeedValue() {
-    return 0;
-  }
-
-  public double GetStrafeValue(Joystick XboxController) {
-    if (XboxController.getRawAxis(3) > 0) {
-      Strafe = XboxController.getRawAxis(3);
-    }
-    else if (XboxController.getRawAxis(2) > 0) {
-      Strafe = -XboxController.getRawAxis(2);
-    }
-    else {
-      Strafe = 0;
-    }
-    return Strafe;
-  }
 
 }
