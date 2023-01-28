@@ -28,11 +28,11 @@ public class PhotonVision {
   // NetworkTableInstance.getDefault().getTable("photonvision"); // not in use
   // right now, camera server below should work.
 
-  PhotonCamera camera = new PhotonCamera(camConstants.kLimelightNetworkID);
+  PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
   private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
   private  Optional<EstimatedRobotPose> getPose;
 
-  private Boolean _hasPose;
+  private Boolean _hasPose = false;
 
   // private NetworkTableEntry result = PhotonVision.getEntry("PipelineIndex");
   // double photonresult = result.getDouble(0);
@@ -45,7 +45,7 @@ public class PhotonVision {
       camera,
       camConstants.robotToCamera);
 
-  // Sets the pose that you want to be refered to
+  // Sets the pose that you want to be referred to
   public void setReferencePose(Pose2d pose) {
     estimatePose.setReferencePose(pose);
   }
@@ -55,22 +55,23 @@ public class PhotonVision {
   }
 
   public void PoseEstimating() {
-    Optional<EstimatedRobotPose> getPose = estimatePose.update();
 
     if (_hasPose == true){
-      poseOnField = getPose;
+      poseOnField = this.getPose;
     } else if (_hasPose == false) {
       poseOnField = Optional.empty();
     } else {
       poseOnField = Optional.empty();
     }
     
+    SmartDashboard.putBoolean("Has Pose", HasPose());
+    this.getPose = estimatePose.update();
 
   }
 
   public Boolean HasPose(){
-
-    if (getPose.isPresent()) {
+    if(this.getPose == null) return false;
+   if (this.getPose.isPresent()){
       _hasPose = true;
     } else {
       _hasPose = false;

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -18,6 +19,7 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision.PhotonVision;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -40,6 +42,7 @@ public class Robot extends TimedRobot {
   private Shooter sShooter;
   private Conveyor sConveyor;
   private Climb sClimb;
+  private PhotonVision sPhotonVision;
 
   // ***** Joysticks ***** //
   private Joystick stick;
@@ -55,6 +58,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     mRobotContainer = new RobotContainer();
 
+    sPhotonVision = mRobotContainer.getPhotonVision();
     sDrivetrain = mRobotContainer.getDrivetrain();
     sIntake = mRobotContainer.getIntake();
     sShooter = mRobotContainer.getShooter();
@@ -63,6 +67,8 @@ public class Robot extends TimedRobot {
 
     stick = mRobotContainer.getStick();
     controller = mRobotContainer.getController();
+
+    sPhotonVision.setReferencePose(new Pose2d());
   }
 
   /**
@@ -79,7 +85,8 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-  }
+    sPhotonVision.PoseEstimating();
+    }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

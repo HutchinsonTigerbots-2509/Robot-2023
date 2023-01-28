@@ -36,12 +36,15 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Vision.LimeLight;
+import frc.robot.subsystems.Vision.PhotonVision;
 import frc.robot.Constants.ctrlConstants;
 import frc.robot.Constants.opConstants;
 import frc.robot.Constants.camConstants;
 
 import java.util.List;
 import java.util.ResourceBundle.Control;
+
+import org.opencv.photo.Photo;
 
 import edu.wpi.first.wpilibj.SPI;
 
@@ -80,6 +83,7 @@ public class RobotContainer {
   private Conveyor sConveyor = new Conveyor();
   private Climb sClimb = new Climb();
   private LimeLight sLimeLight = new LimeLight();
+  private PhotonVision sPhotonVision = new PhotonVision();
 
   // TODO Add in vision subsystems
 
@@ -384,6 +388,7 @@ public class RobotContainer {
   public Conveyor getConveyor() { return sConveyor; }
   public Climb getClimb() { return sClimb; }
   public LimeLight getLimeLight() { return sLimeLight; }
+  public PhotonVision getPhotonVision() { return sPhotonVision;}
 
   public Joystick getStick() { return stick; }
   public Joystick getController() { return controller; }
