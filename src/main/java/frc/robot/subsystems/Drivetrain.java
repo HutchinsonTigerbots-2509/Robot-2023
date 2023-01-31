@@ -9,11 +9,9 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.opConstants;
 import frc.robot.Constants.ctrlConstants;
 
@@ -23,16 +21,14 @@ public class Drivetrain extends SubsystemBase {
   public double Strafe;
   public double z;
 
-  // ***** Setting up Motors ***** //
+  // ***** Setting up Drivetrain ***** //
   public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
   public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
   public WPI_TalonFX rearRightMotor = new WPI_TalonFX(opConstants.kRearRightID);
   public WPI_TalonFX rearLeftMotor = new WPI_TalonFX(opConstants.kRearLeftID);
-
-  //Putting all the motors into a Drivetrain
   public MecanumDrive drivetrain = new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
-
-  //Setting the start gear to highgear
+  
+  // Speed
   private double speedValue = opConstants.kHighSpeed;
   private double speedValueStrafe = opConstants.kHighSpeedStrafe;
 

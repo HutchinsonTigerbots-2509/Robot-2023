@@ -4,20 +4,11 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PneumaticsModuleType;
+
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -29,21 +20,8 @@ import frc.robot.subsystems.Shooter;
 
 public class Robot extends TimedRobot {
 
-  private Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-
   private Command m_autonomousCommand;
   private RobotContainer mRobotContainer;
-
-  // ***** Subsystems ***** //
-  private Drivetrain sDrivetrain;
-  private Intake sIntake;
-  private Shooter sShooter;
-  private Conveyor sConveyor;
-  private Climb sClimb;
-
-  // ***** Joysticks ***** //
-  private Joystick stick;
-  private Joystick controller;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -54,15 +32,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     mRobotContainer = new RobotContainer();
-
-    sDrivetrain = mRobotContainer.getDrivetrain();
-    sIntake = mRobotContainer.getIntake();
-    sShooter = mRobotContainer.getShooter();
-    sConveyor = mRobotContainer.getConveyor();
-    sClimb = mRobotContainer.getClimb();
-
-    stick = mRobotContainer.getStick();
-    controller = mRobotContainer.getController();
   }
 
   /**
@@ -90,7 +59,6 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
-    sIntake.IntakeSolenoid.set(Value.kForward);
     m_autonomousCommand = mRobotContainer.getAutonomousCommand();
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();

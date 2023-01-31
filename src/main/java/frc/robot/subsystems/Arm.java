@@ -4,17 +4,13 @@
 
 package frc.robot.subsystems;
 
-import org.opencv.ml.NormalBayesClassifier;
-
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.opConstants;
 
 public class Arm extends SubsystemBase {
@@ -26,18 +22,35 @@ public class Arm extends SubsystemBase {
 
   public DoubleSolenoid Grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kGrabberP1, opConstants.kGrabberP2);
 
-  Counter normalCounter1 = new Counter(0);
-  Counter normalCounter2 = new Counter(1);
-  Counter normalCounter3 = new Counter(2);
+  public Counter normalCounter1 = new Counter();
+  public Counter normalCounter2 = new Counter();
+  public Counter normalCounter3 = new Counter();
 
   /** Creates a new Conveyor. */
   public Arm() {
     Grabber.set(Value.kForward);
+
+    normalCounter1.setUpSource(opConstants.kArmCounterID);
+    normalCounter1.setUpDownCounterMode();
+    normalCounter1.setMaxPeriod(.1);
+    normalCounter1.setUpdateWhenEmpty(true);
+    normalCounter1.setReverseDirection(false);
+    normalCounter1.setSamplesToAverage(10);
+    normalCounter1.setDistancePerPulse(2.0583);
+    normalCounter1.reset();
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    SmartDashboard.putNumber("Counter", normalCounter1.get());
+    SmartDashboard.putNumber("Degrees", normalCounter1.getDistance());
+    SmartDashboard.updateValues();
+    // System.out.println("\n\nCounter");
+    // System.out.println(normalCounter.get());
+    // System.out.println(normalCounter.getDistance());
   }
 
   //Moves the arm to the pickup position on the cone
@@ -51,5 +64,20 @@ public class Arm extends SubsystemBase {
 
   public void Grab() {
     Grabber.toggle();
+  }
+
+  public void armIn() {
+    //Runs the arm
+    armMotor1.set(-opConstants.kMaxArmSpeed);
+  }
+
+  public void armOut() {
+    //Runs the arm backwards
+    armMotor1.set(opConstants.kMaxArmSpeed);
+  }
+
+  public void armStop() {
+    //Shops the Arm
+    armMotor1.set(0);
   }
 }
