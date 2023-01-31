@@ -75,6 +75,11 @@ public class Drivetrain extends SubsystemBase {
     DisplacementRoll = NavX.getRoll();
     DisplacementPitch = NavX.getPitch();
     DisplacementYaw = NavX.getYaw();
+    
+    SmartDashboard.putNumber("X", DisplacementX);
+    SmartDashboard.putNumber("Y", DisplacementY);
+    SmartDashboard.putNumber("Z", DisplacementZ);
+    SmartDashboard.updateValues();
   }
 
   /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */

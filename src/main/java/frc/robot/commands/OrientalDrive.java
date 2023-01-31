@@ -5,15 +5,9 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
-
-import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import frc.robot.Constants;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.Constants.opConstants;
 import frc.robot.Constants.ctrlConstants;
 
 public class OrientalDrive extends CommandBase {
