@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.DriveVision;
 import frc.robot.commands.OrientalDrive;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Travelator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Vision.LimeLight;
 import frc.robot.Constants.ctrlConstants;
@@ -37,6 +38,7 @@ public class RobotContainer {
   private Drivetrain sDrivetrain = new Drivetrain();
   private LimeLight sLimeLight = new LimeLight();
   private Arm sArm = new Arm();
+  private Travelator sTravelator = new Travelator();
 
   // ***** Joysticks ***** //
   private Joystick stick = new Joystick(Constants.kCoopStickID);
@@ -45,6 +47,8 @@ public class RobotContainer {
   // ***** Joystick Buttons ***** //
   private JoystickButton armBtn;
   private JoystickButton armOutBtn;
+  private JoystickButton travelatorOutBtn;
+  private JoystickButton travelatorInBtn;
   private JoystickButton autoVisionBtn;
   private JoystickButton gearBtn;
 
@@ -70,6 +74,14 @@ public class RobotContainer {
     
     // Configure the button bindings
     configureButtonBindings();
+
+    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    travelatorInBtn.whileHeld(new RunCommand(() -> sTravelator.Moveforward()));
+    travelatorInBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
+
+    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
+    travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
     armBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
     armBtn.whileHeld(new RunCommand(() -> sArm.armIn()));
@@ -111,6 +123,7 @@ public class RobotContainer {
 
   public Drivetrain getDrivetrain() { return sDrivetrain; }
   public Arm getArm() { return sArm; }
+  public Travelator gTravelator() { return sTravelator; }
   public LimeLight getLimeLight() { return sLimeLight; }
 
   public Joystick getStick() { return stick; }

@@ -30,14 +30,14 @@ public class Arm extends SubsystemBase {
   public Arm() {
     Grabber.set(Value.kForward);
 
-    normalCounter1.setUpSource(opConstants.kArmCounterID);
-    normalCounter1.setUpDownCounterMode();
-    normalCounter1.setMaxPeriod(.1);
-    normalCounter1.setUpdateWhenEmpty(true);
-    normalCounter1.setReverseDirection(false);
-    normalCounter1.setSamplesToAverage(10);
-    normalCounter1.setDistancePerPulse(2.0583);
-    normalCounter1.reset();
+    // normalCounter1.setUpSource(opConstants.kArmCounterID);
+    // normalCounter1.setUpDownCounterMode();
+    // normalCounter1.setMaxPeriod(.1);
+    // normalCounter1.setUpdateWhenEmpty(true);
+    // normalCounter1.setReverseDirection(false);
+    // normalCounter1.setSamplesToAverage(10);
+    // normalCounter1.setDistancePerPulse(2.0583);
+    // normalCounter1.reset();
 
   }
 
