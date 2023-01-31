@@ -18,20 +18,20 @@ public class RightSingleCharge extends SequentialCommandGroup {
   public RightSingleCharge() {
     color = DriverStation.getAlliance();
 
-    if (color == Alliance.Blue) {// Right single charger
+    if (color == Alliance.Blue) { // Right single charger
 
-      // Drop sequence 3 
-      
+      // Drop sequence 3
+
       // Move grabber to opposite side
-      
+
       // Drive forward and strafe left
-      
+
       // Grab cube
-      
+
       // Strafe left
-      
+
       // Drive back
-      
+
       // Deploy compressor
       // Blue Alliance Auto
     } else {

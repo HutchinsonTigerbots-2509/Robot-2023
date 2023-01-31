@@ -4,8 +4,6 @@
 
 package frc.robot.commands.drivetrain;
 
-import java.lang.annotation.Target;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Drivetrain;
@@ -19,7 +17,6 @@ public class RotateToAngle extends PIDCommand {
   static final double kD = 0.00;
   static final double kF = 0.00;
 
-
   /** Creates a new RotateToAngle. */
   public RotateToAngle(double TargetAngle, Drivetrain drive) {
     super(
@@ -30,14 +27,14 @@ public class RotateToAngle extends PIDCommand {
         // This should retuPrn the setpoint (can also be a constant)
         TargetAngle,
         // This uses the output
-        output -> {drive.ArcadeDrive(0, output);},
+        output -> {
+          drive.ArcadeDrive(0, output);
+        },
         drive);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-        getController().enableContinuousInput(-180.0,180.0);
-        getController().setTolerance(2.0f);
-        
-        
+    getController().enableContinuousInput(-180.0, 180.0);
+    getController().setTolerance(2.0f);
   }
 
   // Returns true when the command should end.
@@ -46,6 +43,4 @@ public class RotateToAngle extends PIDCommand {
     System.out.println(getController().atSetpoint());
     return getController().atSetpoint();
   }
-
-
 }

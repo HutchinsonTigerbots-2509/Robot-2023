@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands.auto;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -16,7 +17,8 @@ public class MiddleSingleCharger extends SequentialCommandGroup {
     Alliance color = DriverStation.getAlliance();
 
     if (color == Alliance.Blue) {
-    }else{}
+    } else {
+    }
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands();

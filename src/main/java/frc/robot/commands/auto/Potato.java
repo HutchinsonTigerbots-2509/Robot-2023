@@ -16,4 +16,4 @@ public class Potato extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands();
   }
-}//Nothing
+} // Nothing
