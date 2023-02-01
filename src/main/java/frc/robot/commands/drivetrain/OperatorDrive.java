@@ -27,13 +27,14 @@ public class OperatorDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drive.MecanumDrive(stick.getX(), stick.getY(), stick.getZ());
+    drive.mecanumDrive(stick.getRawAxis(0), stick.getRawAxis(1), stick.getRawAxis(2));
+    // drive.mecanumDrive(stick.getX(), stick.getY(), stick.getZ());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    drive.StopDrive();
+    drive.stopDrive();
   }
 
   // Returns true when the command should end.
