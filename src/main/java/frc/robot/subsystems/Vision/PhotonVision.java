@@ -10,6 +10,9 @@ import org.photonvision.common.dataflow.structures.Packet;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.camConstants;
 import frc.robot.RobotContainer;
@@ -18,6 +21,9 @@ public class PhotonVision {
 
   int size;
   byte[] packetData;
+  NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
+
+  private NetworkTableEntry rawBytes = PhotonTable.getEntry("rawBytes");
 
   // NetworkTable PhotonVision =
   // NetworkTableInstance.getDefault().getTable("photonvision"); // not in use
@@ -79,11 +85,6 @@ public class PhotonVision {
   }
 
 
-  public void Packet(byte[] data) {
-    packetData = data;
-    size = packetData.length;
-  }
-  
   /** Clears the packet and resets the read and write positions. */
 
 
@@ -99,17 +100,19 @@ public class PhotonVision {
     return _hasPose;
   }
 
+
+
+  Packet packet = new Packet(1);
+  
+  public PhotonPipelineResult getCurrentResults() {
+    // This is going to be pipeline to raw bytes.
   PhotonPipelineResult camResults = new PhotonPipelineResult();
 
+   packet.clear();
+   SmartDashboard.putData(null);
+   return camResults;
+  // packet.setData(rawBytes.get(new byte[] {}));
 
-  public void clearCache() {
-    byte[] packetData = new byte[size];
-    int readPos = 0;
-    int writePos = 0;
-  }
-
-  public PhotonPipelineResult getCurrentResults() {
- return null; 
     
   }
 }
