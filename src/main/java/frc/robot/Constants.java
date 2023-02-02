@@ -134,11 +134,11 @@ public final class Constants {
         public final static int kXboxButtonX = 3;
         public final static int kXboxButtonY = 4;
         
-        //TODO Assign ID's for the Xbox DPad
+        
         
         public final static int kXboxButtonBack = 7;
         public final static int kXboxButtonStart = 8;
-        //#endregion
+        
 
         //#region ***** Joystick Buttons ***** //
         public final static int kJoystickX = 0;
