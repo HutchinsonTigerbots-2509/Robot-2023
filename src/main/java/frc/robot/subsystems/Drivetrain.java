@@ -6,13 +6,12 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.opConstants;
 import frc.robot.Constants.ctrlConstants;
 
@@ -22,18 +21,25 @@ public class Drivetrain extends SubsystemBase {
   public double Strafe;
   public double z;
 
-  // ***** Setting up Motors ***** //
+  // ***** Setting up Drivetrain ***** //
   public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
   public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
   public WPI_TalonFX rearRightMotor = new WPI_TalonFX(opConstants.kRearRightID);
   public WPI_TalonFX rearLeftMotor = new WPI_TalonFX(opConstants.kRearLeftID);
-
-  //Putting all the motors into a Drivetrain
   public MecanumDrive drivetrain = new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
-
-  //Setting the start gear to highgear
+  
+  // Speed
   private double speedValue = opConstants.kHighSpeed;
   private double speedValueStrafe = opConstants.kHighSpeedStrafe;
+
+  // ***** NavX ***** //
+  AHRS NavX = new AHRS();
+  float DisplacementX = NavX.getDisplacementX();
+  float DisplacementY = NavX.getDisplacementY();
+  float DisplacementZ = NavX.getDisplacementZ();
+  float DisplacementRoll = NavX.getRoll();
+  float DisplacementPitch = NavX.getPitch();
+  float DisplacementYaw = NavX.getYaw();
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
@@ -52,11 +58,24 @@ public class Drivetrain extends SubsystemBase {
 
     GearUp();
 
+    NavX.calibrate();
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    DisplacementX = NavX.getDisplacementX();
+    DisplacementY = NavX.getDisplacementY();
+    DisplacementZ = NavX.getDisplacementZ();
+    DisplacementRoll = NavX.getRoll();
+    DisplacementPitch = NavX.getPitch();
+    DisplacementYaw = NavX.getYaw();
+    
+    SmartDashboard.putNumber("X", DisplacementX);
+    SmartDashboard.putNumber("Y", DisplacementY);
+    SmartDashboard.putNumber("Z", DisplacementZ);
+    SmartDashboard.updateValues();
   }
 
   /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
@@ -66,6 +85,10 @@ public class Drivetrain extends SubsystemBase {
       stick.getRawAxis(ctrlConstants.kXboxRightJoystickX) * speedValue,
       stick.getRawAxis(ctrlConstants.kXboxLeftJoystickX) * speedValue
       );
+  }
+
+  public void OrientDrive(double y, double x, double z) {
+    drivetrain.driveCartesian(y, x, z, NavX.getRotation2d());
   }
   
   public void TeleMecDrive(double y, double x, double z) {

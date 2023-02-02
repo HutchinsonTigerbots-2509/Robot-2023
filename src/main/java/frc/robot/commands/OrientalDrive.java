@@ -5,26 +5,21 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision.LimeLight;
 
-public class AutoDriveVision extends CommandBase {
+import edu.wpi.first.wpilibj.Joystick;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.Constants.ctrlConstants;
+
+public class OrientalDrive extends CommandBase {
   private final Drivetrain m_Drivetrain;
-  private LimeLight m_Vision;
-  private double turn;
-  private double X;
-  private double Y;
+  private Joystick m_joystick;
 
   /** Creates a new DriveTele. */
-  public AutoDriveVision(double x, double y, Drivetrain subsystem, LimeLight pVision) {
+  public OrientalDrive(Joystick stick, Drivetrain subsystem) {
     m_Drivetrain = subsystem;
-    m_Vision = pVision;
-    X = x;
-    Y = y;
+    m_joystick = stick;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_Drivetrain);
-    addRequirements(m_Vision);
   }
 
   // Called when the command is initially scheduled.
@@ -34,22 +29,22 @@ public class AutoDriveVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_Vision.getTargetX() < 29) {turn = ((m_Vision.getTargetX() - 30) * .014) - .15;}
-    else if (m_Vision.getTargetX() > 31) {turn = ((m_Vision.getTargetX() - 30) * .014) + .15;}
-    else {turn = 0;}
+       m_Drivetrain.OrientDrive(
+        -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
+        m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickX),
+        m_joystick.getRawAxis(ctrlConstants.kXboxRightJoystickX));
+   }
 
-    SmartDashboard.putNumber("x", m_Vision.getTargetX());
-
-    m_Drivetrain.TeleMecDrive(
-      Y,
-      X,
-      turn);
-  }
+  //   m_Drivetrain.TeleMecDrive(
+  //     -m_joystick.getRawAxis(Constants.kXboxLeftJoystickY),
+  //     m_Drivetrain.GetStrafeValue(m_joystick),
+  //     m_joystick.getRawAxis(Constants.kXboxRightJoystickX));
+  // }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Drivetrain.TeleMecDrive(0, 0, 0);
+    
   }
 
   // Returns true when the command should end.
