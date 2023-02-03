@@ -69,7 +69,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, stick));
+    sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, stick, true));
   }
 
   /**

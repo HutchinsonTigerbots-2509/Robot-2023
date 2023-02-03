@@ -27,20 +27,15 @@ public final class Constants {
   public static final class opConstants {
 
     // ***** Drivetrain Constants ***** //
-    public static final int kFrontLeftID =
-        14; // Verified that the Motor Ids were set to the correct values 3/19/22
-    public static final int kFrontRightID =
-        1; // Verified that the Motor Ids were set to the correct values 3/19/22
-    public static final int kRearLeftID =
-        15; // Verified that the Motor Ids were set to the correct values 3/19/22
-    public static final int kRearRightID =
-        0; // Verified that the Motor Ids were set to the correct values 3/19/22
-    public static final double kHighSpeed =
-        0.6; // You are going to want to slow this down significantly, even for fast speed it is
-    // very high - S. Collins
-    public static final double kLowSpeed = 0.4;
+    public static final int kFrontLeftID = 14;
+    public static final int kFrontRightID = 1;
+    public static final int kRearLeftID = 15;
+    public static final int kRearRightID = 0;
+    public static final double kMaxSpeed = 0.8;
+    public static final double kMaxAngularSpeed = 0.8;
     public static final double kHighSpeedStrafe = 1;
     public static final double kLowSpeedStrafe = .6;
+    public static final double kSkewRateLimit = 3;
     public static final double kGearRatio = 20.0;
     public static final int kFalconUnitsPerRotation = 2048;
     public static final double kWheelDiameter = 10.0; // This is in centimeters.

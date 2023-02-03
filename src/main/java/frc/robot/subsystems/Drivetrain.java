@@ -115,8 +115,12 @@ public class Drivetrain extends SubsystemBase {
     drive.driveCartesian(0, forward, rotation);
   }
 
-  public void mecanumDrive(double x, double y, double z) {
-    drive.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
+  public void mecanumDrive(double x, double y, double z, boolean fieldRelative) {
+    if (fieldRelative) {
+      drive.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
+    } else {
+      drive.driveCartesian(x, y, z, new Rotation2d());
+    }
   }
 
   public void stopDrive() {

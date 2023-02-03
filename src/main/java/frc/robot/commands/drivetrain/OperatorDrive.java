@@ -4,18 +4,32 @@
 
 package frc.robot.commands.drivetrain;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.opConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class OperatorDrive extends CommandBase {
+
   Joystick stick;
   Drivetrain drive;
+  boolean fieldRelative;
+
+  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+  private final SlewRateLimiter xspeedLimiter;
+  private final SlewRateLimiter yspeedLimiter;
+  private final SlewRateLimiter rotLimiter;
+
   /** Creates a new OperatorDrive. */
-  public OperatorDrive(Drivetrain drive, Joystick stick) {
+  public OperatorDrive(Drivetrain drive, Joystick stick, boolean fieldRelative) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.stick = stick;
     this.drive = drive;
+    this.fieldRelative = fieldRelative;
+    this.xspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
+    this.yspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
+    this.rotLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
 
     addRequirements(drive);
   }
@@ -27,8 +41,10 @@ public class OperatorDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drive.mecanumDrive(stick.getRawAxis(0), stick.getRawAxis(1), stick.getRawAxis(2));
-    // drive.mecanumDrive(stick.getX(), stick.getY(), stick.getZ());
+    double xSpeed = -xspeedLimiter.calculate(stick.getX()) * opConstants.kMaxSpeed;
+    double ySpeed = -yspeedLimiter.calculate(stick.getY()) * opConstants.kMaxSpeed;
+    double rot = -rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
+    drive.mecanumDrive(xSpeed, ySpeed, rot, fieldRelative);
   }
 
   // Called once the command ends or is interrupted.
