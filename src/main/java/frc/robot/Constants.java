@@ -87,6 +87,7 @@ public final class Constants {
         public final static String kLimelightTargetSkewID = "ts";      // Target skew/rotation (-90 to 0 degrees)
         public final static String kLimelightTargetVertID = "tvert";   // Vertical sidelength of bounding box (0-320 pixels)
         public final static String kLimelightTargetHorID = "thor";     // Horizontal sidelength of bounding box (0-320 pixels)
+        public final static String kPhotonTargetXID = "targetPixelsX"; // Horizontal offset from crosshair to april tag
 
         // Camera Variables
         public final static double kCameraHeight = 4;

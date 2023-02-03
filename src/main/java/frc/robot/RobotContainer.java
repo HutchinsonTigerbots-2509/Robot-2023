@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoDriveVision;
 import frc.robot.commands.Drive;
+import frc.robot.commands.DriveApril;
 import frc.robot.commands.DriveTele;
 import frc.robot.commands.DriveVision;
 import frc.robot.subsystems.Climb;
@@ -108,6 +109,7 @@ public class RobotContainer {
   private JoystickButton shootSpeedBtn3;
   private JoystickButton autoVisionBtn;
   private JoystickButton gearBtn;
+  private JoystickButton secondAutoBtn;
 
 
 
@@ -285,8 +287,11 @@ public class RobotContainer {
     conveyorOutBtn.whileHeld(new RunCommand(() -> sIntake.ConveyorOut(opConstants.kMaxConveyorSpeed)));
     conveyorOutBtn.whenReleased(new InstantCommand(() -> sIntake.ConveyorStop()));
 
-    autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
-    autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
+    // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
+    // autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
+    
+    secondAutoBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
+    secondAutoBtn.toggleWhenPressed(new DriveApril(controller, sDrivetrain, sPhotonVision));
 
     intakeBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftBumper);
     intakeBtn.whileHeld(new RunCommand(() -> sIntake.IntakeIn()));

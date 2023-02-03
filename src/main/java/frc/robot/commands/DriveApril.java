@@ -18,14 +18,14 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.LimeLight;
 import frc.robot.subsystems.Vision.PhotonVision;
 
-public class DriveVision extends CommandBase {
+public class DriveApril extends CommandBase {
   private final Drivetrain m_Drivetrain;
   private Joystick m_joystick;
-  private LimeLight m_Vision;
+  private PhotonVision m_Vision;
   private double turn;
 
   /** Creates a new DriveTele. */
-  public DriveVision(Joystick stick, Drivetrain subsystem, LimeLight pVision) {
+  public DriveApril(Joystick stick, Drivetrain subsystem, PhotonVision pVision) {
     m_Drivetrain = subsystem;
     m_joystick = stick;
     m_Vision = pVision;
@@ -41,11 +41,11 @@ public class DriveVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_Vision.getTargetX() < 28) {turn = ((m_Vision.getTargetX() - 30) * .01) - .08;}
-    else if (m_Vision.getTargetX() > 32) {turn = ((m_Vision.getTargetX() - 30) * .010) + .08;}
+    if(m_Vision.fetchTargetX() < 28) {turn = ((m_Vision.fetchTargetX() - 30) * .01) - .08;}
+    else if (m_Vision.fetchTargetX() > 32) {turn = ((m_Vision.fetchTargetX() - 30) * .010) + .08;}
     else {turn = 0;}
 
-    SmartDashboard.putNumber("x", m_Vision.getTargetX());
+    SmartDashboard.putNumber("x", m_Vision.fetchTargetX());
 
     m_Drivetrain.TeleMecDrive(
       -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
@@ -54,7 +54,8 @@ public class DriveVision extends CommandBase {
       m_joystick.setRumble(RumbleType.kLeftRumble, 1);
       m_joystick.setRumble(RumbleType.kRightRumble, 1);
 
-      
+      SmartDashboard.putNumber("Photon X", m_Vision.fetchTargetX());
+  
   }
 
 

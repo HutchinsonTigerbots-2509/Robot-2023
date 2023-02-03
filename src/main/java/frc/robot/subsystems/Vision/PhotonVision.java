@@ -13,11 +13,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.camConstants;
 import frc.robot.RobotContainer;
 
-public class PhotonVision {
+public class PhotonVision extends SubsystemBase{
 
   int size;
   byte[] packetData;
@@ -25,20 +27,14 @@ public class PhotonVision {
 
   private NetworkTableEntry rawBytes = PhotonTable.getEntry("rawBytes");
 
-  // NetworkTable PhotonVision =
-  // NetworkTableInstance.getDefault().getTable("photonvision"); // not in use
-  // right now, camera server below should work.
 
   PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
   private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
   private  Optional<EstimatedRobotPose> getPose;
+  
 
 
   private Boolean _hasPose = false;
-  public void Packet(int size) {
-    this.size = size;
-    packetData = new byte[size];
-  }
 
 /**
  * Constructs a packet with the given data.
@@ -100,19 +96,11 @@ public class PhotonVision {
     return _hasPose;
   }
 
-
-
-  Packet packet = new Packet(1);
-  
-  public PhotonPipelineResult getCurrentResults() {
-    // This is going to be pipeline to raw bytes.
-  PhotonPipelineResult camResults = new PhotonPipelineResult();
-
-   packet.clear();
-   SmartDashboard.putData(null);
-   return camResults;
-  // packet.setData(rawBytes.get(new byte[] {}));
+  public double fetchTargetX() {
+    NetworkTableEntry mPTableX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);
+    double mPTargetX = mPTableX.getDouble(1.0);
+    return mPTargetX;
+  }
 
     
-  }
 }
