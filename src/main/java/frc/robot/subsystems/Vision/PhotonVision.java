@@ -25,8 +25,6 @@ public class PhotonVision extends SubsystemBase{
   byte[] packetData;
   NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
 
-  private NetworkTableEntry rawBytes = PhotonTable.getEntry("rawBytes");
-
 
   PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
   private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
@@ -98,7 +96,7 @@ public class PhotonVision extends SubsystemBase{
 
   public double fetchTargetX() {
     NetworkTableEntry mPTableX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);
-    double mPTargetX = mPTableX.getDouble(1.0);
+    double mPTargetX = mPTableX.getDouble(0.0);
     return mPTargetX;
   }
 

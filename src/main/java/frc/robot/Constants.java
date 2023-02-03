@@ -70,7 +70,7 @@ public final class Constants {
 
         // Network
         public final static String kLimelightIP = "10.25.9.11";        // IP Address of Camera
-        public final static String kPhotonCameraID = "Limelight";  // Name of Camera on Network
+        public final static String kPhotonCameraID = "OV5647";  // Name of Camera on Network
         
         // Settings
         public final static int kLimelightLED = 0;                     // Sets LED. 0 = Set by Pipline, 1 = Force off, 2 = Force blink, 3 = Force on
@@ -87,6 +87,7 @@ public final class Constants {
         public final static String kLimelightTargetSkewID = "ts";      // Target skew/rotation (-90 to 0 degrees)
         public final static String kLimelightTargetVertID = "tvert";   // Vertical sidelength of bounding box (0-320 pixels)
         public final static String kLimelightTargetHorID = "thor";     // Horizontal sidelength of bounding box (0-320 pixels)
+
         public final static String kPhotonTargetXID = "targetPixelsX"; // Horizontal offset from crosshair to april tag
 
         // Camera Variables

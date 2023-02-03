@@ -45,6 +45,8 @@ public class DriveApril extends CommandBase {
     else if (m_Vision.fetchTargetX() > 32) {turn = ((m_Vision.fetchTargetX() - 30) * .010) + .08;}
     else {turn = 0;}
 
+    SmartDashboard.putNumber("fetch target", m_Vision.fetchTargetX());
+
     SmartDashboard.putNumber("x", m_Vision.fetchTargetX());
 
     m_Drivetrain.TeleMecDrive(
