@@ -8,8 +8,10 @@ import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.common.dataflow.structures.Packet;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.networktables.DoubleArrayEntry;
@@ -23,9 +25,6 @@ import frc.robot.Constants.camConstants;
 import frc.robot.RobotContainer;
 
 public class PhotonVision extends SubsystemBase{
-
-  int size;
-  byte[] packetData;
   NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
 
 
@@ -33,10 +32,20 @@ public class PhotonVision extends SubsystemBase{
   PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
   private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
   private  Optional<EstimatedRobotPose> getPose;
-  
+
+  PhotonPipelineResult result = camera.getLatestResult();
+  PhotonTrackedTarget target = result.getBestTarget();
+  int targetID = target.getFiducialId();
+  boolean hasTargets = result.hasTargets();
 
 
   private Boolean _hasPose = false;
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
+    SmartDashboard.putString("Field Position of X", RobotContainer.aprilTagField.getTagPose(targetID).toString());
+  }
 
 /**
  * Constructs a packet with the given data.
@@ -56,6 +65,8 @@ public class PhotonVision extends SubsystemBase{
       camera,
       camConstants.robotToCamera);
 
+    
+
   // Sets the pose that you want to be referred to
   public void setReferencePose(Pose2d pose) {
     estimatePose.setReferencePose(pose);
@@ -69,15 +80,16 @@ public class PhotonVision extends SubsystemBase{
 
 
     // tell the robot when it sees an april tag
-    if (_hasPose == true){
-      poseOnField = this.getPose;
-    } else if (_hasPose == false) {
-      poseOnField = Optional.empty();
-    } else {
-      poseOnField = Optional.empty();
-    }
+    // if (_hasPose == true){
+    //   poseOnField = this.getPose;
+    // } else if (_hasPose == false) {
+    //   poseOnField = Optional.empty();
+    // } else {
+    //   poseOnField = Optional.empty();
+    // }
     
-    SmartDashboard.putBoolean("Has Pose", HasPose());
+    SmartDashboard.putNumber("Target Seen", targetID); // Replaced with just the fudicial ID.
+    SmartDashboard.putBoolean("Has Target", hasTargets);
     this.getPose = estimatePose.update();
     
   }
@@ -86,17 +98,20 @@ public class PhotonVision extends SubsystemBase{
   /** Clears the packet and resets the read and write positions. */
 
 
-  // See if the robot is looking at an april tag
-  public Boolean HasPose(){
-    if(this.getPose == null) return false;
-   if (this.getPose.isPresent()){
-      _hasPose = true;
-    } else {
-      _hasPose = false;
-    }
+  // See if the robot is looking at an april tag 
+  
+  // REPLACED WITH hasTargets
+  
+  // public Boolean HasPose(){
+  //   if(this.getPose == null) return false;
+  //  if (this.getPose.isPresent()){
+  //     _hasPose = true;
+  //   } else {
+  //     _hasPose = false;
+  //   }
 
-    return _hasPose;
-  }
+  //   return _hasPose;
+  // }
 
   public double fetchTargetX() {
     NetworkTableEntry mPTableX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);
@@ -104,10 +119,6 @@ public class PhotonVision extends SubsystemBase{
     return mPTargetX;
   }
 
-  public double whichTag() {
-    
-    return (Double) null;
-  }
   public NetworkTableEntry getDistance() {
     NetworkTableEntry mPTableTP = PhotonTable.getEntry(camConstants.kPhotonTargetPose);
     Pose3d targetPose = (Pose3d)mPTableTP.getValue().getValue(); // Returns the april tag's pose
@@ -116,13 +127,8 @@ public class PhotonVision extends SubsystemBase{
     SmartDashboard.putNumber("relative Y", targetPose.getY());
 
 
-
-    // RobotContainer.aprilTagField
-
-
     // Need to figure out distance from pose 
 
     return mPTableTP;
   }
-    
 }

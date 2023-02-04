@@ -59,8 +59,6 @@ import edu.wpi.first.wpilibj.SPI;
  */
 public class RobotContainer {
   public static AprilTagFieldLayout aprilTagField = new AprilTagFieldLayout(
-    
-  
   List.of(
     new AprilTag(5, new Pose3d(Units.inchesToMeters(14.25), Units.inchesToMeters(265.74), Units.inchesToMeters(27.38), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
     new AprilTag(6, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(147.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
@@ -68,6 +66,7 @@ public class RobotContainer {
     new AprilTag(8, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0))))
   ), camConstants.kFieldLength, camConstants.kFieldWidth);
 
+  
   // ***** Select Auto ***** //
   SendableChooser<Command> AutoSelect = new SendableChooser<>();
 
