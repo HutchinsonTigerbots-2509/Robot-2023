@@ -4,17 +4,23 @@
 
 package frc.robot.subsystems;
 
+import java.lang.ModuleLayer.Controller;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonFX;
+
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
+
 public class Travelator extends SubsystemBase {
   /** Creates a new Travelator. */
 
   // ***** Create Motors ***** //
-  public VictorSP Travelator = new VictorSP(opConstants.kTravelatorID);
+  public TalonFX Travelator = new TalonFX(opConstants.kTravelatorID);
   public DigitalInput LimitSwitch1 = new DigitalInput(opConstants.kDetonator1ID);
   public DigitalInput LimitSwitch2 = new DigitalInput(opConstants.kDetonator2ID);
 
@@ -30,23 +36,29 @@ public class Travelator extends SubsystemBase {
 
   public void Moveforward() {
     if (LimitSwitch1.isAnalogTrigger()) {
-      Travelator.set(0);
+      Travelator.set(ControlMode.PercentOutput, 0);
     }
     else {
-      Travelator.set(opConstants.kTravelatorSpeed);
+      Travelator.set(ControlMode.PercentOutput, opConstants.kTravelatorSpeed);
     }
   }
 
   public void MoveBackward() {
     if (LimitSwitch1.isAnalogTrigger()) {
-      Travelator.set(0);
+      Travelator.set(ControlMode.PercentOutput, 0);
     }
     else {
-      Travelator.set(-opConstants.kTravelatorSpeed);
+      Travelator.set(ControlMode.PercentOutput, -opConstants.kTravelatorSpeed);
     }
   }
 
   public void Stop() {
-    Travelator.set(0);
+    Travelator.set(ControlMode.PercentOutput, 0);
   }
+  
+  public void getTravelatorPos() {
+    Travelator.getSelectedSensorPosition();
+  }
+  
 }
+

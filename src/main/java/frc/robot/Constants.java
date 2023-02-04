@@ -39,7 +39,7 @@ public final class Constants {
 
 
         // ***** Travelator Constants ***** //
-        public final static int kTravelatorID = 0;
+        public final static int kTravelatorID = 0; // TODO: Going to need to get this ID
         public final static double kTravelatorSpeed = .75;
         public final static int kDetonator1ID = 0;
         public final static int kDetonator2ID = 1;
