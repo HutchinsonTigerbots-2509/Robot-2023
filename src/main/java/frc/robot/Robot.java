@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
@@ -69,6 +71,10 @@ public class Robot extends TimedRobot {
     controller = mRobotContainer.getController();
 
     sPhotonVision.setReferencePose(new Pose2d());
+
+    UsbCamera ConeCamera = CameraServer.startAutomaticCapture();
+    ConeCamera.setResolution(640, 480);
+    ConeCamera.setFPS(30);
   }
 
   /**
