@@ -9,7 +9,10 @@ import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.common.dataflow.structures.Packet;
 import org.photonvision.targeting.PhotonPipelineResult;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.networktables.DoubleArrayEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -24,6 +27,7 @@ public class PhotonVision extends SubsystemBase{
   int size;
   byte[] packetData;
   NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
+
 
 
   PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
@@ -47,7 +51,7 @@ public class PhotonVision extends SubsystemBase{
   // PhotonPoseEstimator estimatePose = new
   // PhotonPoseEstimator(camConstants.tagPlayground,
   // PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, camConstants.camOnBoard);
-  PhotonPoseEstimator estimatePose = new PhotonPoseEstimator(RobotContainer.tagPlayground,
+  PhotonPoseEstimator estimatePose = new PhotonPoseEstimator(RobotContainer.aprilTagField,
       PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
       camera,
       camConstants.robotToCamera);
@@ -100,5 +104,25 @@ public class PhotonVision extends SubsystemBase{
     return mPTargetX;
   }
 
+  public double whichTag() {
+    
+    return (Double) null;
+  }
+  public NetworkTableEntry getDistance() {
+    NetworkTableEntry mPTableTP = PhotonTable.getEntry(camConstants.kPhotonTargetPose);
+    Pose3d targetPose = (Pose3d)mPTableTP.getValue().getValue(); // Returns the april tag's pose
+
+    SmartDashboard.putNumber("relative X", targetPose.getX());
+    SmartDashboard.putNumber("relative Y", targetPose.getY());
+
+
+
+    // RobotContainer.aprilTagField
+
+
+    // Need to figure out distance from pose 
+
+    return mPTableTP;
+  }
     
 }

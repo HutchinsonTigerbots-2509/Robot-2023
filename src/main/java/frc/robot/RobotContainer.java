@@ -58,7 +58,7 @@ import edu.wpi.first.wpilibj.SPI;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  public static AprilTagFieldLayout tagPlayground = new AprilTagFieldLayout(
+  public static AprilTagFieldLayout aprilTagField = new AprilTagFieldLayout(
     
   
   List.of(

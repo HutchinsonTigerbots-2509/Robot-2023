@@ -89,6 +89,7 @@ public final class Constants {
         public final static String kLimelightTargetHorID = "thor";     // Horizontal sidelength of bounding box (0-320 pixels)
 
         public final static String kPhotonTargetXID = "targetPixelsX"; // Horizontal offset from crosshair to april tag
+        public final static String kPhotonTargetPose = "targetPose"; // Target Pose, X, Y, Z
 
         // Camera Variables
         public final static double kCameraHeight = 4;
