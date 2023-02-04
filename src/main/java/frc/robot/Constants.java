@@ -112,13 +112,13 @@ public final class Constants {
         public static final int camResHeight = 0; // "
         public static final double minClosestTargetDistance = 0; // Set this to what we plan on using, probably should play around with a good distance. Goes by meters
 
-        // public static final AprilTagFieldLayout tagPlayground = new AprilTagFieldLayout(null, kFieldLength, kFieldWidth); // MOVED TO ROBOT CONTAINER
-
         
         public static Transform3d robotToCamera = new Transform3d(
             new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0)
         );
         
+
+
     }
 
     public static final class ctrlConstants {
