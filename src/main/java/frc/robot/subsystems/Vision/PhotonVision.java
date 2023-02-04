@@ -34,12 +34,12 @@ public class PhotonVision extends SubsystemBase{
   private  Optional<EstimatedRobotPose> getPose;
 
   PhotonPipelineResult result = camera.getLatestResult();
-  PhotonTrackedTarget target = result.getBestTarget();
+  PhotonTrackedTarget target = this.result.getBestTarget();
   int targetID = this.target.getFiducialId();
-  boolean hasTargets = result.hasTargets();
+  boolean hasTargets = this.result.hasTargets();
 
 
-  private Boolean _hasPose = false;
+  // private Boolean _hasPose = false;
 
   @Override
   public void periodic() {
