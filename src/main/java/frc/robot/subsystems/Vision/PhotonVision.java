@@ -35,7 +35,7 @@ public class PhotonVision extends SubsystemBase{
 
   PhotonPipelineResult result = camera.getLatestResult();
   PhotonTrackedTarget target = result.getBestTarget();
-  int targetID = target.getFiducialId();
+  int targetID = this.target.getFiducialId();
   boolean hasTargets = result.hasTargets();
 
 
@@ -44,7 +44,7 @@ public class PhotonVision extends SubsystemBase{
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putString("Field Position of X", RobotContainer.aprilTagField.getTagPose(targetID).toString());
+    SmartDashboard.putString("Field Position of X", RobotContainer.aprilTagField.getTagPose(this.targetID).toString());
   }
 
 /**
