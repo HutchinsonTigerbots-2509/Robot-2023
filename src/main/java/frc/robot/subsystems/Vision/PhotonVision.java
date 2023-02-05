@@ -31,12 +31,12 @@ public class PhotonVision extends SubsystemBase{
 
   PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
   private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
-  private  Optional<EstimatedRobotPose> getPose;
+  // private  Optional<EstimatedRobotPose> getPose;
 
   PhotonPipelineResult result = camera.getLatestResult();
   PhotonTrackedTarget target = this.result.getBestTarget();
-  int targetID = this.target.getFiducialId();
-  boolean hasTargets = this.result.hasTargets();
+  int getTargetID = target.getFiducialId();
+  boolean chasTargets = this.result.hasTargets();
 
 
   // private Boolean _hasPose = false;
@@ -44,7 +44,8 @@ public class PhotonVision extends SubsystemBase{
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putString("Field Position of X", RobotContainer.aprilTagField.getTagPose(this.targetID).toString());
+
+   // SmartDashboard.putString("Field Position of X", RobotContainer.aprilTagField.getTagPose(this.targetID).toString());
   }
 
 /**
@@ -53,13 +54,6 @@ public class PhotonVision extends SubsystemBase{
  * @param data The packet data.
  * @return 
  */
-
-  // private NetworkTableEntry result = PhotonVision.getEntry("PipelineIndex");
-  // double photonresult = result.getDouble(0);
-
-  // PhotonPoseEstimator estimatePose = new
-  // PhotonPoseEstimator(camConstants.tagPlayground,
-  // PoseStrategy.CLOSEST_TO_REFERENCE_POSE, camera, camConstants.camOnBoard);
   PhotonPoseEstimator estimatePose = new PhotonPoseEstimator(RobotContainer.aprilTagField,
       PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
       camera,
@@ -88,9 +82,9 @@ public class PhotonVision extends SubsystemBase{
     //   poseOnField = Optional.empty();
     // }
     
-    SmartDashboard.putNumber("Target Seen", targetID); // Replaced with just the fudicial ID.
-    SmartDashboard.putBoolean("Has Target", hasTargets);
-    this.getPose = estimatePose.update();
+    // SmartDashboard.putNumber("Target Seen", this.targetID); // Replaced with just the fudicial ID.
+    SmartDashboard.putBoolean("Has Target", chasTargets);
+    // this.getPose = estimatePose.update();
     
   }
 
