@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DriveTele;
 import frc.robot.commands.DriveVision;
 import frc.robot.commands.OrientalDrive;
 import frc.robot.subsystems.Drivetrain;
@@ -45,8 +46,10 @@ public class RobotContainer {
   private Joystick controller = new Joystick(Constants.kOpStickID);
 
   // ***** Joystick Buttons ***** //
-  private JoystickButton armBtn;
-  private JoystickButton armOutBtn;
+  private JoystickButton arm1Btn;
+  private JoystickButton arm1OutBtn;
+  private JoystickButton arm2Btn;
+  private JoystickButton arm2OutBtn;
   private JoystickButton travelatorOutBtn;
   private JoystickButton travelatorInBtn;
   private JoystickButton autoVisionBtn;
@@ -62,7 +65,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    sDrivetrain.setDefaultCommand(new OrientalDrive(controller, sDrivetrain));
+    sDrivetrain.setDefaultCommand(new DriveTele(controller, sDrivetrain));
 
     // AutoSelect.setDefaultOption("Right3", Double);
     // AutoSelect.addOption("Middle2", Middle);
@@ -75,27 +78,35 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    travelatorInBtn.whileHeld(new RunCommand(() -> sTravelator.Moveforward()));
-    travelatorInBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
+    // travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    // travelatorInBtn.whileHeld(new RunCommand(() -> sTravelator.Moveforward()));
+    // travelatorInBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
-    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
-    travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
+    // travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    // travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
+    // travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
-    armBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    armBtn.whileHeld(new RunCommand(() -> sArm.armIn()));
-    armBtn.whenReleased(new InstantCommand(() -> sArm.armStop()));
+    arm1Btn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    arm1Btn.whileHeld(new InstantCommand(() -> sArm.arm1In()));
+    arm1Btn.whenReleased(new InstantCommand(() -> sArm.arm1Stop()));
 
-    armOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
-    armOutBtn.whileHeld(new RunCommand(() -> sArm.armOut()));
-    armOutBtn.whenReleased(new InstantCommand(() -> sArm.armStop()));
+    arm1OutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
+    arm1OutBtn.whileHeld(new InstantCommand(() -> sArm.arm1Out()));
+    arm1OutBtn.whenReleased(new InstantCommand(() -> sArm.arm1Stop()));
 
-    autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
-    autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
+    arm2Btn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
+    arm2Btn.whileHeld(new InstantCommand(() -> sArm.arm2In()));
+    arm2Btn.whenReleased(new InstantCommand(() -> sArm.arm2Stop()));
 
-    gearBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftJoystickButton);
-    gearBtn.whenPressed(new InstantCommand(() -> sDrivetrain.Gear()));
+    arm2OutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton6);
+    arm2OutBtn.whileHeld(new InstantCommand(() -> sArm.arm2Out()));
+    arm2OutBtn.whenReleased(new InstantCommand(() -> sArm.arm2Stop()));
+
+    // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
+    // autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
+
+    // gearBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftJoystickButton);
+    // gearBtn.whenPressed(new InstantCommand(() -> sDrivetrain.Gear()));
   }
 
   /**

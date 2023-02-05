@@ -4,11 +4,18 @@
 
 package frc.robot.subsystems;
 
+
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenixpro.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
@@ -16,9 +23,9 @@ import frc.robot.Constants.opConstants;
 public class Arm extends SubsystemBase {
 
   // Sets up the Conveyor
-  public VictorSP armMotor1 = new VictorSP(opConstants.kArmMotor1ID);
-  public VictorSP armMotor2 = new VictorSP(opConstants.kArmMotor2ID);
-  public VictorSP armMotor3 = new VictorSP(opConstants.kArmMotor3ID);
+  public WPI_TalonFX armMotor1 = new WPI_TalonFX(opConstants.kArmMotor1ID);
+  public VictorSPX armMotor2 = new VictorSPX(opConstants.kArmMotor2ID);
+  public WPI_TalonFX armMotor3 = new WPI_TalonFX(opConstants.kArmMotor3ID);
 
   public DoubleSolenoid Grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kGrabberP1, opConstants.kGrabberP2);
 
@@ -28,7 +35,10 @@ public class Arm extends SubsystemBase {
 
   /** Creates a new Conveyor. */
   public Arm() {
+
     Grabber.set(Value.kForward);
+
+    armMotor1.setNeutralMode(NeutralMode.Brake);
 
     // normalCounter1.setUpSource(opConstants.kArmCounterID);
     // normalCounter1.setUpDownCounterMode();
@@ -57,7 +67,7 @@ public class Arm extends SubsystemBase {
   public void ArmMoveFinal(int DPos1, int DPos2, int DPos3, int speedValue) {
 
     armMotor1.set((DPos1 - normalCounter1.get()) * speedValue);
-    armMotor2.set((DPos2 - normalCounter2.get()) * speedValue);
+    //armMotor2.set((DPos2 - normalCounter2.get()) * speedValue);
     armMotor3.set((DPos3 - normalCounter3.get()) * speedValue);
 
   }
@@ -66,18 +76,33 @@ public class Arm extends SubsystemBase {
     Grabber.toggle();
   }
 
-  public void armIn() {
+  public void arm1In() {
     //Runs the arm
-    armMotor1.set(-opConstants.kMaxArmSpeed);
+    armMotor1.set(-opConstants.kMaxArm1Speed);
   }
 
-  public void armOut() {
+  public void arm2In() {
+    //Runs the arm
+    armMotor2.set(ControlMode.PercentOutput, -opConstants.kMaxArm2Speed);
+  }
+
+  public void arm1Out() {
     //Runs the arm backwards
-    armMotor1.set(opConstants.kMaxArmSpeed);
+    armMotor1.set(opConstants.kMaxArm1Speed);
   }
 
-  public void armStop() {
+  public void arm2Out() {
+    //Runs the arm backwards
+    armMotor2.set(ControlMode.PercentOutput, opConstants.kMaxArm2Speed);
+  }
+
+  public void arm1Stop() {
     //Shops the Arm
     armMotor1.set(0);
+  }
+
+  public void arm2Stop() {
+    //Shops the Arm
+    armMotor2.set(ControlMode.PercentOutput, 0);
   }
 }
