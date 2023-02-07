@@ -41,11 +41,11 @@ public class DriveVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_Vision.getTargetX() < 28) {turn = ((m_Vision.getTargetX() - 30) * .01) - .08;}
-    else if (m_Vision.getTargetX() > 32) {turn = ((m_Vision.getTargetX() - 30) * .010) + .08;}
+    if(m_Vision.getTargetX() < 145) {turn = ((m_Vision.getTargetX() - 30) * .01) - .08;}
+    else if (m_Vision.getTargetX() > 155) {turn = ((m_Vision.getTargetX() - 30) * .010) + .08;}
     else {turn = 0;}
 
-    SmartDashboard.putNumber("x", m_Vision.getTargetX());
+    SmartDashboard.putNumber("April Tag X", m_Vision.getTargetX());
 
     m_Drivetrain.TeleMecDrive(
       -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
