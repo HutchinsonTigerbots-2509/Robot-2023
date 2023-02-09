@@ -50,6 +50,7 @@ public class RobotContainer {
   private JoystickButton arm1OutBtn;
   private JoystickButton arm2Btn;
   private JoystickButton arm2OutBtn;
+  private JoystickButton armGrabBtn;
   private JoystickButton travelatorOutBtn;
   private JoystickButton travelatorInBtn;
   private JoystickButton autoVisionBtn;
@@ -101,6 +102,9 @@ public class RobotContainer {
     arm2OutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton6);
     arm2OutBtn.whileHeld(new InstantCommand(() -> sArm.arm2Out()));
     arm2OutBtn.whenReleased(new InstantCommand(() -> sArm.arm2Stop()));
+
+    armGrabBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
+    armGrabBtn.whenPressed(new InstantCommand(() -> sArm.Grab()));
 
     // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
     // autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));

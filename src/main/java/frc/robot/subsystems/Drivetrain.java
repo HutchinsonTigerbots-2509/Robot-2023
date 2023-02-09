@@ -61,6 +61,8 @@ public class Drivetrain extends SubsystemBase {
 
     NavX.calibrate();
 
+    drivetrain.setSafetyEnabled(false);
+
   }
 
   @Override
