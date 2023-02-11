@@ -16,7 +16,7 @@ public class OperatorDrive extends CommandBase {
   Drivetrain drive;
   boolean fieldRelative;
 
-  // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+  // Slew rate limiters to make joystick inputs more gentle; ex: 1/3 sec from 0 to 1.
   private final SlewRateLimiter xspeedLimiter;
   private final SlewRateLimiter yspeedLimiter;
   private final SlewRateLimiter rotLimiter;
@@ -27,6 +27,8 @@ public class OperatorDrive extends CommandBase {
     this.stick = stick;
     this.drive = drive;
     this.fieldRelative = fieldRelative;
+    // Creates a SlewRateLimiter that limits the rate of change of the signal to 0.5 units per
+    // second
     this.xspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
     this.yspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
     this.rotLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
@@ -41,10 +43,10 @@ public class OperatorDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = -xspeedLimiter.calculate(stick.getX()) * opConstants.kMaxSpeed;
-    double ySpeed = -yspeedLimiter.calculate(stick.getY()) * opConstants.kMaxSpeed;
-    double rot = -rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
-    drive.mecanumDrive(xSpeed, ySpeed, rot, fieldRelative);
+    double xSpeed = xspeedLimiter.calculate(stick.getX()) * opConstants.kMaxSpeed;
+    double ySpeed = yspeedLimiter.calculate(stick.getY()) * opConstants.kMaxSpeed;
+    double rot = rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
+    drive.mecanumDrive(ySpeed, xSpeed, rot, fieldRelative);
   }
 
   // Called once the command ends or is interrupted.

@@ -35,10 +35,10 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 0.8;
     public static final double kHighSpeedStrafe = 1;
     public static final double kLowSpeedStrafe = .6;
-    public static final double kSkewRateLimit = 3;
-    public static final double kGearRatio = 20.0;
+    public static final double kSkewRateLimit = 0.8;
+    public static final double kGearRatio = 12.0;
     public static final int kFalconUnitsPerRotation = 2048;
-    public static final double kWheelDiameter = 10.0; // This is in centimeters.
+    public static final double kWheelDiameter = 15.24; // This is in centimeters.
 
     // ***** Intake Constants ***** //
     public static final int kIntakeMotorID_0 = 11; // Motor ID for the front intake - S. COllins

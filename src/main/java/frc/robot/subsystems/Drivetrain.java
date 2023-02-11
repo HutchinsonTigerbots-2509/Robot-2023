@@ -37,10 +37,10 @@ public class Drivetrain extends SubsystemBase {
   // The locations for the wheels must be relative to the center of the robot.
   // Positive x values represent moving toward the front of the robot whereas
   // positive y values represent moving toward the left of the robot.
-  private Translation2d frontLeftTranslate = new Translation2d(0.381, 0.381);
-  private Translation2d frontRightTranslate = new Translation2d(0.381, -0.381);
-  private Translation2d rearLeftTranslate = new Translation2d(-0.381, 0.381);
-  private Translation2d rearRightTranslate = new Translation2d(-0.381, -0.381);
+  private Translation2d frontLeftTranslate = new Translation2d(0.2921, 0.3175);
+  private Translation2d frontRightTranslate = new Translation2d(0.2921, -0.3175);
+  private Translation2d rearLeftTranslate = new Translation2d(-0.2921, 0.3175);
+  private Translation2d rearRightTranslate = new Translation2d(-0.2921, -0.3175);
 
   // Creating my kinematics object using the wheel locations.
   private MecanumDriveKinematics kinematics =
@@ -72,8 +72,6 @@ public class Drivetrain extends SubsystemBase {
     rearRightMotor.setNeutralMode(NeutralMode.Brake);
     rearLeftMotor.setNeutralMode(NeutralMode.Brake);
 
-    navx.reset();
-
     // Setup Odeometry
     robotPose = new Pose2d(13.5, 5.0, new Rotation2d()); // Inital pose of the robot
     odometry =
@@ -99,6 +97,8 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Yaw", navx.getYaw());
     SmartDashboard.putNumber("Roll", navx.getRoll());
     SmartDashboard.putNumber("Pitch", navx.getPitch());
+    SmartDashboard.putNumber("X", field.getRobotPose().getX());
+    SmartDashboard.putNumber("Y", field.getRobotPose().getY());
     SmartDashboard.updateValues();
   }
 
@@ -127,6 +127,17 @@ public class Drivetrain extends SubsystemBase {
     drive.stopMotor();
   }
 
+  public void resetSensors() {
+    // Reset encoder postion
+    frontLeftMotor.setSelectedSensorPosition(0);
+    frontRightMotor.setSelectedSensorPosition(0);
+    rearLeftMotor.setSelectedSensorPosition(0);
+    rearRightMotor.setSelectedSensorPosition(0);
+
+    // Reset Nav-X
+    navx.reset();
+  }
+
   /**
    * Calculates the distance the wheel has traveled.
    *
@@ -136,7 +147,10 @@ public class Drivetrain extends SubsystemBase {
   public double getWheelDistance(WPI_TalonFX motor) {
     double rawValue = motor.getSelectedSensorPosition();
     double distance =
-        (rawValue / opConstants.kFalconUnitsPerRotation) * opConstants.kWheelDiameter * Math.PI;
+        (rawValue / opConstants.kFalconUnitsPerRotation)
+            / opConstants.kGearRatio
+            * opConstants.kWheelDiameter
+            * Math.PI;
     return distance / 100.0;
   }
 
@@ -154,5 +168,10 @@ public class Drivetrain extends SubsystemBase {
     rRightVal = getWheelDistance(this.rearRightMotor);
 
     return new MecanumDriveWheelPositions(fLeftVal, fRightVal, rLeftVal, rRightVal);
+  }
+
+  public Pose2d getCurrentPose() {
+    return robotPose;
+
   }
 }
