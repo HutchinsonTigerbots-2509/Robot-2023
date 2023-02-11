@@ -19,9 +19,8 @@ import frc.robot.commands.drivetrain.DriveToPosition;
 import frc.robot.commands.drivetrain.OperatorDrive;
 import frc.robot.commands.drivetrain.ResetDriveSensors;
 import frc.robot.commands.drivetrain.RotateToAngle;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.LimeLight;
-
 // import frc.robot.AutoCommands;
 
 /**
@@ -33,15 +32,15 @@ import frc.robot.subsystems.Vision.LimeLight;
 public class RobotContainer {
   // ***** Select Auto ***** //
   SendableChooser<Command> AutoSelect = new SendableChooser<>();
-
+  private Drivetrain sDrivetrain = new Drivetrain();
   /** Autos * */
-  private Potato cmdPotato = new Potato();
+  private Potato cmdPotato = new Potato(sDrivetrain);
 
-  private P1Double cmdLeftSing = new P1Double();
-  private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger();
-  private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger();
-  private RightSingle cmdRightSing = new RightSingle();
-  private RightSingleCharge cmdRightCharge = new RightSingleCharge();
+  private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger(sDrivetrain);
+  private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger(sDrivetrain);
+  private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
+  private RightSingleCharger cmdRightCharge = new RightSingleCharger(sDrivetrain);
+  private Path1Double cmdP1Double = new Path1Double(sDrivetrain);
 
   /** Nav-X * */
   // AHRS NavX;
@@ -49,7 +48,7 @@ public class RobotContainer {
   // float DisplacementY = NavX.getDisplacementY();
 
   /** Subsystems * */
-  private Drivetrain sDrivetrain = new Drivetrain();
+  // private Drivetrain sDrivetrain = new Drivetrain();
 
   private LimeLight sLimeLight = new LimeLight();
 
@@ -66,12 +65,12 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     AutoSelect.setDefaultOption("Potato", cmdPotato);
-    AutoSelect.addOption("Left Single", cmdLeftSing);
+    // AutoSelect.addOption("Left Single", cmdl);
+    AutoSelect.addOption("P1", cmdP1Double);
     AutoSelect.addOption("Left Charge", cmdLeftCharge);
     AutoSelect.addOption("Mid Charge", cmdMidCharge);
-    AutoSelect.addOption("Right Single", cmdRightCharge);
+    AutoSelect.addOption("Right Single", cmdRightSing);
     AutoSelect.addOption("Right Charge", cmdRightCharge);
-
     // Configure the button bindings
     configureButtonBindings();
 
@@ -93,7 +92,7 @@ public class RobotContainer {
     turnToZero.whileTrue(new RotateToAngle(0, this.sDrivetrain));
 
     driveToZero = new JoystickButton(stick, 2);
-    driveToZero.onTrue(new DriveToPosition(sDrivetrain, new Pose2d(0,0,new Rotation2d())));
+    driveToZero.onTrue(new DriveToPosition(sDrivetrain, new Pose2d(0, 0, new Rotation2d())));
   }
 
   /**
@@ -102,6 +101,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    System.out.println(AutoSelect.getSelected().getName());
     return AutoSelect.getSelected();
   }
 

@@ -61,18 +61,17 @@ public class DriveToPosition extends CommandBase {
     xSpeed = xController.calculate(this.currentPose.getX());
     ySpeed = yController.calculate(this.currentPose.getY());
 
-
-    if(Math.abs(targetPose.getX() - currentPose.getX()) < 0.02){
+    if (Math.abs(targetPose.getX() - currentPose.getX()) < 0.02) {
       xSpeed = 0;
-    }else{
-      double isNeg = Math.abs(xSpeed)/xSpeed;
+    } else {
+      double isNeg = Math.abs(xSpeed) / xSpeed;
       xSpeed = Math.abs(Math.max(Math.abs(xSpeed), minSpeed));
       xSpeed *= isNeg;
     }
-    if(Math.abs(targetPose.getY() - currentPose.getY()) < 0.02){
+    if (Math.abs(targetPose.getY() - currentPose.getY()) < 0.02) {
       ySpeed = 0;
-    }else{
-      double isNeg = Math.abs(ySpeed)/ySpeed;
+    } else {
+      double isNeg = Math.abs(ySpeed) / ySpeed;
       ySpeed = Math.abs(Math.max(Math.abs(ySpeed), minSpeed));
       ySpeed *= isNeg;
     }
@@ -82,7 +81,7 @@ public class DriveToPosition extends CommandBase {
     // xSpeed = xspeedLimiter.calculate(xSpeed) * opConstants.kMaxSpeed;
     // ySpeed = yspeedLimiter.calculate(ySpeed) * opConstants.kMaxSpeed;
 
-    drive.mecanumDrive(xSpeed,-ySpeed , 0, true);
+    drive.mecanumDrive(xSpeed, -ySpeed, 0, true);
   }
 
   // Called once the command ends or is interrupted.
@@ -95,7 +94,7 @@ public class DriveToPosition extends CommandBase {
   @Override
   public boolean isFinished() {
     if (Math.abs(targetPose.getX() - currentPose.getX()) < 0.02
-        && Math.abs(targetPose.getY() -currentPose.getY()) < 0.02) {
+        && Math.abs(targetPose.getY() - currentPose.getY()) < 0.02) {
       return true;
     } else {
       return false;

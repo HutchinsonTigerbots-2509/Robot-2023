@@ -172,6 +172,5 @@ public class Drivetrain extends SubsystemBase {
 
   public Pose2d getCurrentPose() {
     return robotPose;
-
   }
 }
