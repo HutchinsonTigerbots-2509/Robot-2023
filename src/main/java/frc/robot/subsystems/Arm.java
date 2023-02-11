@@ -68,12 +68,12 @@ public class Arm extends SubsystemBase {
 
   public void armIn() {
     //Runs the arm
-    armMotor1.set(-opConstants.kMaxArmSpeed);
+    armMotor1.set(-opConstants.kMaxArm1Speed);
   }
 
   public void armOut() {
     //Runs the arm backwards
-    armMotor1.set(opConstants.kMaxArmSpeed);
+    armMotor1.set(opConstants.kMaxArm1Speed);
   }
 
   public void armStop() {
