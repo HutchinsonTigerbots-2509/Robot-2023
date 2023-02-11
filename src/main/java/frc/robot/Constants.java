@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.apriltag.AprilTag;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -40,31 +42,23 @@ public final class Constants {
     public static final int kFalconUnitsPerRotation = 2048;
     public static final double kWheelDiameter = 10.0; // This is in centimeters.
 
-    // ***** Intake Constants ***** //
-    public static final int kIntakeMotorID_0 = 11; // Motor ID for the front intake - S. COllins
-    public static final int kIntakeMotorID_1 =
-        12; // Motor ID for the running intake to shooter - S.Collins
-    public static final double kIntakeSpeed = .5;
+        // ***** Travelator Constants ***** //
+        public final static int kTravelatorID = 0;
+        public final static double kTravelatorSpeed = .75;
+        public final static int kDetonator1ID = 0;
+        public final static int kDetonator2ID = 1;
 
-    // ***** Shooter Constants ***** //
-    public static final int kShooterMotorID = 13;
-    public static final int kFlapperMotorID = 8;
-    public static final int kShooterDistance = 5;
-    public static final double kFlapGoalPosition = 24;
-    public static final double kShootingSpeed =
-        .6; // Changed to .6 3/19/22  // <------------ TO CHANGE SHOOTING SPEED
+        // ***** Arm Constants ***** //
+        public final static int kArmMotor1ID = 0;
+        public final static int kArmMotor2ID = 2;
+        public final static int kArmMotor3ID = 0;
+        public final static double kMaxArm1Speed = .3;
+        public final static double kMaxArm2Speed = .6;
+        public final static int kGrabberP1 = 0;
+        public final static int kGrabberP2 = 1;
+        public final static int kArmCounterID = 0;
+    }
 
-    // ***** Conveyor Constants ***** //
-    public static final int kConveyorMotorID = 12;
-    public static final double kMaxConveyorSpeed = .75;
-    public static final int kLightSensor = 1;
-
-    // ***** Climb Constants ***** //
-    public static final int kClimberMotorID = 2;
-
-    // ***** Arm Constants ***** //
-    public static final int kArmMotor1ID = 0;
-  }
 
   public static final class camConstants {
 
@@ -143,27 +137,22 @@ public final class Constants {
     public static final int kXboxLeftJoystickButton = 9;
     public static final int kXboxRightJoystickButton = 10;
 
-    public static final int kXboxLeftTrigger = 2;
-    public static final int kXboxRightTrigger = 3;
-
-    public static final int kXboxLeftBumper = 5;
-    public static final int kXboxRightBumper = 6;
-
-    public static final int kXboxButtonA = 1;
-    public static final int kXboxButtonB = 2;
-    public static final int kXboxButtonX = 3;
-    public static final int kXboxButtonY = 4;
-
-    // TODO Assign ID's for the Xbox DPad
-
-    public static final int kXboxButtonBack = 7;
-    public static final int kXboxButtonStart = 8;
-    // #endregion
-
-    // #region ***** Joystick Buttons ***** //
-    public static final int kJoystickX = 0;
-    public static final int kJoystickY = 1;
-    public static final int kJoystickZ = 2;
+        public final static int kXboxLeftTrigger = 2;
+        public final static int kXboxRightTrigger = 3;
+        
+        public final static int kXboxLeftBumper = 5;
+        public final static int kXboxRightBumper = 6;
+        
+        public final static int kXboxButtonA = 1;
+        public final static int kXboxButtonB = 2;
+        public final static int kXboxButtonX = 3;
+        public final static int kXboxButtonY = 4;
+        
+        //TODO Assign ID's for the Xbox DPad
+        
+        public final static int kXboxButtonBack = 7;
+        public final static int kXboxButtonStart = 8;
+        //#endregion
 
     public static final int kJoystickSlider = 3;
 
