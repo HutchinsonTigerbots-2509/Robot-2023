@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
@@ -73,7 +74,7 @@ public class Drivetrain extends SubsystemBase {
     rearLeftMotor.setNeutralMode(NeutralMode.Brake);
 
     // Setup Odeometry
-    robotPose = new Pose2d(13.5, 5.0, new Rotation2d()); // Inital pose of the robot
+    robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
         new MecanumDriveOdometry(kinematics, navx.getRotation2d(), getWheelPositions(), robotPose);
     SmartDashboard.putData("Field", field);
@@ -172,5 +173,16 @@ public class Drivetrain extends SubsystemBase {
 
   public Pose2d getCurrentPose() {
     return robotPose;
+  }
+
+  public Pose2d setRobotPose(Pose2d newPose) {
+    robotPose = newPose;
+    odometry.resetPosition(this.navx.getRotation2d(), getWheelPositions(), newPose);
+    field.setRobotPose(odometry.getPoseMeters());
+    return field.getRobotPose();
+  }
+
+  public Command setCurrentPose(Pose2d newPose) {
+    return this.runOnce(() -> this.setRobotPose(newPose));
   }
 }

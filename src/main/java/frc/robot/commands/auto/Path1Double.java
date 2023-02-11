@@ -14,9 +14,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.drivetrain.DriveToPosition;
 import frc.robot.subsystems.Drivetrain;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Path1Double extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
@@ -24,20 +21,20 @@ public class Path1Double extends InstantCommand {
   public Path1Double(Drivetrain sDrivetrain) {
     blueCommandSequence =
         Commands.sequence(
-            new DriveToPosition(
-                sDrivetrain, new Pose2d(1.944496403743151, 0.477247225100959, new Rotation2d())),
-            new DriveToPosition(
-                sDrivetrain, new Pose2d(6.202532950021199, 0.815038327521982, new Rotation2d())),
-            new DriveToPosition(
-                sDrivetrain, new Pose2d(1.16298497890432, 2.030060169629243, new Rotation2d())));
+            // This is your starting location on the field. The blue corner is 0,0
+            // When choosing target poses, you only need 3 decimal places.
+            sDrivetrain.setCurrentPose(new Pose2d(1.5, 0.5, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(3.0, 0.75, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(6.202, 0.815, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(1.162, 1.0, new Rotation2d())));
     redCommandSequence =
         Commands.sequence(
-            new DriveToPosition(
-                sDrivetrain, new Pose2d(14.634718153442892, 0.382807439027479, new Rotation2d())),
-            new DriveToPosition(
-                sDrivetrain, new Pose2d(10.468843760267244, 0.886324254209018, new Rotation2d())),
-            new DriveToPosition(
-                sDrivetrain, new Pose2d(14.53695576595974, 1.091239527336539, new Rotation2d())));
+            // This is your starting location on the field. The blue corner is 0,0
+            // When choosing target poses, you only need 3 decimal places.
+            sDrivetrain.setCurrentPose(new Pose2d(14.5, 0.5, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(12.5, 0.75, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(10.5, 0.815, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(14.5, 1.0, new Rotation2d())));
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
