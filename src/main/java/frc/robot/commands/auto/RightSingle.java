@@ -8,9 +8,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
-public class RightSingle extends SequentialCommandGroup {
+public class Rightsingle extends SequentialCommandGroup {
   /** Creates a new Rightsingle. */
-  public RightSingle() {
+  public Rightsingle() {
     Alliance color = DriverStation.getAlliance();
 
     if (color == Alliance.Blue) {
