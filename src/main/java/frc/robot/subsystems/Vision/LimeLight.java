@@ -14,8 +14,6 @@ public class LimeLight extends SubsystemBase {
   public static double tTurn;
   NetworkTable LimeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
 
-  private NetworkTableEntry tx = LimeLightTable.getEntry("tx");
-
   /** Creates a new LimeLight. */
   public LimeLight() {}
 

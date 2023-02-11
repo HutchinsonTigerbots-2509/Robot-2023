@@ -40,30 +40,21 @@ public final class Constants {
     public static final int kFalconUnitsPerRotation = 2048;
     public static final double kWheelDiameter = 15.24; // This is in centimeters.
 
-    // ***** Intake Constants ***** //
-    public static final int kIntakeMotorID_0 = 11; // Motor ID for the front intake - S. COllins
-    public static final int kIntakeMotorID_1 =
-        12; // Motor ID for the running intake to shooter - S.Collins
-    public static final double kIntakeSpeed = .5;
-
-    // ***** Shooter Constants ***** //
-    public static final int kShooterMotorID = 13;
-    public static final int kFlapperMotorID = 8;
-    public static final int kShooterDistance = 5;
-    public static final double kFlapGoalPosition = 24;
-    public static final double kShootingSpeed =
-        .6; // Changed to .6 3/19/22  // <------------ TO CHANGE SHOOTING SPEED
-
-    // ***** Conveyor Constants ***** //
-    public static final int kConveyorMotorID = 12;
-    public static final double kMaxConveyorSpeed = .75;
-    public static final int kLightSensor = 1;
-
-    // ***** Climb Constants ***** //
-    public static final int kClimberMotorID = 2;
+    // ***** Travelator Constants ***** //
+    public static final int kTravelatorID = 0;
+    public static final double kTravelatorSpeed = .75;
+    public static final int kDetonator1ID = 0;
+    public static final int kDetonator2ID = 1;
 
     // ***** Arm Constants ***** //
     public static final int kArmMotor1ID = 0;
+    public static final int kArmMotor2ID = 2;
+    public static final int kArmMotor3ID = 0;
+    public static final double kMaxArm1Speed = .3;
+    public static final double kMaxArm2Speed = .6;
+    public static final int kGrabberP1 = 0;
+    public static final int kGrabberP2 = 1;
+    public static final int kArmCounterID = 0;
   }
 
   public static final class camConstants {
@@ -159,11 +150,6 @@ public final class Constants {
     public static final int kXboxButtonBack = 7;
     public static final int kXboxButtonStart = 8;
     // #endregion
-
-    // #region ***** Joystick Buttons ***** //
-    public static final int kJoystickX = 0;
-    public static final int kJoystickY = 1;
-    public static final int kJoystickZ = 2;
 
     public static final int kJoystickSlider = 3;
 
