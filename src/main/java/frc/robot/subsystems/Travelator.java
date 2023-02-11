@@ -8,6 +8,7 @@ import java.lang.ModuleLayer.Controller;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
@@ -17,47 +18,65 @@ import frc.robot.Constants.opConstants;
 
 
 public class Travelator extends SubsystemBase {
-  /** Creates a new Travelator. */
-
   // ***** Create Motors ***** //
-  public TalonFX Travelator = new TalonFX(opConstants.kTravelatorID);
-  public DigitalInput LimitSwitch1 = new DigitalInput(opConstants.kDetonator1ID);
-  public DigitalInput LimitSwitch2 = new DigitalInput(opConstants.kDetonator2ID);
+  public WPI_TalonFX Travelator = new WPI_TalonFX(opConstants.kTravelatorID);
+  public DigitalInput LimitSwitch1 = new DigitalInput(opConstants.kBackRightLimitSwitchID);
+  public DigitalInput LimitSwitch2 = new DigitalInput(opConstants.kBackLeftLimitSwitchID);
+  public DigitalInput LimitSwitch3 = new DigitalInput(opConstants.kFrontRightLimitSwitchID);
+  public DigitalInput LimitSwitch4 = new DigitalInput(opConstants.kFrontLeftLimitSwitchID);
 
-  public Travelator() {}
+  public Travelator() {
+    addChild("Motor",Travelator);
+    
+    addChild("Switch 1", LimitSwitch1);
+    addChild("Switch 2", LimitSwitch2);
+    addChild("Switch 3", LimitSwitch3);
+    addChild("Switch 4", LimitSwitch4);
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putData("Switch1", LimitSwitch1);
-    SmartDashboard.putData("Switch2", LimitSwitch2);
+    // SmartDashboard.putData("Switch1", LimitSwitch1);
+    // SmartDashboard.putData("Switch2", LimitSwitch2);
+    SmartDashboard.putNumber("Travelator Pose", getTravelatorPos());
     SmartDashboard.updateValues();
+
+    if(!LimitSwitch1.get() || !LimitSwitch2.get()){
+      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMinTicks);
+      Travelator.set(ControlMode.PercentOutput, 0);
+    }
+
+    if(!LimitSwitch3.get() || !LimitSwitch4.get()){
+      // Travelator.setSelectedSensorPosition(opConstants.kTravelatorMaxTicks);
+      Travelator.set(ControlMode.PercentOutput, 0);
+    }
   }
 
   public void Moveforward() {
-    if (LimitSwitch1.isAnalogTrigger()) {
+    if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
       Travelator.set(ControlMode.PercentOutput, 0);
-    }
-    else {
+     }
+     else {
       Travelator.set(ControlMode.PercentOutput, opConstants.kTravelatorSpeed);
-    }
+     }
   }
 
   public void MoveBackward() {
-    if (LimitSwitch1.isAnalogTrigger()) {
-      Travelator.set(ControlMode.PercentOutput, 0);
-    }
-    else {
+     if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
+       Travelator.set(ControlMode.PercentOutput, 0);
+     }
+     else {
       Travelator.set(ControlMode.PercentOutput, -opConstants.kTravelatorSpeed);
-    }
+     }
   }
 
   public void Stop() {
     Travelator.set(ControlMode.PercentOutput, 0);
   }
-  
-  public void getTravelatorPos() {
-    Travelator.getSelectedSensorPosition();
+
+  public double getTravelatorPos() {
+    return Travelator.getSelectedSensorPosition()/(2048*opConstants.kTravelatorGearRatio/0.12192);
   }
   
 }

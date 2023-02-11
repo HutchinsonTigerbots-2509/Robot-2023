@@ -39,13 +39,18 @@ public final class Constants {
 
 
         // ***** Travelator Constants ***** //
-        public final static int kTravelatorID = 0; // TODO: Going to need to get this ID
-        public final static double kTravelatorSpeed = .75;
-        public final static int kDetonator1ID = 0;
-        public final static int kDetonator2ID = 1;
+        public final static int kTravelatorID = 13; 
+        public final static double kTravelatorSpeed = 1;
+        public final static int kBackRightLimitSwitchID = 0;
+        public final static int kBackLeftLimitSwitchID = 1;
+        public final static int kFrontRightLimitSwitchID = 2;
+        public final static int kFrontLeftLimitSwitchID = 3;
+        public final static double kTravelatorGearRatio = 29.118;
+        public final static int kTravelatorMaxTicks = 291952;
+        public final static int kTravelatorMinTicks = 0;
 
         // ***** Arm Constants ***** //
-        public final static int kArmMotor1ID = 12;
+        public final static int kArmMotor1ID = 3;
         public final static int kArmMotor2ID = 1;
         public final static int kArmMotor3ID = 2;
         public final static double kMaxArmSpeed = .75;

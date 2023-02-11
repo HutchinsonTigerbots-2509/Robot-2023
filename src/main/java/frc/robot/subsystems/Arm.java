@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -16,7 +19,7 @@ import frc.robot.Constants.opConstants;
 public class Arm extends SubsystemBase {
 
   // Sets up the Conveyor
-  public VictorSP armMotor1 = new VictorSP(opConstants.kArmMotor1ID);
+  public WPI_TalonFX armMotor1 = new WPI_TalonFX(opConstants.kArmMotor1ID);
   public VictorSP armMotor2 = new VictorSP(opConstants.kArmMotor2ID);
   public VictorSP armMotor3 = new VictorSP(opConstants.kArmMotor3ID);
 
@@ -29,6 +32,8 @@ public class Arm extends SubsystemBase {
   /** Creates a new Conveyor. */
   public Arm() {
     Grabber.set(Value.kForward);
+
+    armMotor1.setNeutralMode(NeutralMode.Brake);
 
     // normalCounter1.setUpSource(opConstants.kArmCounterID);
     // normalCounter1.setUpDownCounterMode();

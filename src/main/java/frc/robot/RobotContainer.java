@@ -75,11 +75,11 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
     travelatorInBtn.whileHeld(new RunCommand(() -> sTravelator.Moveforward()));
     travelatorInBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
-    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton10);
     travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
     travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
