@@ -6,22 +6,34 @@ package frc.robot.commands.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class LeftSingleCharger extends SequentialCommandGroup {
-  /** Creates a new LeftSingleCharger. */
-  public LeftSingleCharger() {
-    Alliance color = DriverStation.getAlliance();
+public class LeftSingleCharger extends InstantCommand {
+  private Command blueCommandSequence;
+  private Command redCommandSequence;
 
-    if (color == Alliance.Blue) {
+  /** Creates a new LeftSingleCharger. */
+  public LeftSingleCharger(Drivetrain sDrivetrain) {
+
+    blueCommandSequence = Commands.sequence();
+    redCommandSequence = Commands.sequence();
+    // Use addRequirements() here to declare subsystem dependencies.
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {
+    if (DriverStation.getAlliance() == Alliance.Blue) {
+      blueCommandSequence.schedule();
     } else {
+      redCommandSequence.schedule();
     }
-    // Add your commands in the addCommands() call, e.g.
-    // addCommands(new FooCommand(), new BarCommand());
-    addCommands();
   }
 } // Drop sequence 3
 

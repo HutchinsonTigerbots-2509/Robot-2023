@@ -14,12 +14,12 @@ import frc.robot.subsystems.Drivetrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class RightSingle extends InstantCommand {
+public class RightSingleCharger extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
   /** Creates a new LeftSingleCharger. */
-  public RightSingle(Drivetrain sDrivetrain) {
+  public RightSingleCharger(Drivetrain sDrivetrain) {
 
     blueCommandSequence = Commands.sequence();
     redCommandSequence = Commands.sequence();
@@ -48,16 +48,19 @@ public class RightSingle extends InstantCommand {
 // Drive back
 
 // Deploy compressor
- // Drop sequence 3
 
-// Move grabber to oposite side
+// Right single charger
 
-// Drive forward and strafe left
+      // Drop sequence 3
 
-// Grab cube
+      // Move grabber to opposite side
 
-// Move grabber to drop position
+      // Drive forward and strafe left
 
-// Drive back
+      // Grab cube
 
-// Drop cube
+      // Strafe left
+
+      // Drive back
+
+      // Deploy compressor
