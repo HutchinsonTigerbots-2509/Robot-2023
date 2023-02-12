@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -39,6 +40,8 @@ public final class Constants {
     public static final double kGearRatio = 12.0;
     public static final int kFalconUnitsPerRotation = 2048;
     public static final double kWheelDiameter = 15.24; // This is in centimeters.
+    public static final int kParkingBrakeExtend = 2;
+    public static final int kParkingBrakeRetract = 3;
 
     // ***** Travelator Constants ***** //
     public static final int kTravelatorID = 0;
@@ -55,6 +58,7 @@ public final class Constants {
     public static final int kGrabberP1 = 0;
     public static final int kGrabberP2 = 1;
     public static final int kArmCounterID = 0;
+
   }
 
   public static final class camConstants {

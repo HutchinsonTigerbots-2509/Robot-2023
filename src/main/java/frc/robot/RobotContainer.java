@@ -56,6 +56,8 @@ public class RobotContainer {
   // ***** Joystick Buttons ***** //
   private Trigger turnToZero;
   private Trigger driveToZero;
+  private Trigger extendParkingBrake;
+  private Trigger retractParkingBrake;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -94,6 +96,13 @@ public class RobotContainer {
 
     driveToZero = new JoystickButton(stick, 2);
     driveToZero.onTrue(new DriveToPosition(sDrivetrain, new Pose2d(0, 0, new Rotation2d())));
+
+    extendParkingBrake = new JoystickButton(stick, 3);
+    extendParkingBrake.onTrue(sDrivetrain.extendParkingBrake());
+
+    retractParkingBrake = new JoystickButton(stick, 4);
+    retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
+
   }
 
   /**

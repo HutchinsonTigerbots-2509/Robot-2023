@@ -9,8 +9,11 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -35,6 +38,9 @@ public class Drivetrain extends SubsystemBase {
 
   // Nav-X
   private AHRS navx = new AHRS();
+
+  // Parking Brake Cylinders
+  private DoubleSolenoid parkingBrake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kParkingBrakeExtend, opConstants.kParkingBrakeRetract);
 
   // Kinematics
   // The locations for the wheels must be relative to the center of the robot.
@@ -213,4 +219,13 @@ public class Drivetrain extends SubsystemBase {
   public Command setCurrentPose(Pose2d newPose) {
     return this.runOnce(() -> this.setRobotPose(newPose));
   }
+
+  public Command extendParkingBrake() {
+    return this.runOnce(() -> parkingBrake.set(Value.kForward));
+  }
+
+  public Command retractParkingBrake() {
+    return this.runOnce(() -> parkingBrake.set(Value.kReverse));
+  }
+  
 }
