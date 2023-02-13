@@ -14,14 +14,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.opConstants;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.*;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.drivetrain.ResetDriveSensors;
+import frc.robot.commands.auto.RightSingle;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
 import frc.robot.subsystems.Vision.LimeLight;
+import edu.wpi.first.wpilibj.motorcontrol.PWMMotorController;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -58,6 +61,8 @@ public class RobotContainer {
   private Trigger driveToZero;
   private Trigger extendParkingBrake;
   private Trigger retractParkingBrake;
+  private Trigger travelatorBackward;
+  private Trigger travelatorForward;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -97,11 +102,19 @@ public class RobotContainer {
     driveToZero = new JoystickButton(stick, 2);
     driveToZero.onTrue(new DriveToPosition(sDrivetrain, new Pose2d(0, 0, new Rotation2d())));
 
+    travelatorForward = new JoystickButton(stick, 8);
+    travelatorForward.whileTrue(sTravelator.Moveforward());
+
+    travelatorBackward = new JoystickButton(stick, 9);
+    travelatorBackward.whileTrue(sTravelator.MoveBackward());
+
     extendParkingBrake = new JoystickButton(stick, 3);
     extendParkingBrake.onTrue(sDrivetrain.extendParkingBrake());
 
     retractParkingBrake = new JoystickButton(stick, 4);
     retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
+
+
 
   }
 

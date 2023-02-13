@@ -44,10 +44,12 @@ public final class Constants {
     public static final int kParkingBrakeRetract = 3;
 
     // ***** Travelator Constants ***** //
-    public static final int kTravelatorID = 0;
+    public static final int kTravelatorID = 13;
     public static final double kTravelatorSpeed = .75;
-    public static final int kDetonator1ID = 0;
-    public static final int kDetonator2ID = 1;
+    public static final int kBackRightLimitSwitchID = 0;
+    public static final int kBackLeftLimitSwitchID = 1;
+    public static final int kFrontRightLimitSwitchID = 2;
+    public static final int kFrontLeftLimitSwitchID = 3;
 
     // ***** Arm Constants ***** //
     public static final int kArmMotor1ID = 0;
