@@ -4,18 +4,16 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-
-import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.Constants.ctrlConstants;
 
 public class OrientalDrive extends CommandBase {
   private final Drivetrain m_Drivetrain;
-  private Joystick m_joystick;
+  private XboxController m_joystick;
 
   /** Creates a new DriveTele. */
-  public OrientalDrive(Joystick stick, Drivetrain subsystem) {
+  public OrientalDrive(XboxController stick, Drivetrain subsystem) {
     m_Drivetrain = subsystem;
     m_joystick = stick;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -24,27 +22,20 @@ public class OrientalDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    //Do nothing
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-       m_Drivetrain.OrientDrive(
-        -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
-        m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickX),
-        m_joystick.getRawAxis(ctrlConstants.kXboxRightJoystickX));
-   }
-
-  //   m_Drivetrain.TeleMecDrive(
-  //     -m_joystick.getRawAxis(Constants.kXboxLeftJoystickY),
-  //     m_Drivetrain.GetStrafeValue(m_joystick),
-  //     m_joystick.getRawAxis(Constants.kXboxRightJoystickX));
-  // }
+    m_Drivetrain.OrientDrive(-m_joystick.getLeftY(), m_joystick.getLeftX(), m_joystick.getRightX());
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    
+    //Do nothing
   }
 
   // Returns true when the command should end.
