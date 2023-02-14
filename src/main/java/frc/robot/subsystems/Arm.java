@@ -4,18 +4,14 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
-
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import com.ctre.phoenixpro.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -25,7 +21,7 @@ public class Arm extends SubsystemBase {
 
   // Sets up the Conveyor
   public WPI_TalonFX armMotor1 = new WPI_TalonFX(opConstants.kArmMotor1ID);
-  public VictorSPX armMotor2 = new VictorSPX(opConstants.kArmMotor2ID);
+  public WPI_VictorSPX armMotor2 = new WPI_VictorSPX(opConstants.kArmMotor2ID);
   public WPI_TalonFX armMotor3 = new WPI_TalonFX(opConstants.kArmMotor3ID);
 
   private DoubleSolenoid grabber =
@@ -36,7 +32,9 @@ public class Arm extends SubsystemBase {
   private Counter normalCounter2 = new Counter();
   private Counter normalCounter3 = new Counter();
 
-  /** Creates a new Conveyor. */
+  /** 
+   * Creates a new Arm. 
+   */
   public Arm() {
     setName("Arm");
     addChild("Grabber", grabber);
@@ -68,47 +66,47 @@ public class Arm extends SubsystemBase {
     SmartDashboard.updateValues();
   }
 
-  // Moves the arm to the pickup position on the cone
+  /** Moves the arm to the pickup position on the cone */
   public void armMoveFinal(int dPos1, int dPos2, int dPos3, int speedValue) {
     armMotor1.set((dPos1 - normalCounter1.get()) * speedValue);
-    //armMotor2.set((dPos2 - normalCounter2.get()) * speedValue);
+    // armMotor2.set((dPos2 - normalCounter2.get()) * speedValue);
     armMotor3.set((dPos3 - normalCounter3.get()) * speedValue);
   }
 
+  /** Toggles the grabber. */
   public void grab() {
     grabber.toggle();
   }
 
+  /** Runs the arm forward. */
   public void arm1In() {
-    //Runs the arm
     armMotor1.set(-opConstants.kMaxArm1Speed);
   }
 
+  /** Runs the arm forward */
   public void arm2In() {
-    //Runs the arm
     armMotor2.set(ControlMode.PercentOutput, -opConstants.kMaxArm2Speed);
   }
 
+  /** Runs the arm backwards */
   public void arm1Out() {
-    //Runs the arm backwards
     armMotor1.set(opConstants.kMaxArm1Speed);
   }
 
+  /** Runs the arm backwards */
   public void arm2Out() {
-    //Runs the arm backwards
     armMotor2.set(ControlMode.PercentOutput, opConstants.kMaxArm2Speed);
   }
 
+  /** Stops the Arm 1 */
   public void arm1Stop() {
-    //Shops the Arm
     armMotor1.set(0);
   }
 
+  /** Stops the Arm 2 */
   public void arm2Stop() {
-    //Shops the Arm
     armMotor2.set(ControlMode.PercentOutput, 0);
   }
-}
 
   /**
    * Running this {@link Command} will toggle the gripper from open to close or close to open.
@@ -117,5 +115,41 @@ public class Arm extends SubsystemBase {
    */
   public Command toggleGrip() {
     return this.runOnce(grabber::toggle);
+  }
+
+  /**
+   * Running this {@link Command} will run Arm 1 up.
+   *
+   * @return {@link Command} Arm 1 Up
+   */
+  public Command arm1Up() {
+    return this.runEnd(this::arm1In, this::arm1Stop);
+  }
+
+  /**
+   * Running this {@link Command} will run Arm 1 down.
+   *
+   * @return {@link Command} Arm 1 Down
+   */
+  public Command arm1Down() {
+    return this.runEnd(this::arm1Out, this::arm1Stop);
+  }
+
+  /**
+   * Running this {@link Command} will run Arm 2 up.
+   *
+   * @return {@link Command} Arm 1 Up
+   */
+  public Command arm2Up() {
+    return this.runEnd(this::arm2In, this::arm2Stop);
+  }
+
+  /**
+   * Running this {@link Command} will run Arm 2 down.
+   *
+   * @return {@link Command} Arm 1 Down
+   */
+  public Command arm2Down() {
+    return this.runEnd(this::arm2Out, this::arm2Stop);
   }
 }

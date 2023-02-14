@@ -12,9 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.DriveTele;
-import frc.robot.commands.DriveVision;
-import frc.robot.commands.OrientalDrive;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.*;
@@ -62,11 +59,11 @@ public class RobotContainer {
   private Trigger retractParkingBrake;
   private Trigger travelatorBackward;
   private Trigger travelatorForward;
-  private JoystickButton arm1Btn;
-  private JoystickButton arm1OutBtn;
-  private JoystickButton arm2Btn;
-  private JoystickButton arm2OutBtn;
-  private JoystickButton armGrabBtn;
+  private Trigger arm1Btn;
+  private Trigger arm1OutBtn;
+  private Trigger arm2Btn;
+  private Trigger arm2OutBtn;
+  private Trigger armGrabBtn;
   private JoystickButton travelatorOutBtn;
   private JoystickButton travelatorInBtn;
   private JoystickButton autoVisionBtn;
@@ -118,33 +115,29 @@ public class RobotContainer {
 
     retractParkingBrake = new JoystickButton(stick, 4);
     retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
-    
-    // travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+
+    // travelatorInBtn = new JoystickButton(stick, 2);
     // travelatorInBtn.whileHeld(new RunCommand(() -> sTravelator.Moveforward()));
     // travelatorInBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
-    // travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    // travelatorOutBtn = new JoystickButton(stick, 2);
     // travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
     // travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
-    arm1Btn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    arm1Btn.whileHeld(new InstantCommand(() -> sArm.arm1In()));
-    arm1Btn.whenReleased(new InstantCommand(() -> sArm.arm1Stop()));
+    arm1Btn = new JoystickButton(stick, 2);
+    arm1Btn.whileTrue(sArm.arm1Up());
 
-    arm1OutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
-    arm1OutBtn.whileHeld(new InstantCommand(() -> sArm.arm1Out()));
-    arm1OutBtn.whenReleased(new InstantCommand(() -> sArm.arm1Stop()));
+    arm1OutBtn = new JoystickButton(stick, 3);
+    arm1OutBtn.whileTrue(sArm.arm1Down());
 
-    arm2Btn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
-    arm2Btn.whileHeld(new InstantCommand(() -> sArm.arm2In()));
-    arm2Btn.whenReleased(new InstantCommand(() -> sArm.arm2Stop()));
+    arm2Btn = new JoystickButton(stick, 4);
+    arm2Btn.whileTrue(sArm.arm2Up());
 
-    arm2OutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton6);
-    arm2OutBtn.whileHeld(new InstantCommand(() -> sArm.arm2Out()));
-    arm2OutBtn.whenReleased(new InstantCommand(() -> sArm.arm2Stop()));
+    arm2OutBtn = new JoystickButton(stick, 6);
+    arm2OutBtn.whileTrue(sArm.arm1Down());
 
-    armGrabBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
-    armGrabBtn.whenPressed(new InstantCommand(() -> sArm.Grab()));
+    armGrabBtn = new JoystickButton(stick, 1);
+    armGrabBtn.onTrue(sArm.toggleGrip());
 
     // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
     // autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
