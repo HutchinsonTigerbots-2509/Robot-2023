@@ -57,7 +57,7 @@ public final class Constants {
         public final static int kTravelatorMinTicks = 0;
 
         // ***** Arm Constants ***** //
-        public final static int kArmLiftID = 12;
+        public final static int kArmLiftID = 3;
         public final static int kGrabberP1 = 2;
         public final static int kGrabberP2 = 3;
         public final static int kArmCounterID = 0;
