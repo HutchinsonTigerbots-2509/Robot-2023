@@ -59,10 +59,8 @@ public class Drivetrain extends SubsystemBase {
       new MecanumDriveKinematics(
           frontLeftTranslate, frontRightTranslate, rearLeftTranslate, rearRightTranslate);
   // Creating my odometry object from the kinematics object and the initial wheel
-  // positions. Here, our starting pose is 5 meters along the long end of the
-  // field and in
-  // the center of the field along the short end, facing the opposing alliance
-  // wall.
+  // positions. Here, our starting pose is 5 meters along the long end of the field and in
+  // the center of the field along the short end, facing the opposing alliance wall.
   private MecanumDriveOdometry odometry;
   private Pose2d robotPose;
   private Field2d field = new Field2d();

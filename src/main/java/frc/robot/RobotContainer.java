@@ -12,6 +12,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DriveTele;
+import frc.robot.commands.DriveVision;
+import frc.robot.commands.OrientalDrive;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.*;
@@ -59,6 +62,15 @@ public class RobotContainer {
   private Trigger retractParkingBrake;
   private Trigger travelatorBackward;
   private Trigger travelatorForward;
+  private JoystickButton arm1Btn;
+  private JoystickButton arm1OutBtn;
+  private JoystickButton arm2Btn;
+  private JoystickButton arm2OutBtn;
+  private JoystickButton armGrabBtn;
+  private JoystickButton travelatorOutBtn;
+  private JoystickButton travelatorInBtn;
+  private JoystickButton autoVisionBtn;
+  private JoystickButton gearBtn;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -106,6 +118,39 @@ public class RobotContainer {
 
     retractParkingBrake = new JoystickButton(stick, 4);
     retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
+    
+    // travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    // travelatorInBtn.whileHeld(new RunCommand(() -> sTravelator.Moveforward()));
+    // travelatorInBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
+
+    // travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    // travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
+    // travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
+
+    arm1Btn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    arm1Btn.whileHeld(new InstantCommand(() -> sArm.arm1In()));
+    arm1Btn.whenReleased(new InstantCommand(() -> sArm.arm1Stop()));
+
+    arm1OutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
+    arm1OutBtn.whileHeld(new InstantCommand(() -> sArm.arm1Out()));
+    arm1OutBtn.whenReleased(new InstantCommand(() -> sArm.arm1Stop()));
+
+    arm2Btn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
+    arm2Btn.whileHeld(new InstantCommand(() -> sArm.arm2In()));
+    arm2Btn.whenReleased(new InstantCommand(() -> sArm.arm2Stop()));
+
+    arm2OutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton6);
+    arm2OutBtn.whileHeld(new InstantCommand(() -> sArm.arm2Out()));
+    arm2OutBtn.whenReleased(new InstantCommand(() -> sArm.arm2Stop()));
+
+    armGrabBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
+    armGrabBtn.whenPressed(new InstantCommand(() -> sArm.Grab()));
+
+    // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
+    // autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
+
+    // gearBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftJoystickButton);
+    // gearBtn.whenPressed(new InstantCommand(() -> sDrivetrain.Gear()));
   }
 
   // Getter Methods

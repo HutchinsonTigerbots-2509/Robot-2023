@@ -10,6 +10,12 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenixpro.hardware.TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -18,9 +24,9 @@ import frc.robot.Constants.opConstants;
 public class Arm extends SubsystemBase {
 
   // Sets up the Conveyor
-  private WPI_TalonFX armMotor1 = new WPI_TalonFX(opConstants.kArmMotor1ID);
-  private VictorSP armMotor2 = new VictorSP(opConstants.kArmMotor2ID);
-  private VictorSP armMotor3 = new VictorSP(opConstants.kArmMotor3ID);
+  public WPI_TalonFX armMotor1 = new WPI_TalonFX(opConstants.kArmMotor1ID);
+  public VictorSPX armMotor2 = new VictorSPX(opConstants.kArmMotor2ID);
+  public WPI_TalonFX armMotor3 = new WPI_TalonFX(opConstants.kArmMotor3ID);
 
   private DoubleSolenoid grabber =
       new DoubleSolenoid(
@@ -43,6 +49,8 @@ public class Arm extends SubsystemBase {
 
     grabber.set(Value.kForward);
 
+    armMotor1.setNeutralMode(NeutralMode.Brake);
+
     // normalCounter1.setUpSource(opConstants.kArmCounterID);
     // normalCounter1.setUpDownCounterMode();
     // normalCounter1.setMaxPeriod(.1);
@@ -63,7 +71,7 @@ public class Arm extends SubsystemBase {
   // Moves the arm to the pickup position on the cone
   public void armMoveFinal(int dPos1, int dPos2, int dPos3, int speedValue) {
     armMotor1.set((dPos1 - normalCounter1.get()) * speedValue);
-    armMotor2.set((dPos2 - normalCounter2.get()) * speedValue);
+    //armMotor2.set((dPos2 - normalCounter2.get()) * speedValue);
     armMotor3.set((dPos3 - normalCounter3.get()) * speedValue);
   }
 
@@ -71,20 +79,36 @@ public class Arm extends SubsystemBase {
     grabber.toggle();
   }
 
-  public void armIn() {
-    // Runs the arm
+  public void arm1In() {
+    //Runs the arm
     armMotor1.set(-opConstants.kMaxArm1Speed);
   }
 
-  public void armOut() {
-    // Runs the arm backwards
+  public void arm2In() {
+    //Runs the arm
+    armMotor2.set(ControlMode.PercentOutput, -opConstants.kMaxArm2Speed);
+  }
+
+  public void arm1Out() {
+    //Runs the arm backwards
     armMotor1.set(opConstants.kMaxArm1Speed);
   }
 
-  public void armStop() {
-    // Shops the Arm
+  public void arm2Out() {
+    //Runs the arm backwards
+    armMotor2.set(ControlMode.PercentOutput, opConstants.kMaxArm2Speed);
+  }
+
+  public void arm1Stop() {
+    //Shops the Arm
     armMotor1.set(0);
   }
+
+  public void arm2Stop() {
+    //Shops the Arm
+    armMotor2.set(ControlMode.PercentOutput, 0);
+  }
+}
 
   /**
    * Running this {@link Command} will toggle the gripper from open to close or close to open.
