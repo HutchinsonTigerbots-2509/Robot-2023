@@ -57,6 +57,8 @@ public class RobotContainer {
   private JoystickButton armKnuckleOutBtn;
   private JoystickButton extendParkingBrake;
   private JoystickButton retractParkingBrake;
+  private JoystickButton armLiftInBtn;
+  private JoystickButton armLiftOutBtn;
 
   //private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
 
@@ -116,6 +118,14 @@ public class RobotContainer {
     armKnuckleOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton7);
     armKnuckleOutBtn.whileTrue(new RunCommand(() -> sArm.armKnuckleOut()));
     armKnuckleOutBtn.onFalse(new InstantCommand(() -> sArm.armKnuckleStop()));
+
+    armLiftInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
+    armLiftInBtn.whileTrue(new RunCommand(() -> sArm.armLiftIn()));
+    armLiftInBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
+
+    armLiftOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    armLiftOutBtn.whileTrue(new RunCommand(() -> sArm.armLiftOut()));
+    armLiftOutBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
 
     extendParkingBrake = new JoystickButton(stick, ctrlConstants.kJoystickButton11);
     extendParkingBrake.onTrue(sDrivetrain.extendParkingBrake());

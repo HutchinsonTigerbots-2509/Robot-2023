@@ -20,7 +20,7 @@ import frc.robot.Constants.opConstants;
 public class Arm extends SubsystemBase {
 
   // Sets up the arm
-  public WPI_TalonSRX armLift = new WPI_TalonSRX(opConstants.kArmLiftID);
+  public WPI_TalonFX armLift = new WPI_TalonFX(opConstants.kArmLiftID);
   public WPI_TalonSRX armKnuckle = new WPI_TalonSRX(opConstants.kArmKnuckleID);
   public WPI_TalonSRX armWrist = new WPI_TalonSRX(opConstants.kArmWristID);
 
