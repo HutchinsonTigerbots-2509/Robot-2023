@@ -23,7 +23,7 @@ public class OrientalDrive extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //Do nothing
+    // Do nothing
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -35,7 +35,7 @@ public class OrientalDrive extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    //Do nothing
+    // Do nothing
   }
 
   // Returns true when the command should end.
