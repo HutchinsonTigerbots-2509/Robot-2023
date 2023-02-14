@@ -19,9 +19,9 @@ import frc.robot.Constants.opConstants;
 public class Arm extends SubsystemBase {
 
   // Sets up the Conveyor
-  public WPI_TalonFX armLift = new WPI_TalonFX(opConstants.kArmLiftID);
-  public VictorSP armKnuckle = new VictorSP(opConstants.kArmKnuckleID);
-  public VictorSP armWrist = new VictorSP(opConstants.kArmWristID);
+  public VictorSP armLift = new VictorSP(opConstants.kArmMotor1ID);
+  public VictorSP armKnuckle = new VictorSP(opConstants.kArmMotor2ID);
+  public VictorSP armWrist = new VictorSP(opConstants.kArmMotor3ID);
 
   public DoubleSolenoid Grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kGrabberP1, opConstants.kGrabberP2);
 
@@ -32,8 +32,6 @@ public class Arm extends SubsystemBase {
   /** Creates a new arm. **/
   public Arm() {
     Grabber.set(Value.kForward);
-
-    armLift.setNeutralMode(NeutralMode.Brake);
 
     // normalCounter1.setUpSource(opConstants.kArmCounterID);
     // normalCounter1.setUpDownCounterMode();
