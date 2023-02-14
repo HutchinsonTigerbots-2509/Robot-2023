@@ -46,7 +46,7 @@ public final class Constants {
 
 
         // ***** Travelator Constants ***** //
-        public final static int kTravelatorID = 13; 
+        public final static int kTravelatorID = 2; 
         public final static double kTravelatorSpeed = 1;
         public final static int kBackRightLimitSwitchID = 0;
         public final static int kBackLeftLimitSwitchID = 1;

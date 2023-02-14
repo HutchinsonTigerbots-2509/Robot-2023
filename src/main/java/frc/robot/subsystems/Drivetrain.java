@@ -13,7 +13,10 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,6 +59,13 @@ public class Drivetrain extends SubsystemBase {
   private Translation2d frontRightTranslate = new Translation2d(0.2921, -0.3175);
   private Translation2d rearLeftTranslate = new Translation2d(-0.2921, 0.3175);
   private Translation2d rearRightTranslate = new Translation2d(-0.2921, -0.3175);
+
+  /** Solenoids */ 
+  private DoubleSolenoid parkingBrake =
+  new DoubleSolenoid(
+      PneumaticsModuleType.CTREPCM,
+      opConstants.kParkingBrakeExtend,
+      opConstants.kParkingBrakeRetract);
 
   // Creating my kinematics object using the wheel locations.
   private MecanumDriveKinematics kinematics =
@@ -189,6 +199,7 @@ public class Drivetrain extends SubsystemBase {
     NavX.reset();
   }
   
+  
   public void TeleMecDrive(double y, double x, double z) {
     drivetrain.driveCartesian(
       y * speedValue,
@@ -251,4 +262,11 @@ public class Drivetrain extends SubsystemBase {
     return field.getRobotPose();
   }
 
+  public Command extendParkingBrake() {
+    return this.runOnce(() -> parkingBrake.set(Value.kForward));
+  }
+
+  public Command retractParkingBrake() {
+    return this.runOnce(() -> parkingBrake.set(Value.kReverse));
+  }
 }

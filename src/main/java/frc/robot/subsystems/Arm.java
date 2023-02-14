@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -18,12 +19,12 @@ import frc.robot.Constants.opConstants;
 
 public class Arm extends SubsystemBase {
 
-  // Sets up the Conveyor
-  public VictorSP armLift = new VictorSP(opConstants.kArmLiftID);
-  public VictorSP armKnuckle = new VictorSP(opConstants.kArmKnuckleID);
-  public VictorSP armWrist = new VictorSP(opConstants.kArmWristID);
+  // Sets up the arm
+  public WPI_TalonSRX armLift = new WPI_TalonSRX(opConstants.kArmLiftID);
+  public WPI_TalonSRX armKnuckle = new WPI_TalonSRX(opConstants.kArmKnuckleID);
+  public WPI_TalonSRX armWrist = new WPI_TalonSRX(opConstants.kArmWristID);
 
-  public DoubleSolenoid Grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kGrabberP1, opConstants.kGrabberP2);
+ // public DoubleSolenoid Grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kGrabberP1, opConstants.kGrabberP2);
 
   public Counter normalCounter1 = new Counter();
   public Counter normalCounter2 = new Counter();
@@ -31,7 +32,7 @@ public class Arm extends SubsystemBase {
 
   /** Creates a new arm. **/
   public Arm() {
-    Grabber.set(Value.kForward);
+   // Grabber.set(Value.kForward);
 
     // normalCounter1.setUpSource(opConstants.kArmCounterID);
     // normalCounter1.setUpDownCounterMode();
@@ -66,7 +67,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void Grab() {
-    Grabber.toggle();
+  //  Grabber.toggle();
   }
 
   /** The tower/lift */
