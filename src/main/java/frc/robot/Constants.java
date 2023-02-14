@@ -27,31 +27,43 @@ public final class Constants {
     public static final class opConstants {
 
 
-        // ***** Drivetrain Constants ***** //
-        public final static int kFrontLeftID = 14; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static int kFrontRightID = 1; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static int kRearLeftID = 15; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static int kRearRightID = 0; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static double kHighSpeed = 0.6; // You are going to want to slow this down significantly, even for fast speed it is very high - S. Collins
-        public final static double kLowSpeed = 0.4;
-        public final static double kHighSpeedStrafe = 1;
-        public final static double kLowSpeedStrafe = .6;
+    // ***** Drivetrain Constants ***** //
+    public static final int kFrontLeftID = 14;
+    public static final int kFrontRightID = 1;
+    public static final int kRearLeftID = 15;
+    public static final int kRearRightID = 0;
+    public static final double kMaxSpeed = 0.8;
+    public static final double kLowSpeed = 0.3;
+    public static final double kMaxAngularSpeed = 0.8;
+    public static final double kHighSpeedStrafe = 1;
+    public static final double kLowSpeedStrafe = .6;
+    public static final double kSkewRateLimit = 0.8;
+    public static final double kGearRatio = 12.0;
+    public static final int kFalconUnitsPerRotation = 2048;
+    public static final double kWheelDiameter = 15.24; // This is in centimeters.
+    public static final int kParkingBrakeExtend = 2;
+    public static final int kParkingBrakeRetract = 3;
 
 
         // ***** Travelator Constants ***** //
-        public final static int kTravelatorID = 0; // TODO: Going to need to get this ID
-        public final static double kTravelatorSpeed = .75;
-        public final static int kDetonator1ID = 0;
-        public final static int kDetonator2ID = 1;
+        public final static int kTravelatorID = 13; 
+        public final static double kTravelatorSpeed = 1;
+        public final static int kBackRightLimitSwitchID = 0;
+        public final static int kBackLeftLimitSwitchID = 1;
+        public final static int kFrontRightLimitSwitchID = 2;
+        public final static int kFrontLeftLimitSwitchID = 3;
+        public final static double kTravelatorGearRatio = 29.118;
+        public final static int kTravelatorMaxTicks = 291952;
+        public final static int kTravelatorMinTicks = 0;
 
         // ***** Arm Constants ***** //
-        public final static int kArmMotor1ID = 12;
-        public final static int kArmMotor2ID = 1;
-        public final static int kArmMotor3ID = 2;
+        public final static int kArmLiftID = 3;
         public final static double kMaxArmSpeed = .75;
         public final static int kGrabberP1 = 2;
         public final static int kGrabberP2 = 3;
         public final static int kArmCounterID = 0;
+        public final static int kArmKnuckleID = 10;
+        public final static int kArmWristID = 11;
     }
 
 

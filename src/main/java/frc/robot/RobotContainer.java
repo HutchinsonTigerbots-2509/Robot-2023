@@ -51,8 +51,10 @@ public class RobotContainer {
   private JoystickButton travelatorInBtn;
   private JoystickButton autoVisionBtn;
   private JoystickButton gearBtn;
-
-
+  private JoystickButton armWristBtn;
+  private JoystickButton armWristOutBtn;
+  private JoystickButton armKnuckleBtn;
+  private JoystickButton armKnuckleOutBtn;
 
   //private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
 
@@ -75,27 +77,43 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    travelatorInBtn.whileHeld(new RunCommand(() -> sTravelator.Moveforward()));
-    travelatorInBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
+    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
+    travelatorInBtn.whileTrue(new RunCommand(() -> sTravelator.Moveforward()));
+    travelatorInBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
 
-    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
-    travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
+    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton10);
+    travelatorOutBtn.whileTrue(new RunCommand(() -> sTravelator.MoveBackward()));
+    travelatorOutBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
 
     armBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    armBtn.whileHeld(new RunCommand(() -> sArm.armIn()));
-    armBtn.whenReleased(new InstantCommand(() -> sArm.armStop()));
+    armBtn.whileTrue(new RunCommand(() -> sArm.armLiftIn()));
+    armBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
 
     armOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
-    armOutBtn.whileHeld(new RunCommand(() -> sArm.armOut()));
-    armOutBtn.whenReleased(new InstantCommand(() -> sArm.armStop()));
+    armOutBtn.whileTrue(new RunCommand(() -> sArm.armLiftOut()));
+    armOutBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
 
     autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
-    autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
+    autoVisionBtn.whileTrue(new DriveVision(controller, sDrivetrain, sLimeLight));
 
     gearBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftJoystickButton);
-    gearBtn.whenPressed(new InstantCommand(() -> sDrivetrain.Gear()));
+    gearBtn.onFalse(new InstantCommand(() -> sDrivetrain.Gear()));
+
+    armWristBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
+    armWristBtn.whileTrue(new RunCommand(() -> sArm.armWristIn()));
+    armWristBtn.onFalse(new InstantCommand(() -> sArm.armWristStop()));
+
+    armWristOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton5);
+    armWristOutBtn.whileTrue(new RunCommand(() -> sArm.armWristOut()));
+    armWristOutBtn.onFalse(new InstantCommand(() -> sArm.armWristStop()));
+
+    armKnuckleBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton6);
+    armKnuckleBtn.whileTrue(new RunCommand(() -> sArm.armKnuckleIn()));
+    armKnuckleBtn.onFalse(new InstantCommand(() -> sArm.armKnuckleStop()));
+
+    armKnuckleOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton7);
+    armKnuckleOutBtn.whileTrue(new RunCommand(() -> sArm.armKnuckleOut()));
+    armKnuckleOutBtn.onFalse(new InstantCommand(() -> sArm.armKnuckleStop()));
   }
 
   /**
