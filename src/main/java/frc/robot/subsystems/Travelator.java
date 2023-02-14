@@ -4,10 +4,8 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import com.ctre.phoenixpro.hardware.TalonFX;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -17,15 +15,22 @@ public class Travelator extends SubsystemBase {
   /** Creates a new Travelator. */
 
   // ***** Create Motors ***** //
-  public TalonFX Travelator = new TalonFX(opConstants.kTravelatorID);
+  private TalonFX Travelator = new TalonFX(opConstants.kTravelatorID);
 
   // ***** The Limit Switches ***** //
-  public DigitalInput LimitSwitch1 = new DigitalInput(opConstants.kBackRightLimitSwitchID);
-  public DigitalInput LimitSwitch2 = new DigitalInput(opConstants.kBackLeftLimitSwitchID);
-  public DigitalInput LimitSwitch3 = new DigitalInput(opConstants.kFrontRightLimitSwitchID);
-  public DigitalInput LimitSwitch4 = new DigitalInput(opConstants.kFrontLeftLimitSwitchID);
+  private DigitalInput LimitSwitch1 = new DigitalInput(opConstants.kBackRightLimitSwitchID);
+  private DigitalInput LimitSwitch2 = new DigitalInput(opConstants.kBackLeftLimitSwitchID);
+  private DigitalInput LimitSwitch3 = new DigitalInput(opConstants.kFrontRightLimitSwitchID);
+  private DigitalInput LimitSwitch4 = new DigitalInput(opConstants.kFrontLeftLimitSwitchID);
 
-  public Travelator() {}
+  public Travelator() {
+    setName("Travelator");
+    addChild("Motor", Travelator);
+    addChild("Switch 1", LimitSwitch1);
+    addChild("Switch 2", LimitSwitch2);
+    addChild("Switch 3", LimitSwitch3);
+    addChild("Switch 4", LimitSwitch4);
+  }
 
   @Override
   public void periodic() {
@@ -39,30 +44,50 @@ public class Travelator extends SubsystemBase {
     }
   }
 
-  public Command Moveforward() {
-    if (!LimitSwitch1.get() || !LimitSwitch2.get()) { // we use not limit switch since the current switches are true until pressed.
+  public void moveforward() {
+    // we use not limit switch since the current switches are true until pressed.
+    if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
       Travelator.set(0);
     } else {
       Travelator.set(opConstants.kTravelatorSpeed);
-    };
-    return null;
+    }
   }
 
-  public Command MoveBackward() {
+  public void moveBackward() {
     if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
       Travelator.set(0);
     } else {
       Travelator.set(-opConstants.kTravelatorSpeed);
     }
-    return null;
-    }
+  }
 
-  public void Stop() {
+  public void stop() {
     Travelator.set(0);
   }
 
   public Command moveTravelatorMiddle() {
-    return null; //this.runOnce(() -> Travelator.);
+    return null; // this.runOnce(() -> Travelator.);
   }
 
+  /**
+   * Move Travelator forwards command
+   *
+   * @return
+   */
+  public Command moveTravelatorForward() {
+    // We use the RunEnd function because moveForward() will
+    // be called every iteration.
+    return this.runEnd(this::moveforward, this::stop);
+  }
+
+  /**
+   * Move Travelator backwards command
+   *
+   * @return
+   */
+  public Command moveTravelatorBackward() {
+    // We use the RunEnd function because moveBackward() will
+    // be called every iteration.
+    return this.runEnd(this::moveBackward, this::stop);
+  }
 }

@@ -4,17 +4,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ctrlConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveTele extends CommandBase {
   private final Drivetrain m_Drivetrain;
-  private Joystick m_joystick;
+  private XboxController m_joystick;
 
   /** Creates a new DriveTele. */
-  public DriveTele(Joystick stick, Drivetrain subsystem) {
+  public DriveTele(XboxController stick, Drivetrain subsystem) {
     m_Drivetrain = subsystem;
     m_joystick = stick;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,23 +22,16 @@ public class DriveTele extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    //Do nothing
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     m_Drivetrain.TeleMecDrive(
-        -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
-        m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickX),
-        m_joystick.getRawAxis(ctrlConstants.kXboxRightJoystickX));
+        -m_joystick.getLeftY(), m_joystick.getLeftX(), m_joystick.getRightX());
   }
-
-  //   m_Drivetrain.TeleMecDrive(
-  //     -m_joystick.getRawAxis(Constants.kXboxLeftJoystickY),
-  //     m_Drivetrain.GetStrafeValue(m_joystick),
-  //     m_joystick.getRawAxis(Constants.kXboxRightJoystickX));
-  // }
 
   // Called once the command ends or is interrupted.
   @Override

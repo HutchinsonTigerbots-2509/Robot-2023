@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ctrlConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.LimeLight;
 
@@ -30,7 +29,9 @@ public class DriveVision extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    //Do nothing
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -46,9 +47,7 @@ public class DriveVision extends CommandBase {
     SmartDashboard.putNumber("x", m_Vision.getTargetX());
 
     m_Drivetrain.TeleMecDrive(
-        -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
-        m_Drivetrain.GetStrafeValue(m_joystick),
-        turn);
+        -m_joystick.getRawAxis(1), m_Drivetrain.GetStrafeValue(m_joystick), turn);
 
     m_joystick.setRumble(RumbleType.kLeftRumble, 1);
     m_joystick.setRumble(RumbleType.kRightRumble, 1);
