@@ -51,14 +51,14 @@ public final class Constants {
     public static final int kFrontLeftLimitSwitchID = 3;
 
     // Arm Constants
-    public final static int kArmMotor1ID = 3;
-    public final static int kArmMotor2ID = 2;
-    public final static int kArmMotor3ID = 0;
-    public final static double kMaxArm1Speed = .3;
-    public final static double kMaxArm2Speed = .6;
-    public final static int kGrabberP1 = 0;
-    public final static int kGrabberP2 = 1;
-    public final static int kArmCounterID = 0;
+    public static final int kArmMotor1ID = 3;
+    public static final int kArmMotor2ID = 2;
+    public static final int kArmMotor3ID = 0;
+    public static final double kMaxArm1Speed = .3;
+    public static final double kMaxArm2Speed = .6;
+    public static final int kGrabberP1 = 0;
+    public static final int kGrabberP2 = 1;
+    public static final int kArmCounterID = 0;
   }
 
   public static final class camConstants {
