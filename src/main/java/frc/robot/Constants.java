@@ -34,7 +34,7 @@ public final class Constants {
     public static final int kRearRightID = 0;
     public static final double kMaxSpeed = 0.8;
     public static final double kLowSpeed = 0.3;
-    public static final double kMaxAngularSpeed = 0.8;
+    public static final double kMaxAngularSpeed = 0.5;
     public static final double kHighSpeedStrafe = 1;
     public static final double kLowSpeedStrafe = .6;
     public static final double kSkewRateLimit = 0.8;
@@ -43,6 +43,8 @@ public final class Constants {
     public static final double kWheelDiameter = 15.24; // This is in centimeters.
     public static final int kParkingBrakeExtend = 2;
     public static final int kParkingBrakeRetract = 3;
+
+    
 
 
         // ***** Travelator Constants ***** //
@@ -58,12 +60,16 @@ public final class Constants {
 
         // ***** Arm Constants ***** //
         public final static int kArmLiftID = 3;
-        public final static int kGrabberP1 = 2;
-        public final static int kGrabberP2 = 3;
+        public final static int kGrabberP1 = 0;
+        public final static int kGrabberP2 = 1;
         public final static int kArmCounterID = 0;
         public final static int kArmKnuckleID = 10;
         public final static int kArmWristID = 11;
-        public final static double kMaxArmSpeed = .75;
+        public final static double kMaxArmSpeed = .45;
+
+        //* Solenoids */
+        public final static int kParkingBrakeP1 = 2;
+        public final static int kParkingBrakeP2 = 3;
     }
 
 

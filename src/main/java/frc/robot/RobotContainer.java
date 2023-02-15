@@ -57,8 +57,7 @@ public class RobotContainer {
   private JoystickButton armKnuckleOutBtn;
   private JoystickButton extendParkingBrake;
   private JoystickButton retractParkingBrake;
-  private JoystickButton armLiftInBtn;
-  private JoystickButton armLiftOutBtn;
+  private JoystickButton grabBtn;
 
   //private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
 
@@ -81,33 +80,33 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton8);
+    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
     travelatorInBtn.whileTrue(new RunCommand(() -> sTravelator.Moveforward()));
     travelatorInBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
 
-    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
+    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton10);
     travelatorOutBtn.whileTrue(new RunCommand(() -> sTravelator.MoveBackward()));
     travelatorOutBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
 
-    armBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    armBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton7);
     armBtn.whileTrue(new RunCommand(() -> sArm.armLiftIn()));
     armBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
 
-    armOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
+    armOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton8);
     armOutBtn.whileTrue(new RunCommand(() -> sArm.armLiftOut()));
     armOutBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
 
-    autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
-    autoVisionBtn.whileTrue(new DriveVision(controller, sDrivetrain, sLimeLight));
+    // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
+    // autoVisionBtn.whileTrue(new DriveVision(controller, sDrivetrain, sLimeLight));
 
     gearBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftJoystickButton);
     gearBtn.onFalse(new InstantCommand(() -> sDrivetrain.Gear()));
 
-    armWristBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
+    armWristBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton5);
     armWristBtn.whileTrue(new RunCommand(() -> sArm.armWristIn()));
     armWristBtn.onFalse(new InstantCommand(() -> sArm.armWristStop()));
 
-    armWristOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton5);
+    armWristOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
     armWristOutBtn.whileTrue(new RunCommand(() -> sArm.armWristOut()));
     armWristOutBtn.onFalse(new InstantCommand(() -> sArm.armWristStop()));
 
@@ -115,23 +114,18 @@ public class RobotContainer {
     armKnuckleBtn.whileTrue(new RunCommand(() -> sArm.armKnuckleIn()));
     armKnuckleBtn.onFalse(new InstantCommand(() -> sArm.armKnuckleStop()));
 
-    armKnuckleOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton7);
+    armKnuckleOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
     armKnuckleOutBtn.whileTrue(new RunCommand(() -> sArm.armKnuckleOut()));
     armKnuckleOutBtn.onFalse(new InstantCommand(() -> sArm.armKnuckleStop()));
-
-    armLiftInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
-    armLiftInBtn.whileTrue(new RunCommand(() -> sArm.armLiftIn()));
-    armLiftInBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
-
-    armLiftOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    armLiftOutBtn.whileTrue(new RunCommand(() -> sArm.armLiftOut()));
-    armLiftOutBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
 
     extendParkingBrake = new JoystickButton(stick, ctrlConstants.kJoystickButton11);
     extendParkingBrake.onTrue(sDrivetrain.extendParkingBrake());
 
     retractParkingBrake = new JoystickButton(stick, ctrlConstants.kJoystickButton12);
     retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
+
+    grabBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
+    grabBtn.onTrue(new RunCommand(() -> sArm.Grab()));
 
   }
 

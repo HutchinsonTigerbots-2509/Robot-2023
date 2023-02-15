@@ -24,7 +24,7 @@ public class Arm extends SubsystemBase {
   public WPI_TalonSRX armKnuckle = new WPI_TalonSRX(opConstants.kArmKnuckleID);
   public WPI_TalonSRX armWrist = new WPI_TalonSRX(opConstants.kArmWristID);
 
- // public DoubleSolenoid Grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kGrabberP1, opConstants.kGrabberP2);
+  public DoubleSolenoid Grabber = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kParkingBrakeP1, opConstants.kParkingBrakeP2);
 
   public Counter normalCounter1 = new Counter();
   public Counter normalCounter2 = new Counter();
@@ -42,6 +42,8 @@ public class Arm extends SubsystemBase {
     // normalCounter1.setSamplesToAverage(10);
     // normalCounter1.setDistancePerPulse(2.0583);
     // normalCounter1.reset();
+
+    armLift.setNeutralMode(NeutralMode.Brake);
 
   }
 
@@ -67,7 +69,7 @@ public class Arm extends SubsystemBase {
   }
 
   public void Grab() {
-  //  Grabber.toggle();
+    Grabber.toggle();
   }
 
   /** The tower/lift */

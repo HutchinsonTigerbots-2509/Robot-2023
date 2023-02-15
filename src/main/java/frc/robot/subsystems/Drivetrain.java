@@ -61,11 +61,11 @@ public class Drivetrain extends SubsystemBase {
   private Translation2d rearRightTranslate = new Translation2d(-0.2921, -0.3175);
 
   /** Solenoids */ 
-  private DoubleSolenoid parkingBrake =
-  new DoubleSolenoid(
-      PneumaticsModuleType.CTREPCM,
-      opConstants.kParkingBrakeExtend,
-      opConstants.kParkingBrakeRetract);
+   private DoubleSolenoid parkingBrake =
+   new DoubleSolenoid(
+       PneumaticsModuleType.CTREPCM,
+       opConstants.kParkingBrakeExtend,
+       opConstants.kParkingBrakeRetract);
 
   // Creating my kinematics object using the wheel locations.
   private MecanumDriveKinematics kinematics =
@@ -262,11 +262,11 @@ public class Drivetrain extends SubsystemBase {
     return field.getRobotPose();
   }
 
-  public Command extendParkingBrake() {
-    return this.runOnce(() -> parkingBrake.set(Value.kForward));
-  }
+ public Command extendParkingBrake() {
+   return this.runOnce(() -> parkingBrake.set(Value.kForward));
+ }
 
   public Command retractParkingBrake() {
-    return this.runOnce(() -> parkingBrake.set(Value.kReverse));
-  }
+   return this.runOnce(() -> parkingBrake.set(Value.kReverse));
+ }
 }
