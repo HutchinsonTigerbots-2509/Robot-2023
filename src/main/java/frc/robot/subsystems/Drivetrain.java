@@ -64,8 +64,8 @@ public class Drivetrain extends SubsystemBase {
    private DoubleSolenoid parkingBrake =
    new DoubleSolenoid(
        PneumaticsModuleType.CTREPCM,
-       opConstants.kParkingBrakeExtend,
-       opConstants.kParkingBrakeRetract);
+       opConstants.kParkingBrakeP1,
+       opConstants.kParkingBrakeP2);
 
   // Creating my kinematics object using the wheel locations.
   private MecanumDriveKinematics kinematics =

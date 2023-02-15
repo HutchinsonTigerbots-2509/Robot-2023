@@ -41,8 +41,6 @@ public final class Constants {
     public static final double kGearRatio = 12.0;
     public static final int kFalconUnitsPerRotation = 2048;
     public static final double kWheelDiameter = 15.24; // This is in centimeters.
-    public static final int kParkingBrakeExtend = 2;
-    public static final int kParkingBrakeRetract = 3;
 
     
 
