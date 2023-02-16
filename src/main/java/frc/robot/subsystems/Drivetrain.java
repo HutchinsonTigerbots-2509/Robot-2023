@@ -151,11 +151,16 @@ public class Drivetrain extends SubsystemBase {
     return NavX.getYaw();
   }
 
-  public void mecanumDrive(double x, double y, double z, boolean fieldRelative) {
-    if (fieldRelative) {
-      drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
-    } else {
-      drivetrain.driveCartesian(x, y, z, new Rotation2d());
+  public void mecanumDrive(double x, double y, double z, boolean fieldRelative, boolean OnOff) {
+    if (OnOff = true) {
+      if (fieldRelative) {
+        drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
+      } else {
+        drivetrain.driveCartesian(x, y, z, new Rotation2d());
+      }
+    }
+    else {
+      drivetrain.driveCartesian(x, y, z);
     }
   }
 

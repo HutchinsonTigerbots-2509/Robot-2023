@@ -53,8 +53,8 @@ public final class Constants {
         public final static int kFrontRightLimitSwitchID = 2;
         public final static int kFrontLeftLimitSwitchID = 3;
         public final static double kTravelatorGearRatio = 29.118;
-        public final static int kTravelatorMaxTicks = 291952;
-        public final static int kTravelatorMinTicks = 0;
+        public final static double kTravelatorMaxTicks = 1;
+        public final static double kTravelatorMinTicks = 0;
 
         // ***** Arm Constants ***** //
         public final static int kArmLiftID = 3;

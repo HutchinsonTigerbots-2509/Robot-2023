@@ -43,12 +43,12 @@ public class Travelator extends SubsystemBase {
     SmartDashboard.updateValues();
 
     if(!LimitSwitch1.get() || !LimitSwitch2.get()){
-      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMinTicks);
+      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMaxTicks);
       Travelator.set(ControlMode.PercentOutput, 0);
     }
 
     if(!LimitSwitch3.get() || !LimitSwitch4.get()){
-      // Travelator.setSelectedSensorPosition(opConstants.kTravelatorMaxTicks);
+      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMinTicks);
       Travelator.set(ControlMode.PercentOutput, 0);
     }
   }
@@ -73,10 +73,24 @@ public class Travelator extends SubsystemBase {
 
   public void Stop() {
     Travelator.set(ControlMode.PercentOutput, 0);
+    Travelator.getSelectedSensorPosition();
   }
 
   public double getTravelatorPos() {
     return Travelator.getSelectedSensorPosition()/(2048*opConstants.kTravelatorGearRatio/0.12192);
+  }
+
+  public void goToMiddleTravelator() {
+    if (!LimitSwitch1.get() || !LimitSwitch2.get() || !LimitSwitch3.get() || !LimitSwitch4.get()) {
+    Travelator.set(0);
+    } else if (Travelator.getSelectedSensorPosition() < -0.500) {
+      Travelator.set(ControlMode.PercentOutput, opConstants.kTravelatorSpeed);
+    } else if (Travelator.getSelectedSensorPosition() > -0.470) {
+      Travelator.set(ControlMode.PercentOutput, opConstants.kTravelatorSpeed);
+    } else {
+      Travelator.set(0);
+    }
+    return;
   }
   
 }

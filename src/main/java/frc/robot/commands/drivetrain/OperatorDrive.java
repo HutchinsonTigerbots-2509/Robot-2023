@@ -46,7 +46,7 @@ public class OperatorDrive extends CommandBase {
     double xSpeed = xspeedLimiter.calculate(stick.getX()) * opConstants.kMaxSpeed;
     double ySpeed = yspeedLimiter.calculate(stick.getY()) * opConstants.kMaxSpeed;
     double rot = rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
-    drive.mecanumDrive(ySpeed, xSpeed, rot, fieldRelative);
+    drive.mecanumDrive(ySpeed, xSpeed, rot, fieldRelative, false);
   }
 
   // Called once the command ends or is interrupted.

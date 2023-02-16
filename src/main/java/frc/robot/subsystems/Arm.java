@@ -70,16 +70,16 @@ public class Arm extends SubsystemBase {
 
   }
 
-  // public Command Grab() {
-  //   return this.runOnce(() -> Grabber.toggle());
+  // public Command grabExtend() {
+  //   return this.runOnce(() -> Grabber.set(Value.kForward));
+  // }
+ 
+  //  public Command grabRetract() {
+  //   return this.runOnce(() -> Grabber.set(Value.kReverse));
   // }
 
-  public Command grabTest1() {
-    return this.runOnce(() -> Grabber.set(Value.kForward));
-  }
- 
-   public Command grabTest2() {
-    return this.runOnce(() -> Grabber.set(Value.kReverse));
+  public Command Grab() {
+    return this.runOnce(() -> Grabber.toggle());
   }
 
 
