@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ctrlConstants;
 import frc.robot.Constants.opConstants;
 
 public class Arm extends SubsystemBase {
@@ -32,7 +34,7 @@ public class Arm extends SubsystemBase {
 
   /** Creates a new arm. **/
   public Arm() {
-   // Grabber.set(Value.kForward);
+    Grabber.set(Value.kForward);
 
     // normalCounter1.setUpSource(opConstants.kArmCounterID);
     // normalCounter1.setUpDownCounterMode();
@@ -68,9 +70,18 @@ public class Arm extends SubsystemBase {
 
   }
 
-  public void Grab() {
-    Grabber.toggle();
+  // public Command Grab() {
+  //   return this.runOnce(() -> Grabber.toggle());
+  // }
+
+  public Command grabTest1() {
+    return this.runOnce(() -> Grabber.set(Value.kForward));
   }
+ 
+   public Command grabTest2() {
+    return this.runOnce(() -> Grabber.set(Value.kReverse));
+  }
+
 
   /** The tower/lift */
   public void armLiftIn() {

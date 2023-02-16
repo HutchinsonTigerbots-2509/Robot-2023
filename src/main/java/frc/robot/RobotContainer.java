@@ -58,6 +58,7 @@ public class RobotContainer {
   private JoystickButton extendParkingBrake;
   private JoystickButton retractParkingBrake;
   private JoystickButton grabBtn;
+  private JoystickButton grabTestBtn;
 
   //private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
 
@@ -125,8 +126,11 @@ public class RobotContainer {
     retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
 
     grabBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
-    grabBtn.onTrue(new RunCommand(() -> sArm.Grab()));
+    grabBtn.onTrue(new RunCommand(() -> sArm.grabTest1()));
 
+    grabTestBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
+    grabTestBtn.onTrue(new RunCommand(() -> sArm.grabTest1()));
+    
   }
 
   /**

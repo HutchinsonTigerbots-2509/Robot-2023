@@ -32,11 +32,11 @@ public class Drivetrain extends SubsystemBase {
   public double z;
 
   // ***** Setting up Drivetrain ***** //
-  public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
-  public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
-  public WPI_TalonFX rearRightMotor = new WPI_TalonFX(opConstants.kRearRightID);
-  public WPI_TalonFX rearLeftMotor = new WPI_TalonFX(opConstants.kRearLeftID);
-  public MecanumDrive drivetrain = new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+  public WPI_TalonFX backLeftMotor = new WPI_TalonFX(opConstants.kFrontRightID);
+  public WPI_TalonFX backRightMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
+  public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kRearRightID);
+  public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kRearLeftID);
+  public MecanumDrive drivetrain = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
   
   // Speed
   private double speedValue = opConstants.kMaxSpeed;
@@ -61,12 +61,8 @@ public class Drivetrain extends SubsystemBase {
   private Translation2d rearRightTranslate = new Translation2d(-0.2921, -0.3175);
 
   /** Solenoids */ 
-   private DoubleSolenoid parkingBrake =
-   new DoubleSolenoid(
-       PneumaticsModuleType.CTREPCM,
-       opConstants.kParkingBrakeP1,
-       opConstants.kParkingBrakeP2);
-
+   private DoubleSolenoid parkingBrake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kParkingBrakeP1, opConstants.kParkingBrakeP2);
+   
   // Creating my kinematics object using the wheel locations.
   private MecanumDriveKinematics kinematics =
       new MecanumDriveKinematics(
@@ -87,14 +83,14 @@ public class Drivetrain extends SubsystemBase {
     // ***** Inverts all the motors that need to be inverted ***** //
     frontRightMotor.setInverted(false);
     frontLeftMotor.setInverted(true);
-    rearRightMotor.setInverted(false);
-    rearLeftMotor.setInverted(true);
+    backRightMotor.setInverted(false);
+    backLeftMotor.setInverted(true);
 
     // ***** Sets the motors to break when at 0 ***** //
     frontRightMotor.setNeutralMode(NeutralMode.Brake);
     frontLeftMotor.setNeutralMode(NeutralMode.Brake);
-    rearRightMotor.setNeutralMode(NeutralMode.Brake);
-    rearLeftMotor.setNeutralMode(NeutralMode.Brake);
+    backRightMotor.setNeutralMode(NeutralMode.Brake);
+    backLeftMotor.setNeutralMode(NeutralMode.Brake);
 
     GearUp();
 
@@ -135,8 +131,8 @@ public class Drivetrain extends SubsystemBase {
 
     fLeftVal = getWheelDistance(this.frontLeftMotor);
     fRightVal = getWheelDistance(this.frontRightMotor);
-    rLeftVal = getWheelDistance(this.rearLeftMotor);
-    rRightVal = getWheelDistance(this.rearRightMotor);
+    rLeftVal = getWheelDistance(this.backLeftMotor);
+    rRightVal = getWheelDistance(this.backRightMotor);
 
     return new MecanumDriveWheelPositions(fLeftVal, fRightVal, rLeftVal, rRightVal);
   }
@@ -192,8 +188,8 @@ public class Drivetrain extends SubsystemBase {
     // Reset encoder postionN
     frontLeftMotor.setSelectedSensorPosition(0);
     frontRightMotor.setSelectedSensorPosition(0);
-    rearLeftMotor.setSelectedSensorPosition(0);
-    rearRightMotor.setSelectedSensorPosition(0);
+    backLeftMotor.setSelectedSensorPosition(0);
+    backRightMotor.setSelectedSensorPosition(0);
 
     // Reset Nav-X
     NavX.reset();
