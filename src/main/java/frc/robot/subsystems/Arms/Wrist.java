@@ -17,7 +17,7 @@ public class Wrist extends SubsystemBase {
   private Encoder JawEncoder = new Encoder(6, 7, false, Encoder.EncodingType.k4X);
 
   /** Creates a new Wrist. */
-  public WPI_TalonSRX armWrist = new WPI_TalonSRX(opConstants.kArmWristID);
+  public WPI_TalonSRX Wrist = new WPI_TalonSRX(opConstants.kArmWristID);
 
   public DoubleSolenoid Grabber =
       new DoubleSolenoid(
@@ -32,34 +32,66 @@ public class Wrist extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public Command Grab() {
+  // Use commands and functions to open and close the grabber
+
+  // Function to initiate the grabber (claw) opening
+  public void GrabOpen() {
+    Grabber.set(Value.kForward);
+  }
+
+  // Actual command to utilize the function
+  public Command cmdGrabOpen() {
+    return this.runOnce(this::GrabOpen);
+  }
+
+  // Function to close the grabber
+  public void GrabClose() {
+    Grabber.set(Value.kReverse);
+  }
+
+  // Command to utilize the grabber closing
+  public Command cmdGrabClose() {
+    return this.runOnce(this::GrabClose);
+  }
+
+  // Command to toggle the grabber (mostly used for reset & preset)
+  public Command GrabToggle() {
     return this.runOnce(() -> Grabber.toggle());
   }
 
-  public void armWristForward() {
-    armWrist.set(opConstants.kMaxAngularSpeed);
+  // Commands and functions for the Wrist
+
+  // Moves Wrist Forward
+  public void WristForward() {
+    Wrist.set(opConstants.kMaxAngularSpeed);
   }
 
-  public Command cmdArmWristForward() {
-    return this.runEnd(this::armWristForward, this::armWristStop);
+  // Command to move the wrist forward function
+  public Command cmdWristForward() {
+    return this.runEnd(this::WristForward, this::WristStop);
   }
 
-  public void armWristBackward() {
-    armWrist.set(-opConstants.kMaxAngularSpeed);
+  // Moves Wrist Backward
+  public void WristBackward() {
+    Wrist.set(-opConstants.kMaxAngularSpeed);
   }
 
-  public Command cmdArmWristBackward() {
-    return this.runEnd(this::armWristBackward, this::armWristStop);
+  // Command to move the wrist backward function
+  public Command cmdWristBackward() {
+    return this.runEnd(this::WristBackward, this::WristStop);
   }
 
+  // Moves wrist to position from the WristToPosition command
   public void WristMove(Double Speed) {
-    armWrist.set(Speed);
+    Wrist.set(Speed);
   }
 
-  public void armWristStop() {
-    armWrist.set(0);
+  // Stops the wrist after movement
+  public void WristStop() {
+    Wrist.set(0);
   }
 
+  // Fetches the encoder's (placed on the back of the jaw) distance
   public double getWristPose() {
     return JawEncoder.getDistance(); // Return the shaft sensor position
   }

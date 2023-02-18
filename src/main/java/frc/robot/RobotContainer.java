@@ -14,7 +14,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.opConstants;
+import frc.robot.commands.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.OrientalDrive;
+import frc.robot.commands.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.Wrist.WristMoveToPosition;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -51,23 +53,36 @@ public class RobotContainer {
   private Joystick opStick = new Joystick(Constants.kOpStickID);
 
   // ***** Joystick Buttons ***** //
+
+  // Shoulder
   private Trigger shoulderForwardBtn;
   private Trigger shoulderBackwardBtn;
+
+  // Travelator
   private Trigger travelatorForwardBtn;
   private Trigger travelatorBackwardBtn;
   private Trigger travelatorBackPosBtn;
   private Trigger travelatorMiddlePosBtn;
   private Trigger travelatorFrontPosBtn;
+
+  // Wrist
   private Trigger armWristForwardBtn;
   private Trigger armWristBackwardBtn;
   private Trigger armWristZeroBtn;
   private Trigger armWristNinetyBtn;
+
+  // Elbow
   private Trigger armElbowForwardBtn;
   private Trigger armElbowBackwardBtn;
-  private Trigger fireParkingBrake;
-  private Trigger grabBtn;
+
+  // Dislocator
   private Trigger DislocatorForwardBtn;
   private Trigger DislocatorBackwardBtn;
+
+  // Misc
+  private Trigger fireParkingBrake;
+  private Trigger grabBtn;
+  private Trigger PresetGrabBtn;
 
   // private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
 
@@ -95,10 +110,10 @@ public class RobotContainer {
     // Shoulder Buttons
 
     shoulderForwardBtn = new JoystickButton(coopStick, 7);
-    shoulderForwardBtn.whileTrue(sShoulder.cmdArmLiftForward());
+    shoulderForwardBtn.whileTrue(sShoulder.cmdShoulderForward());
 
     shoulderBackwardBtn = new JoystickButton(coopStick, 8);
-    shoulderBackwardBtn.whileTrue(sShoulder.cmdArmLiftBackward());
+    shoulderBackwardBtn.whileTrue(sShoulder.cmdShoulderBackward());
 
     // Travelator Buttons
 
@@ -135,7 +150,7 @@ public class RobotContainer {
     armWristNinetyBtn.whileTrue(new WristMoveToPosition(90, sWrist));
 
     grabBtn = new JoystickButton(coopStick, 1);
-    grabBtn.onTrue(sWrist.Grab());
+    grabBtn.onTrue(sWrist.GrabToggle());
 
     // Elbow Buttons
 
@@ -146,11 +161,22 @@ public class RobotContainer {
     armElbowBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
 
     // Dislocate your arm!
+
     DislocatorForwardBtn = new JoystickButton(coopStick, 0);
     DislocatorForwardBtn.whileTrue(sDislocator.cmdDislocatorMoveForward());
 
     DislocatorBackwardBtn = new JoystickButton(coopStick, 0);
     DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
+
+    // Presets
+    // Preset to set up for a come standing up on the ground
+
+    PresetGrabBtn = new JoystickButton(coopStick, 2);
+    PresetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorMax, sTravelator));
+    PresetGrabBtn.onTrue(new ShoulderMoveToPosition(0, sShoulder)); // TODO: GET EVERYTHING
+    PresetGrabBtn.onTrue(new ElbowMoveToPosition(0, sElbow)); // TODO: GET EVERYTHING
+    PresetGrabBtn.onTrue(new WristMoveToPosition(90, sWrist));
+    PresetGrabBtn.onTrue(sWrist.cmdGrabOpen());
   }
 
   /**

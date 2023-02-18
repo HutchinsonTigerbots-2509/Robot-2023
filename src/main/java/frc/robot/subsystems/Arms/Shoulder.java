@@ -53,42 +53,42 @@ public class Shoulder extends SubsystemBase {
     SmartDashboard.putNumber("Degrees", normalCounter1.getDistance());
     SmartDashboard.putNumber("Jaw Get", JawEncoder.getDistance());
     SmartDashboard.updateValues();
-    // System.out.println("\n\nCounter");
-    // System.out.println(normalCounter.get());
-    // System.out.println(normalCounter.getDistance());
   }
 
-  // public Command grabExtend() {
-  //   return this.runOnce(() -> Grabber.set(Value.kForward));
-  // }
-
-  //  public Command grabRetract() {
-  //   return this.runOnce(() -> Grabber.set(Value.kReverse));
-  // }
-
   /** The tower/lift */
-  public void armLiftForward() {
-    // Runs the arm
+
+  // Moves Shoulder Forward
+  public void ShoulderForward() {
     armLift.set(-opConstants.kMaxArmSpeed);
   }
 
-  public Command cmdArmLiftForward() {
-    return this.runEnd(this::armLiftForward, this::armLiftStop);
+  // Command to move the shoulder forward function
+  public Command cmdShoulderForward() {
+    return this.runEnd(this::ShoulderForward, this::ShoulderStop);
   }
 
-  public void armLiftBackward() {
-    // Runs the arm backwards
+  // Moves Shoulder backward
+  public void ShoulderBackward() {
     armLift.set(opConstants.kMaxArmSpeed);
   }
 
-  public Command cmdArmLiftBackward() {
-    return this.runEnd(this::armLiftBackward, this::armLiftStop);
+  // Command to move shoulder backward function
+  public Command cmdShoulderBackward() {
+    return this.runEnd(this::ShoulderBackward, this::ShoulderStop);
   }
 
-  public void armLiftStop() {
-    // Shops the Arm
+  // Stops the arm after movement
+  public void ShoulderStop() {
     armLift.set(0);
   }
 
-  /** The wrist */
+  // Moves the shoulder so that it will move to a position
+  public void ShoulderMove(Double Speed) {
+    armLift.set(Speed);
+  }
+
+  // Gets the position of the shoulder for the move to position
+  public double getShoulderPos() {
+    return armLift.getSelectedSensorPosition();
+  }
 }

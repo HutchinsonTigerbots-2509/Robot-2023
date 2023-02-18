@@ -20,20 +20,27 @@ public class Dislocator extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void DislocatorForward() {}
+  // Makes Extendor / Dislocator go forward
+  public void DislocatorForward() {
+    Dislocator.set(opConstants.kDislocatorSpeed);
+  }
 
+  // Command to utilize the Dislocator moving forwards
   public Command cmdDislocatorMoveForward() {
     return this.runEnd(this::DislocatorForward, this::DislocatorStop);
   }
 
+  // Makes Extendor / Dislocator go backward
   public void DislocatorBackward() {
     Dislocator.set(-opConstants.kDislocatorSpeed);
   }
 
+  // Command to utilize the Dislocator moving backwards
   public Command cmdDislocatorMoveBackward() {
     return this.runEnd(this::DislocatorBackward, this::DislocatorStop);
   }
 
+  // Stops the Dislocator after movement
   public void DislocatorStop() {
     Dislocator.set(0);
   }
