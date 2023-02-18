@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.ctrlConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveTele extends CommandBase {
@@ -23,23 +22,15 @@ public class DriveTele extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    // Do nothing
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    m_Drivetrain.TeleMecDrive(
-        -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
-        m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickX),
-        m_joystick.getRawAxis(ctrlConstants.kXboxRightJoystickX));
+    m_Drivetrain.TeleMecDrive(-m_joystick.getX(), m_joystick.getY(), m_joystick.getZ());
   }
-
-  //   m_Drivetrain.TeleMecDrive(
-  //     -m_joystick.getRawAxis(Constants.kXboxLeftJoystickY),
-  //     m_Drivetrain.GetStrafeValue(m_joystick),
-  //     m_joystick.getRawAxis(Constants.kXboxRightJoystickX));
-  // }
 
   // Called once the command ends or is interrupted.
   @Override

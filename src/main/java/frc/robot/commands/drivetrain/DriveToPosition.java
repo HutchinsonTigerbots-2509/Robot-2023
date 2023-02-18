@@ -81,7 +81,7 @@ public class DriveToPosition extends CommandBase {
     // xSpeed = xspeedLimiter.calculate(xSpeed) * opConstants.kMaxSpeed;
     // ySpeed = yspeedLimiter.calculate(ySpeed) * opConstants.kMaxSpeed;
 
-    drive.mecanumDrive(xSpeed, -ySpeed, 0, true, true);
+    drive.mecanumDrive(xSpeed, -ySpeed, 0, true);
   }
 
   // Called once the command ends or is interrupted.
