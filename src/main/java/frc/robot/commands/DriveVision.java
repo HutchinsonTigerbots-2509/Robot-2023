@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ctrlConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.LimeLight;
@@ -35,16 +35,20 @@ public class DriveVision extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(m_Vision.getTargetX() < 28) {turn = ((m_Vision.getTargetX() - 30) * .01) - .08;}
-    else if (m_Vision.getTargetX() > 32) {turn = ((m_Vision.getTargetX() - 30) * .010) + .08;}
-    else {turn = 0;}
+    if (m_Vision.getTargetX() < 28) {
+      turn = ((m_Vision.getTargetX() - 30) * .01) - .08;
+    } else if (m_Vision.getTargetX() > 32) {
+      turn = ((m_Vision.getTargetX() - 30) * .010) + .08;
+    } else {
+      turn = 0;
+    }
 
     SmartDashboard.putNumber("x", m_Vision.getTargetX());
 
     m_Drivetrain.TeleMecDrive(
-      -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
-      m_Drivetrain.GetStrafeValue(m_joystick),
-      turn);
+        -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
+        m_Drivetrain.GetStrafeValue(m_joystick),
+        turn);
 
     m_joystick.setRumble(RumbleType.kLeftRumble, 1);
     m_joystick.setRumble(RumbleType.kRightRumble, 1);

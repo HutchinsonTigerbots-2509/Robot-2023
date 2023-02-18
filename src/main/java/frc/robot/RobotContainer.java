@@ -4,31 +4,28 @@
 
 package frc.robot;
 
-
-import java.util.function.BooleanSupplier;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.DriveVision;
+import frc.robot.Constants.opConstants;
 import frc.robot.commands.OrientalDrive;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
+import frc.robot.commands.Wrist.WristMoveToPosition;
+import frc.robot.subsystems.Arms.Dislocator;
+import frc.robot.subsystems.Arms.Elbow;
+import frc.robot.subsystems.Arms.Shoulder;
+import frc.robot.subsystems.Arms.Wrist;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
-import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Vision.LimeLight;
-import frc.robot.Constants.ctrlConstants;
-import frc.robot.Constants.opConstants;
 
-//import frc.robot.AutoCommands;
+// import frc.robot.AutoCommands;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -43,7 +40,10 @@ public class RobotContainer {
   // ***** Subsystems ***** //
   private Drivetrain sDrivetrain = new Drivetrain();
   private LimeLight sLimeLight = new LimeLight();
-  private Arm sArm = new Arm();
+  private Shoulder sShoulder = new Shoulder();
+  private Dislocator sDislocator = new Dislocator();
+  private Elbow sElbow = new Elbow();
+  private Wrist sWrist = new Wrist();
   private Travelator sTravelator = new Travelator();
 
   // ***** Joysticks ***** //
@@ -51,8 +51,8 @@ public class RobotContainer {
   private Joystick opStick = new Joystick(Constants.kOpStickID);
 
   // ***** Joystick Buttons ***** //
-  private Trigger armForwardBtn;
-  private Trigger armBackwardBtn;
+  private Trigger shoulderForwardBtn;
+  private Trigger shoulderBackwardBtn;
   private Trigger travelatorForwardBtn;
   private Trigger travelatorBackwardBtn;
   private Trigger travelatorBackPosBtn;
@@ -60,17 +60,15 @@ public class RobotContainer {
   private Trigger travelatorFrontPosBtn;
   private Trigger armWristForwardBtn;
   private Trigger armWristBackwardBtn;
-  private Trigger armKnuckleForwardBtn;
-  private Trigger armKnuckleBackwardBtn;
-  private Trigger extendParkingBrake;
-  private Trigger retractParkingBrake;
+  private Trigger armWristZeroBtn;
+  private Trigger armElbowForwardBtn;
+  private Trigger armElbowBackwardBtn;
+  private Trigger fireParkingBrake;
   private Trigger grabBtn;
-  private Trigger POVTriggerBtn;
+  private Trigger DislocatorForwardBtn;
+  private Trigger DislocatorBackwardBtn;
 
-  //private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
-
-
-
+  // private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -84,46 +82,25 @@ public class RobotContainer {
     // AutoSelect.addOption("Middle4", MiddleFar);
     // AutoSelect.addOption("Potato", Potato);
     SmartDashboard.putData(AutoSelect);
-    
+
     // Configure the button bindings
     configureButtonBindings();
 
-    // travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
-    // travelatorInBtn.whileTrue(new RunCommand(() -> sTravelator.Moveforward()));
-    // travelatorInBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
+    // Parking Break Buttons
 
-    // travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton10);
-    // travelatorOutBtn.whileTrue(new RunCommand(() -> sTravelator.MoveBackward()));
-    // travelatorOutBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
+    fireParkingBrake = new JoystickButton(opStick, 2);
+    fireParkingBrake.onTrue(sDrivetrain.cmdToggleBrake());
 
-    armForwardBtn = new JoystickButton(coopStick, 7);
-    armForwardBtn.whileTrue(sArm.cmdArmLiftForward());
+    // Shoulder Buttons
 
-    armBackwardBtn = new JoystickButton(coopStick,8);
-    armBackwardBtn.whileTrue(sArm.cmdArmLiftBackward());
+    shoulderForwardBtn = new JoystickButton(coopStick, 7);
+    shoulderForwardBtn.whileTrue(sShoulder.cmdArmLiftForward());
 
-    armWristForwardBtn = new JoystickButton(coopStick, 5);
-    armWristForwardBtn.whileTrue(sArm.cmdArmWristForward());
+    shoulderBackwardBtn = new JoystickButton(coopStick, 8);
+    shoulderBackwardBtn.whileTrue(sShoulder.cmdArmLiftBackward());
 
-    armWristBackwardBtn = new JoystickButton(coopStick,3);
-    armWristBackwardBtn.whileTrue(sArm.cmdArmWristBackward());
+    // Travelator Buttons
 
-    armKnuckleForwardBtn = new JoystickButton(coopStick, 6);
-    armKnuckleForwardBtn.whileTrue(sArm.cmdArmKnuckleIn());
-
-    armKnuckleBackwardBtn = new JoystickButton(coopStick, 4);
-    armKnuckleBackwardBtn.whileTrue(sArm.cmdArmKnuckleOut());
-
-    extendParkingBrake = new JoystickButton(opStick, 3);
-    extendParkingBrake.onTrue(sDrivetrain.extendParkingBrake());
-
-    retractParkingBrake = new JoystickButton(opStick, 5);
-    retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
-
-    grabBtn = new JoystickButton(coopStick, 1);
-    grabBtn.onTrue(sArm.Grab());
-
-    //Travelator Button
     travelatorForwardBtn = new JoystickButton(opStick, 7);
     travelatorForwardBtn.whileTrue(sTravelator.cmdMoveForward());
 
@@ -131,15 +108,45 @@ public class RobotContainer {
     travelatorBackwardBtn.whileTrue(sTravelator.cmdMoveBackward());
 
     travelatorBackPosBtn = new JoystickButton(opStick, 12);
-    travelatorBackPosBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
+    travelatorBackPosBtn.onTrue(
+        new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
 
     travelatorMiddlePosBtn = new JoystickButton(opStick, 10);
-    travelatorMiddlePosBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, sTravelator));
+    travelatorMiddlePosBtn.onTrue(
+        new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, sTravelator));
 
     travelatorFrontPosBtn = new JoystickButton(opStick, 8);
-    travelatorFrontPosBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
+    travelatorFrontPosBtn.onTrue(
+        new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
 
+    // Wrist Buttons
 
+    armWristForwardBtn = new POVButton(coopStick, 90);
+    armWristForwardBtn.whileTrue(sElbow.cmdArmElbowForward());
+
+    armWristBackwardBtn = new POVButton(coopStick, 270);
+    armWristBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
+
+    armWristZeroBtn = new POVButton(coopStick, 0);
+    armWristZeroBtn.whileTrue(new WristMoveToPosition(0, sWrist));
+
+    grabBtn = new JoystickButton(coopStick, 1);
+    grabBtn.onTrue(sWrist.Grab());
+
+    // Elbow Buttons
+
+    armElbowForwardBtn = new JoystickButton(coopStick, 6);
+    armElbowForwardBtn.whileTrue(sElbow.cmdArmElbowForward());
+
+    armElbowBackwardBtn = new JoystickButton(coopStick, 4);
+    armElbowBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
+
+    // Dislocate your arm!
+    DislocatorForwardBtn = new JoystickButton(coopStick, 0);
+    DislocatorForwardBtn.whileTrue(sDislocator.cmdDislocatorMoveForward());
+
+    DislocatorBackwardBtn = new JoystickButton(coopStick, 0);
+    DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
   }
 
   /**
@@ -159,18 +166,45 @@ public class RobotContainer {
     return AutoSelect.getSelected();
   }
 
-  public Command getAutCommand(){
+  public Command getAutCommand() {
     return AutoSelect.getSelected();
   }
-  
+
   // Getter Methods
 
-  public Drivetrain getDrivetrain() { return sDrivetrain; }
-  public Arm getArm() { return sArm; }
-  public Travelator gTravelator() { return sTravelator; }
-  public LimeLight getLimeLight() { return sLimeLight; }
+  public Drivetrain getDrivetrain() {
+    return sDrivetrain;
+  }
 
-  public Joystick getCoopStick() { return coopStick; }
-  public Joystick getOpStick() { return opStick; }
-  
+  public Shoulder getShoulder() {
+    return sShoulder;
+  }
+
+  public Dislocator getDislocator() {
+    return sDislocator;
+  }
+
+  public Elbow getElbow() {
+    return sElbow;
+  }
+
+  public Wrist getWrist() {
+    return sWrist;
+  }
+
+  public Travelator gTravelator() {
+    return sTravelator;
+  }
+
+  public LimeLight getLimeLight() {
+    return sLimeLight;
+  }
+
+  public Joystick getCoopStick() {
+    return coopStick;
+  }
+
+  public Joystick getOpStick() {
+    return opStick;
+  }
 }

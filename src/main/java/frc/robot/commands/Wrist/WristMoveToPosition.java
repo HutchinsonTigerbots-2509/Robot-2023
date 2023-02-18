@@ -6,7 +6,7 @@ package frc.robot.commands.Wrist;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
-import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Arms.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -16,18 +16,18 @@ public class WristMoveToPosition extends PIDCommand {
   static final double kI = 0.0;
   static final double kD = 0.0;
   /** Creates a new WristMoveToPosition. */
-  public WristMoveToPosition(double PreferedAngle, Arm arm) {
+  public WristMoveToPosition(double PreferedAngle, Wrist wrist) {
     super(
         // The controller that the command will use
         new PIDController(kP, kI, kD),
         // This should return the measurement
-        arm::getWristPose,
+        wrist::getWristPose,
         // This should return the setpoint (can also be a constant)
         PreferedAngle,
         // This uses the output
         output -> {
           // Use the output here
-        arm.Move(output);
+          wrist.WristMove(output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.

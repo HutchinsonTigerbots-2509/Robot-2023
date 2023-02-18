@@ -4,10 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ctrlConstants;
+import frc.robot.subsystems.Drivetrain;
 
 public class DriveTele extends CommandBase {
   private final Drivetrain m_Drivetrain;
@@ -29,11 +29,11 @@ public class DriveTele extends CommandBase {
   @Override
   public void execute() {
 
-       m_Drivetrain.TeleMecDrive(
-       -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
-       m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickX),
-       m_joystick.getRawAxis(ctrlConstants.kXboxRightJoystickX));
-   }
+    m_Drivetrain.TeleMecDrive(
+        -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
+        m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickX),
+        m_joystick.getRawAxis(ctrlConstants.kXboxRightJoystickX));
+  }
 
   //   m_Drivetrain.TeleMecDrive(
   //     -m_joystick.getRawAxis(Constants.kXboxLeftJoystickY),

@@ -16,14 +16,13 @@ import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.opConstants;
 import frc.robot.Constants.ctrlConstants;
+import frc.robot.Constants.opConstants;
 
 public class Drivetrain extends SubsystemBase {
 
@@ -36,8 +35,9 @@ public class Drivetrain extends SubsystemBase {
   public WPI_TalonFX backRightMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
   public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kRearRightID);
   public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kRearLeftID);
-  public MecanumDrive drivetrain = new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
-  
+  public MecanumDrive drivetrain =
+      new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
+
   // Speed
   private double speedValue = opConstants.kMaxSpeed;
   private double speedValueStrafe = opConstants.kHighSpeedStrafe;
@@ -51,7 +51,7 @@ public class Drivetrain extends SubsystemBase {
   float DisplacementPitch = NavX.getPitch();
   float DisplacementYaw = NavX.getYaw();
 
-   // Kinematics
+  // Kinematics
   // The locations for the wheels must be relative to the center of the robot.
   // Positive x values represent moving toward the front of the robot whereas
   // positive y values represent moving toward the left of the robot.
@@ -60,9 +60,11 @@ public class Drivetrain extends SubsystemBase {
   private Translation2d rearLeftTranslate = new Translation2d(-0.2921, 0.3175);
   private Translation2d rearRightTranslate = new Translation2d(-0.2921, -0.3175);
 
-  /** Solenoids */ 
-   private DoubleSolenoid parkingBrake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kParkingBrakeP1, opConstants.kParkingBrakeP2);
-   
+  /** Solenoids */
+  private DoubleSolenoid parkingBrake =
+      new DoubleSolenoid(
+          PneumaticsModuleType.CTREPCM, opConstants.kParkingBrakeP1, opConstants.kParkingBrakeP2);
+
   // Creating my kinematics object using the wheel locations.
   private MecanumDriveKinematics kinematics =
       new MecanumDriveKinematics(
@@ -76,7 +78,6 @@ public class Drivetrain extends SubsystemBase {
   private Pose2d robotPose;
   private Field2d field = new Field2d();
 
-  
   /** Creates a new Drivetrain. */
   public Drivetrain() {
 
@@ -96,14 +97,13 @@ public class Drivetrain extends SubsystemBase {
 
     NavX.calibrate();
 
-     // Setup Odeometry
-     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
-     odometry =
-         new MecanumDriveOdometry(kinematics, NavX.getRotation2d(), getWheelPositions(), robotPose);
-     SmartDashboard.putData("Field", field);
-     SmartDashboard.putNumber("Odom X", robotPose.getX());
-     SmartDashboard.putNumber("Odom Y", robotPose.getY());
-     
+    // Setup Odeometry
+    robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
+    odometry =
+        new MecanumDriveOdometry(kinematics, NavX.getRotation2d(), getWheelPositions(), robotPose);
+    SmartDashboard.putData("Field", field);
+    SmartDashboard.putNumber("Odom X", robotPose.getX());
+    SmartDashboard.putNumber("Odom Y", robotPose.getY());
   }
 
   @Override
@@ -146,7 +146,7 @@ public class Drivetrain extends SubsystemBase {
             * Math.PI;
     return distance / 100.0;
   }
-  
+
   public double getAngle() {
     return NavX.getYaw();
   }
@@ -158,8 +158,7 @@ public class Drivetrain extends SubsystemBase {
       } else {
         drivetrain.driveCartesian(x, y, z, new Rotation2d());
       }
-    }
-    else {
+    } else {
       drivetrain.driveCartesian(x, y, z);
     }
   }
@@ -167,7 +166,7 @@ public class Drivetrain extends SubsystemBase {
   public void stopDrive() {
     drivetrain.stopMotor();
   }
-  
+
   public Command setCurrentPose(Pose2d newPose) {
     return this.runOnce(() -> this.setRobotPose(newPose));
   }
@@ -175,10 +174,9 @@ public class Drivetrain extends SubsystemBase {
   /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
   public void MecDrive(Joystick stick) {
     drivetrain.driveCartesian(
-      -stick.getRawAxis(ctrlConstants.kXboxLeftJoystickY) * speedValue,
-      stick.getRawAxis(ctrlConstants.kXboxRightJoystickX) * speedValue,
-      stick.getRawAxis(ctrlConstants.kXboxLeftJoystickX) * speedValue
-      );
+        -stick.getRawAxis(ctrlConstants.kXboxLeftJoystickY) * speedValue,
+        stick.getRawAxis(ctrlConstants.kXboxRightJoystickX) * speedValue,
+        stick.getRawAxis(ctrlConstants.kXboxLeftJoystickX) * speedValue);
   }
 
   public void OrientDrive(double y, double x, double z) {
@@ -199,14 +197,9 @@ public class Drivetrain extends SubsystemBase {
     // Reset Nav-X
     NavX.reset();
   }
-  
-  
+
   public void TeleMecDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(
-      y * speedValue,
-      x * speedValueStrafe,
-      z * speedValue
-      );
+    drivetrain.driveCartesian(y * speedValue, x * speedValueStrafe, z * speedValue);
   }
 
   /** Drives the autonomous with the speed put into the AutoDrive */
@@ -219,7 +212,7 @@ public class Drivetrain extends SubsystemBase {
     speedValue = opConstants.kLowSpeed;
     return;
   }
-  
+
   /** Puts the gear up to be able speed up driving */
   public void GearUp() {
     speedValue = opConstants.kMaxSpeed;
@@ -231,8 +224,7 @@ public class Drivetrain extends SubsystemBase {
     if (speedValue > .5) {
       speedValue = opConstants.kLowSpeed;
       speedValueStrafe = opConstants.kLowSpeedStrafe;
-    }
-    else {
+    } else {
       speedValue = opConstants.kMaxSpeed;
       speedValueStrafe = opConstants.kHighSpeedStrafe;
     }
@@ -246,11 +238,9 @@ public class Drivetrain extends SubsystemBase {
   public double GetStrafeValue(Joystick XboxController) {
     if (XboxController.getRawAxis(3) > 0) {
       Strafe = XboxController.getRawAxis(3);
-    }
-    else if (XboxController.getRawAxis(2) > 0) {
+    } else if (XboxController.getRawAxis(2) > 0) {
       Strafe = -XboxController.getRawAxis(2);
-    }
-    else {
+    } else {
       Strafe = 0;
     }
     return Strafe;
@@ -263,16 +253,15 @@ public class Drivetrain extends SubsystemBase {
     return field.getRobotPose();
   }
 
- public Command extendParkingBrake() {
-   return this.runOnce(() -> parkingBrake.set(Value.kForward));
- }
+  public void ToggleBrake() {
+    parkingBrake.toggle();
+  }
 
-  public Command retractParkingBrake() {
-   return this.runOnce(() -> parkingBrake.set(Value.kReverse));
- }
+  public Command cmdToggleBrake() {
+    return this.run(this::ToggleBrake);
+  }
 
- public double getRoll() {
-  return NavX.getRoll();
-}
-
+  public double getRoll() {
+    return NavX.getRoll();
+  }
 }

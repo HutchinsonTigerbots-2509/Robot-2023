@@ -4,11 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.subsystems.Drivetrain;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ctrlConstants;
+import frc.robot.subsystems.Drivetrain;
 
 public class OrientalDrive extends CommandBase {
   private final Drivetrain m_Drivetrain;
@@ -29,11 +28,11 @@ public class OrientalDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-       m_Drivetrain.OrientDrive(
+    m_Drivetrain.OrientDrive(
         -m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickY),
         m_joystick.getRawAxis(ctrlConstants.kXboxLeftJoystickX),
         m_joystick.getRawAxis(ctrlConstants.kXboxRightJoystickX));
-   }
+  }
 
   //   m_Drivetrain.TeleMecDrive(
   //     -m_joystick.getRawAxis(Constants.kXboxLeftJoystickY),
@@ -43,9 +42,7 @@ public class OrientalDrive extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

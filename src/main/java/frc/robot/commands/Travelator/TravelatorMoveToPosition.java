@@ -31,7 +31,7 @@ public class TravelatorMoveToPosition extends PIDCommand {
           // Use the output here4
           tv.Move(output);
         });
-      
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(tv);
     // Configure additional PID options by calling `getController` here.

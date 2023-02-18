@@ -4,23 +4,14 @@
 
 package frc.robot.subsystems;
 
-import java.lang.ModuleLayer.Controller;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.opConstants;
-import java.lang.Math;
-
 
 public class Travelator extends SubsystemBase {
   // ***** Create Motors ***** //
@@ -31,8 +22,8 @@ public class Travelator extends SubsystemBase {
   public DigitalInput LimitSwitch4 = new DigitalInput(opConstants.kFrontLeftLimitSwitchID);
 
   public Travelator() {
-    addChild("Motor",Travelator);
-    
+    addChild("Motor", Travelator);
+
     addChild("Switch 1", LimitSwitch1);
     addChild("Switch 2", LimitSwitch2);
     addChild("Switch 3", LimitSwitch3);
@@ -40,23 +31,23 @@ public class Travelator extends SubsystemBase {
 
     Travelator.setNeutralMode(NeutralMode.Brake);
     Travelator.setInverted(true);
-    }
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-     SmartDashboard.putBoolean("TV Back SW", !LimitSwitch1.get()|| !LimitSwitch2.get());
-     SmartDashboard.putBoolean("TV Front SW", !LimitSwitch3.get()||! LimitSwitch4.get());
-    SmartDashboard.putNumber("TV Ticks", Travelator.getSelectedSensorPosition());
-    SmartDashboard.putNumber("TV Distance", getTravelatorPos());
+    //  SmartDashboard.putBoolean("TV Back SW", !LimitSwitch1.get()|| !LimitSwitch2.get());
+    //  SmartDashboard.putBoolean("TV Front SW", !LimitSwitch3.get()||! LimitSwitch4.get());
+    // SmartDashboard.putNumber("TV Ticks", Travelator.getSelectedSensorPosition());
+    // SmartDashboard.putNumber("TV Distance", getTravelatorPos());
     SmartDashboard.updateValues();
 
-    if(!LimitSwitch1.get() || !LimitSwitch2.get()){
+    if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
       Travelator.setSelectedSensorPosition(opConstants.kTravelatorMin);
       Travelator.set(ControlMode.PercentOutput, 0);
     }
 
-    if(!LimitSwitch3.get() || !LimitSwitch4.get()){
+    if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
       Travelator.setSelectedSensorPosition(opConstants.kTravelatorMax);
       Travelator.set(ControlMode.PercentOutput, 0);
     }
@@ -65,30 +56,27 @@ public class Travelator extends SubsystemBase {
   public void MoveBackward() {
     if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
       Travelator.set(ControlMode.PercentOutput, 0);
-     }
-     else {
+    } else {
       Travelator.set(ControlMode.PercentOutput, -opConstants.kTravelatorSpeed);
-     }
+    }
   }
 
   public void MoveForward() {
-     if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
-       Travelator.set(ControlMode.PercentOutput, 0);
-     }
-     else {
+    if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
+      Travelator.set(ControlMode.PercentOutput, 0);
+    } else {
       Travelator.set(ControlMode.PercentOutput, opConstants.kTravelatorSpeed);
-     }
+    }
   }
 
-  public void Move(double Speed){
-    if(Speed<0 && (!LimitSwitch1.get() || !LimitSwitch2.get())){
+  public void Move(double Speed) {
+    if (Speed < 0 && (!LimitSwitch1.get() || !LimitSwitch2.get())) {
       Travelator.set(ControlMode.PercentOutput, 0);
-    }else if(Speed>0 && (!LimitSwitch3.get() || !LimitSwitch4.get())){
+    } else if (Speed > 0 && (!LimitSwitch3.get() || !LimitSwitch4.get())) {
       Travelator.set(ControlMode.PercentOutput, 0);
-    }else{
+    } else {
       Travelator.set(ControlMode.PercentOutput, Speed);
     }
-  
   }
 
   public void Stop() {
@@ -97,15 +85,15 @@ public class Travelator extends SubsystemBase {
   }
 
   public double getTravelatorPos() {
-    return Travelator.getSelectedSensorPosition()/(2048*opConstants.kTravelatorGearRatio/ 2.70203);
-  }
-  
-  public Command cmdMoveForward(){
-    return this.runEnd(this::MoveForward,this::Stop);
+    return Travelator.getSelectedSensorPosition()
+        / (2048 * opConstants.kTravelatorGearRatio / 2.70203);
   }
 
-  public Command cmdMoveBackward(){
-    return this.runEnd(this::MoveBackward,this::Stop);
+  public Command cmdMoveForward() {
+    return this.runEnd(this::MoveForward, this::Stop);
+  }
+
+  public Command cmdMoveBackward() {
+    return this.runEnd(this::MoveBackward, this::Stop);
   }
 }
-
