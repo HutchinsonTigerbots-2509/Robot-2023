@@ -122,58 +122,6 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-
-    // Parking Break Buttons
-    fireParkingBrake = new JoystickButton(opStick, 2);
-    fireParkingBrake.onTrue(sDrivetrain.cmdToggleBrake());
-
-    // Shoulder Buttons
-    shoulderForwardBtn = new JoystickButton(coopStick, 7);
-    shoulderForwardBtn.whileTrue(sShoulder.cmdArmLiftForward());
-    shoulderBackwardBtn = new JoystickButton(coopStick, 8);
-    shoulderBackwardBtn.whileTrue(sShoulder.cmdArmLiftBackward());
-
-    // Travelator Buttons
-    travelatorForwardBtn = new JoystickButton(opStick, 7);
-    travelatorForwardBtn.whileTrue(sTravelator.cmdMoveForward());
-    travelatorBackwardBtn = new JoystickButton(opStick, 11);
-    travelatorBackwardBtn.whileTrue(sTravelator.cmdMoveBackward());
-
-    travelatorBackPosBtn = new JoystickButton(opStick, 12);
-    travelatorBackPosBtn.onTrue(
-        new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
-    travelatorMiddlePosBtn = new JoystickButton(opStick, 10);
-    travelatorMiddlePosBtn.onTrue(
-        new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, sTravelator));
-    travelatorFrontPosBtn = new JoystickButton(opStick, 8);
-    travelatorFrontPosBtn.onTrue(
-        new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
-
-    // Wrist Buttons
-    armWristForwardBtn = new POVButton(coopStick, 90);
-    armWristForwardBtn.whileTrue(sElbow.cmdArmElbowForward());
-    armWristBackwardBtn = new POVButton(coopStick, 270);
-    armWristBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
-    armWristZeroBtn = new POVButton(coopStick, 0);
-    armWristZeroBtn.whileTrue(new WristMoveToPosition(0, sWrist));
-    armWristNinetyBtn = new POVButton(coopStick, 180);
-    armWristNinetyBtn.whileTrue(new WristMoveToPosition(90, sWrist));
-    grabBtn = new JoystickButton(coopStick, 1);
-    grabBtn.onTrue(sWrist.Grab());
-
-    // Elbow Buttons
-    armElbowForwardBtn = new JoystickButton(coopStick, 6);
-    armElbowForwardBtn.whileTrue(sElbow.cmdArmElbowForward());
-    armElbowBackwardBtn = new JoystickButton(coopStick, 4);
-    armElbowBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
-
-    // Dislocate your arm!
-    DislocatorForwardBtn = new JoystickButton(coopStick, 0);
-    DislocatorForwardBtn.whileTrue(sDislocator.cmdDislocatorMoveForward());
-    DislocatorBackwardBtn = new JoystickButton(coopStick, 0);
-    DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
-
-    
     // Parking Break Buttons
 
     fireParkingBrake = new JoystickButton(opStick, 2);
@@ -234,10 +182,10 @@ public class RobotContainer {
 
     // Dislocate your arm!
 
-    DislocatorForwardBtn = new JoystickButton(coopStick, 0);
+    DislocatorForwardBtn = new JoystickButton(coopStick, 5);
     DislocatorForwardBtn.whileTrue(sDislocator.cmdDislocatorMoveForward());
 
-    DislocatorBackwardBtn = new JoystickButton(coopStick, 0);
+    DislocatorBackwardBtn = new JoystickButton(coopStick, 3);
     DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
 
     // Presets
