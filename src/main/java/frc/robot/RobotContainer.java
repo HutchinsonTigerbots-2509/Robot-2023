@@ -61,6 +61,7 @@ public class RobotContainer {
   private Trigger armWristForwardBtn;
   private Trigger armWristBackwardBtn;
   private Trigger armWristZeroBtn;
+  private Trigger armWristNinetyBtn;
   private Trigger armElbowForwardBtn;
   private Trigger armElbowBackwardBtn;
   private Trigger fireParkingBrake;
@@ -129,6 +130,9 @@ public class RobotContainer {
 
     armWristZeroBtn = new POVButton(coopStick, 0);
     armWristZeroBtn.whileTrue(new WristMoveToPosition(0, sWrist));
+
+    armWristNinetyBtn = new POVButton(coopStick, 180);
+    armWristNinetyBtn.whileTrue(new WristMoveToPosition(90, sWrist));
 
     grabBtn = new JoystickButton(coopStick, 1);
     grabBtn.onTrue(sWrist.Grab());
