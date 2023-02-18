@@ -4,16 +4,16 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class OrientalDrive extends CommandBase {
   private final Drivetrain m_Drivetrain;
-  private XboxController m_joystick;
+  private Joystick m_joystick;
 
   /** Creates a new DriveTele. */
-  public OrientalDrive(XboxController stick, Drivetrain subsystem) {
+  public OrientalDrive(Joystick stick, Drivetrain subsystem) {
     m_Drivetrain = subsystem;
     m_joystick = stick;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,7 +29,7 @@ public class OrientalDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Drivetrain.OrientDrive(-m_joystick.getLeftY(), m_joystick.getLeftX(), m_joystick.getRightX());
+    m_Drivetrain.OrientDrive(-m_joystick.getX(), m_joystick.getY(), m_joystick.getZ());
   }
 
   // Called once the command ends or is interrupted.

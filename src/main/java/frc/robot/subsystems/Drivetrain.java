@@ -8,9 +8,14 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.*;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
+import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
+import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,7 +30,7 @@ public class Drivetrain extends SubsystemBase {
   public double Strafe;
   private double speedValue = opConstants.kMaxSpeed;
 
-  // ***** Setting up Motors ***** //
+  // Setting up Motors
   public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
   public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
   public WPI_TalonFX rearRightMotor = new WPI_TalonFX(opConstants.kRearRightID);
@@ -59,8 +64,10 @@ public class Drivetrain extends SubsystemBase {
       new MecanumDriveKinematics(
           frontLeftTranslate, frontRightTranslate, rearLeftTranslate, rearRightTranslate);
   // Creating my odometry object from the kinematics object and the initial wheel
-  // positions. Here, our starting pose is 5 meters along the long end of the field and in
-  // the center of the field along the short end, facing the opposing alliance wall.
+  // positions. Here, our starting pose is 5 meters along the long end of the
+  // field and in
+  // the center of the field along the short end, facing the opposing alliance
+  // wall.
   private MecanumDriveOdometry odometry;
   private Pose2d robotPose;
   private Field2d field = new Field2d();
@@ -111,8 +118,52 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.updateValues();
   }
 
-  public void OrientDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y, x, z, navx.getRotation2d());
+  /**
+   * Constructs a MecanumDriveWheelPosisitons object for the drivetrain.
+   *
+   * @return MecanumDriveWheelPosisitons
+   */
+  private MecanumDriveWheelPositions getWheelPositions() {
+    double fLeftVal, fRightVal, rLeftVal, rRightVal;
+
+    fLeftVal = getWheelDistance(this.frontLeftMotor);
+    fRightVal = getWheelDistance(this.frontRightMotor);
+    rLeftVal = getWheelDistance(this.rearLeftMotor);
+    rRightVal = getWheelDistance(this.rearRightMotor);
+
+    return new MecanumDriveWheelPositions(fLeftVal, fRightVal, rLeftVal, rRightVal);
+  }
+
+  /**
+   * Calculates the distance the wheel has traveled.
+   *
+   * @param motor
+   * @return The distance in meters
+   */
+  public double getWheelDistance(WPI_TalonFX motor) {
+    double rawValue = motor.getSelectedSensorPosition();
+    double distance =
+        (rawValue / opConstants.kFalconUnitsPerRotation)
+            / opConstants.kGearRatio
+            * opConstants.kWheelDiameter
+            * Math.PI;
+    return distance / 100.0;
+  }
+
+  public void mecanumDrive(double x, double y, double z, boolean fieldRelative, boolean OnOff) {
+    if (OnOff = true) {
+      if (fieldRelative) {
+        drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
+      } else {
+        drivetrain.driveCartesian(x, y, z, new Rotation2d());
+      }
+    } else {
+      drivetrain.driveCartesian(x, y, z);
+    }
+  }
+
+  public Command setCurrentPose(Pose2d newPose) {
+    return this.runOnce(() -> this.setRobotPose(newPose));
   }
 
   /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
@@ -121,6 +172,21 @@ public class Drivetrain extends SubsystemBase {
         -stick.getLeftY() * speedValue,
         stick.getRightX() * speedValue,
         stick.getLeftX() * speedValue);
+  }
+
+  public void OrientDrive(double y, double x, double z) {
+    drivetrain.driveCartesian(y, x, z, navx.getRotation2d());
+  }
+
+  public void resetSensors() {
+    // Reset encoder postionN
+    frontLeftMotor.setSelectedSensorPosition(0);
+    frontRightMotor.setSelectedSensorPosition(0);
+    rearLeftMotor.setSelectedSensorPosition(0);
+    rearRightMotor.setSelectedSensorPosition(0);
+
+    // Reset Nav-X
+    navx.reset();
   }
 
   public void TeleMecDrive(double y, double x, double z) {
@@ -163,49 +229,6 @@ public class Drivetrain extends SubsystemBase {
     drivetrain.stopMotor();
   }
 
-  public void resetSensors() {
-    // Reset encoder postion
-    frontLeftMotor.setSelectedSensorPosition(0);
-    frontRightMotor.setSelectedSensorPosition(0);
-    rearLeftMotor.setSelectedSensorPosition(0);
-    rearRightMotor.setSelectedSensorPosition(0);
-
-    // Reset Nav-X
-    navx.reset();
-  }
-
-  /**
-   * Calculates the distance the wheel has traveled.
-   *
-   * @param motor
-   * @return The distance in meters
-   */
-  public double getWheelDistance(WPI_TalonFX motor) {
-    double rawValue = motor.getSelectedSensorPosition();
-    double distance =
-        (rawValue / opConstants.kFalconUnitsPerRotation)
-            / opConstants.kGearRatio
-            * opConstants.kWheelDiameter
-            * Math.PI;
-    return distance / 100.0;
-  }
-
-  /**
-   * Constructs a MecanumDriveWheelPosisitons object for the drivetrain.
-   *
-   * @return MecanumDriveWheelPosisitons
-   */
-  public MecanumDriveWheelPositions getWheelPositions() {
-    double fLeftVal, fRightVal, rLeftVal, rRightVal;
-
-    fLeftVal = getWheelDistance(this.frontLeftMotor);
-    fRightVal = getWheelDistance(this.frontRightMotor);
-    rLeftVal = getWheelDistance(this.rearLeftMotor);
-    rRightVal = getWheelDistance(this.rearRightMotor);
-
-    return new MecanumDriveWheelPositions(fLeftVal, fRightVal, rLeftVal, rRightVal);
-  }
-
   public Pose2d getCurrentPose() {
     return robotPose;
   }
@@ -217,15 +240,15 @@ public class Drivetrain extends SubsystemBase {
     return field.getRobotPose();
   }
 
-  public Command setCurrentPose(Pose2d newPose) {
-    return this.runOnce(() -> this.setRobotPose(newPose));
+  public void ToggleBrake() {
+    parkingBrake.toggle();
   }
 
-  public Command extendParkingBrake() {
-    return this.runOnce(() -> parkingBrake.set(Value.kForward));
+  public Command cmdToggleBrake() {
+    return this.run(this::ToggleBrake);
   }
 
-  public Command retractParkingBrake() {
-    return this.runOnce(() -> parkingBrake.set(Value.kReverse));
+  public double getRoll() {
+    return navx.getRoll();
   }
 }

@@ -49,16 +49,30 @@ public final class Constants {
     public static final int kBackLeftLimitSwitchID = 1;
     public static final int kFrontRightLimitSwitchID = 2;
     public static final int kFrontLeftLimitSwitchID = 3;
+    public static final double kTravelatorGearRatio = 29.118;
+    public static final double kTravelatorMax = 457950;
+    public static final double kTravelatorMin = 0;
+    public static final double kTravelatorBack = 0;
+    public static final double kTravelatorMiddle = 12;
+    public static final double kTravelatorFront = 20.75;
 
-    // Arm Constants
-    public static final int kArmMotor1ID = 3;
-    public static final int kArmMotor2ID = 2;
-    public static final int kArmMotor3ID = 0;
-    public static final double kMaxArm1Speed = .3;
-    public static final double kMaxArm2Speed = .6;
+    // ***** Arm Constants ***** //
+    public static final int kArmLiftID = 3;
     public static final int kGrabberP1 = 0;
     public static final int kGrabberP2 = 1;
     public static final int kArmCounterID = 0;
+    public static final int kArmElbowID = 10;
+    public static final int kArmWristID = 11;
+
+    public static final int kDislocatorID = 0; // Nom nom nom
+    public static final double kDislocatorSpeed = .4;
+
+    public static final double kMaxArmSpeed = .45;
+    public static final int kWristFullRotation = 90;
+
+    // * Solenoids */
+    public static final int kParkingBrakeP1 = 2;
+    public static final int kParkingBrakeP2 = 3;
   }
 
   public static final class camConstants {

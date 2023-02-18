@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenixpro.hardware.TalonFX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,61 +14,79 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
 public class Travelator extends SubsystemBase {
-  /** Creates a new Travelator. */
-
   // ***** Create Motors ***** //
-  private TalonFX Travelator = new TalonFX(opConstants.kTravelatorID);
-
-  // ***** The Limit Switches ***** //
-  private DigitalInput LimitSwitch1 = new DigitalInput(opConstants.kBackRightLimitSwitchID);
-  private DigitalInput LimitSwitch2 = new DigitalInput(opConstants.kBackLeftLimitSwitchID);
-  private DigitalInput LimitSwitch3 = new DigitalInput(opConstants.kFrontRightLimitSwitchID);
-  private DigitalInput LimitSwitch4 = new DigitalInput(opConstants.kFrontLeftLimitSwitchID);
+  public WPI_TalonFX Travelator = new WPI_TalonFX(opConstants.kTravelatorID);
+  public DigitalInput LimitSwitch1 = new DigitalInput(opConstants.kBackRightLimitSwitchID);
+  public DigitalInput LimitSwitch2 = new DigitalInput(opConstants.kBackLeftLimitSwitchID);
+  public DigitalInput LimitSwitch3 = new DigitalInput(opConstants.kFrontRightLimitSwitchID);
+  public DigitalInput LimitSwitch4 = new DigitalInput(opConstants.kFrontLeftLimitSwitchID);
 
   public Travelator() {
-    setName("Travelator");
     addChild("Motor", Travelator);
+
     addChild("Switch 1", LimitSwitch1);
     addChild("Switch 2", LimitSwitch2);
     addChild("Switch 3", LimitSwitch3);
     addChild("Switch 4", LimitSwitch4);
+
+    Travelator.setNeutralMode(NeutralMode.Brake);
+    Travelator.setInverted(true);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    //  SmartDashboard.putBoolean("TV Back SW", !LimitSwitch1.get()|| !LimitSwitch2.get());
+    //  SmartDashboard.putBoolean("TV Front SW", !LimitSwitch3.get()||! LimitSwitch4.get());
+    // SmartDashboard.putNumber("TV Ticks", Travelator.getSelectedSensorPosition());
+    // SmartDashboard.putNumber("TV Distance", getTravelatorPos());
     SmartDashboard.updateValues();
-  }
 
-  public void travelatorPose() {
     if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
-      Travelator.getPosition();
+      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMin);
+      Travelator.set(ControlMode.PercentOutput, 0);
     }
-  }
 
-  public void moveforward() {
-    // we use not limit switch since the current switches are true until pressed.
-    if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
-      Travelator.set(0);
-    } else {
-      Travelator.set(opConstants.kTravelatorSpeed);
-    }
-  }
-
-  public void moveBackward() {
     if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
-      Travelator.set(0);
-    } else {
-      Travelator.set(-opConstants.kTravelatorSpeed);
+      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMax);
+      Travelator.set(ControlMode.PercentOutput, 0);
     }
   }
 
-  public void stop() {
-    Travelator.set(0);
+  public void MoveBackward() {
+    if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
+      Travelator.set(ControlMode.PercentOutput, 0);
+    } else {
+      Travelator.set(ControlMode.PercentOutput, -opConstants.kTravelatorSpeed);
+    }
   }
 
-  public Command moveTravelatorMiddle() {
-    return null; // this.runOnce(() -> Travelator.);
+  public void MoveForward() {
+    if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
+      Travelator.set(ControlMode.PercentOutput, 0);
+    } else {
+      Travelator.set(ControlMode.PercentOutput, opConstants.kTravelatorSpeed);
+    }
+  }
+
+  public void Move(double Speed) {
+    if (Speed < 0 && (!LimitSwitch1.get() || !LimitSwitch2.get())) {
+      Travelator.set(ControlMode.PercentOutput, 0);
+    } else if (Speed > 0 && (!LimitSwitch3.get() || !LimitSwitch4.get())) {
+      Travelator.set(ControlMode.PercentOutput, 0);
+    } else {
+      Travelator.set(ControlMode.PercentOutput, Speed);
+    }
+  }
+
+  public void Stop() {
+    Travelator.set(ControlMode.PercentOutput, 0);
+    Travelator.getSelectedSensorPosition();
+  }
+
+  public double getTravelatorPos() {
+    return Travelator.getSelectedSensorPosition()
+        / (2048 * opConstants.kTravelatorGearRatio / 2.70203);
   }
 
   /**
@@ -74,10 +94,8 @@ public class Travelator extends SubsystemBase {
    *
    * @return
    */
-  public Command moveTravelatorForward() {
-    // We use the RunEnd function because moveForward() will
-    // be called every iteration.
-    return this.runEnd(this::moveforward, this::stop);
+  public Command cmdMoveForward() {
+    return this.runEnd(this::MoveForward, this::Stop);
   }
 
   /**
@@ -85,9 +103,7 @@ public class Travelator extends SubsystemBase {
    *
    * @return
    */
-  public Command moveTravelatorBackward() {
-    // We use the RunEnd function because moveBackward() will
-    // be called every iteration.
-    return this.runEnd(this::moveBackward, this::stop);
+  public Command cmdMoveBackward() {
+    return this.runEnd(this::MoveBackward, this::Stop);
   }
 }
