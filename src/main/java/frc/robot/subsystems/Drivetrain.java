@@ -10,16 +10,15 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ctrlConstants;
 import frc.robot.Constants.opConstants;
 
 public class Drivetrain extends SubsystemBase {
@@ -40,7 +39,11 @@ public class Drivetrain extends SubsystemBase {
   private AHRS navx = new AHRS();
 
   // Parking Brake Cylinders
-  private DoubleSolenoid parkingBrake = new DoubleSolenoid(PneumaticsModuleType.CTREPCM, opConstants.kParkingBrakeExtend, opConstants.kParkingBrakeRetract);
+  private DoubleSolenoid parkingBrake =
+      new DoubleSolenoid(
+          PneumaticsModuleType.CTREPCM,
+          opConstants.kParkingBrakeExtend,
+          opConstants.kParkingBrakeRetract);
 
   // Kinematics
   // The locations for the wheels must be relative to the center of the robot.
@@ -56,10 +59,8 @@ public class Drivetrain extends SubsystemBase {
       new MecanumDriveKinematics(
           frontLeftTranslate, frontRightTranslate, rearLeftTranslate, rearRightTranslate);
   // Creating my odometry object from the kinematics object and the initial wheel
-  // positions. Here, our starting pose is 5 meters along the long end of the
-  // field and in
-  // the center of the field along the short end, facing the opposing alliance
-  // wall.
+  // positions. Here, our starting pose is 5 meters along the long end of the field and in
+  // the center of the field along the short end, facing the opposing alliance wall.
   private MecanumDriveOdometry odometry;
   private Pose2d robotPose;
   private Field2d field = new Field2d();
@@ -115,11 +116,11 @@ public class Drivetrain extends SubsystemBase {
   }
 
   /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
-  public void MecDrive(Joystick stick) {
+  public void MecDrive(XboxController stick) {
     drivetrain.driveCartesian(
-        -stick.getRawAxis(ctrlConstants.kXboxLeftJoystickY) * speedValue,
-        stick.getRawAxis(ctrlConstants.kXboxRightJoystickX) * speedValue,
-        stick.getRawAxis(ctrlConstants.kXboxLeftJoystickX) * speedValue);
+        -stick.getLeftY() * speedValue,
+        stick.getRightX() * speedValue,
+        stick.getLeftX() * speedValue);
   }
 
   public void TeleMecDrive(double y, double x, double z) {
@@ -227,5 +228,4 @@ public class Drivetrain extends SubsystemBase {
   public Command retractParkingBrake() {
     return this.runOnce(() -> parkingBrake.set(Value.kReverse));
   }
-  
 }
