@@ -10,6 +10,7 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.motorcontrol.VictorSP;
@@ -32,9 +33,11 @@ public class Arm extends SubsystemBase {
   public Counter normalCounter2 = new Counter();
   public Counter normalCounter3 = new Counter();
 
+  private Encoder JawEncoder = new Encoder(8, 9, false, Encoder.EncodingType.k2X);
+
   /** Creates a new arm. **/
   public Arm() {
-    Grabber.set(Value.kForward);
+    Grabber.set(Value.kReverse);
 
     // normalCounter1.setUpSource(opConstants.kArmCounterID);
     // normalCounter1.setUpDownCounterMode();
@@ -49,12 +52,16 @@ public class Arm extends SubsystemBase {
 
   }
 
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber("Counter", normalCounter1.get());
     SmartDashboard.putNumber("Degrees", normalCounter1.getDistance());
+    SmartDashboard.putNumber("JawRaw", JawEncoder.getRaw());
+    SmartDashboard.putNumber("JawDistance", JawEncoder.getDistance());
+    SmartDashboard.putNumber("JawGet", JawEncoder.get());
     SmartDashboard.updateValues();
     // System.out.println("\n\nCounter");
     // System.out.println(normalCounter.get());
@@ -84,14 +91,22 @@ public class Arm extends SubsystemBase {
 
 
   /** The tower/lift */
-  public void armLiftIn() {
+  public void armLiftForward() {
     //Runs the arm
     armLift.set(-opConstants.kMaxArmSpeed);
   }
 
-  public void armLiftOut() {
+  public Command cmdArmLiftForward(){
+    return this.runEnd(this::armLiftForward,this::armLiftStop);
+  }
+
+  public void armLiftBackward() {
     //Runs the arm backwards
     armLift.set(opConstants.kMaxArmSpeed);
+  }
+
+  public Command cmdArmLiftBackward(){
+    return this.runEnd(this::armLiftBackward,this::armLiftStop);
   }
 
   public void armLiftStop() {
@@ -105,8 +120,16 @@ public class Arm extends SubsystemBase {
     armKnuckle.set(opConstants.kMaxAngularSpeed);
   }
 
+  public Command cmdArmKnuckleIn(){
+    return this.runEnd(this::armKnuckleIn,this::armKnuckleStop);
+  }
+
   public void armKnuckleOut() {
     armKnuckle.set(-opConstants.kMaxAngularSpeed);
+  }
+
+  public Command cmdArmKnuckleOut(){
+    return this.runEnd(this::armKnuckleOut,this::armKnuckleStop);
   }
 
   public void armKnuckleStop() {
@@ -115,15 +138,31 @@ public class Arm extends SubsystemBase {
 
   
   /** The wrist */
-  public void armWristIn() {
+  public void armWristForward() {
     armWrist.set(opConstants.kMaxAngularSpeed);
   }
 
-  public void armWristOut() {
+  public Command cmdArmWristForward(){
+    return this.runEnd(this::armWristForward,this::armWristStop);
+  }
+
+  public void armWristBackward() {
     armWrist.set(-opConstants.kMaxAngularSpeed);
+  }
+
+  public Command cmdArmWristBackward(){
+    return this.runEnd(this::armWristBackward,this::armWristStop);
+  }
+
+  public void Move(Double Speed) {
+    armWrist.set(Speed);
   }
 
   public void armWristStop() {
     armWrist.set(0);
   }
+  public double getWristPose() {
+    return JawEncoder.getRaw(); // Return the shaft sensor position
+  }
+  
 }

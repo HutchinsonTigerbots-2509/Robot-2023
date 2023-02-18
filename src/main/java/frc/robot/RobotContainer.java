@@ -5,6 +5,8 @@
 package frc.robot;
 
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,14 +15,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DriveVision;
 import frc.robot.commands.OrientalDrive;
+import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Vision.LimeLight;
 import frc.robot.Constants.ctrlConstants;
+import frc.robot.Constants.opConstants;
 
 //import frc.robot.AutoCommands;
 
@@ -41,24 +47,25 @@ public class RobotContainer {
   private Travelator sTravelator = new Travelator();
 
   // ***** Joysticks ***** //
-  private Joystick stick = new Joystick(Constants.kCoopStickID);
-  private Joystick controller = new Joystick(Constants.kOpStickID);
+  private Joystick coopStick = new Joystick(Constants.kCoopStickID);
+  private Joystick opStick = new Joystick(Constants.kOpStickID);
 
   // ***** Joystick Buttons ***** //
-  private JoystickButton armBtn;
-  private JoystickButton armOutBtn;
-  private JoystickButton travelatorOutBtn;
-  private JoystickButton travelatorInBtn;
-  private JoystickButton autoVisionBtn;
-  private JoystickButton gearBtn;
-  private JoystickButton armWristBtn;
-  private JoystickButton armWristOutBtn;
-  private JoystickButton armKnuckleBtn;
-  private JoystickButton armKnuckleOutBtn;
-  private JoystickButton extendParkingBrake;
-  private JoystickButton retractParkingBrake;
-  private JoystickButton grabBtn;
-  private JoystickButton middleTravelator;
+  private Trigger armForwardBtn;
+  private Trigger armBackwardBtn;
+  private Trigger travelatorForwardBtn;
+  private Trigger travelatorBackwardBtn;
+  private Trigger travelatorBackPosBtn;
+  private Trigger travelatorMiddlePosBtn;
+  private Trigger travelatorFrontPosBtn;
+  private Trigger armWristForwardBtn;
+  private Trigger armWristBackwardBtn;
+  private Trigger armKnuckleForwardBtn;
+  private Trigger armKnuckleBackwardBtn;
+  private Trigger extendParkingBrake;
+  private Trigger retractParkingBrake;
+  private Trigger grabBtn;
+  private Trigger POVTriggerBtn;
 
   //private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
 
@@ -68,7 +75,7 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    sDrivetrain.setDefaultCommand(new OrientalDrive(controller, sDrivetrain));
+    sDrivetrain.setDefaultCommand(new OrientalDrive(opStick, sDrivetrain));
 
     // AutoSelect.setDefaultOption("Right3", Double);
     // AutoSelect.addOption("Middle2", Middle);
@@ -81,58 +88,58 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
-    travelatorInBtn.whileTrue(new RunCommand(() -> sTravelator.Moveforward()));
-    travelatorInBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
+    // travelatorInBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
+    // travelatorInBtn.whileTrue(new RunCommand(() -> sTravelator.Moveforward()));
+    // travelatorInBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
 
-    travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton10);
-    travelatorOutBtn.whileTrue(new RunCommand(() -> sTravelator.MoveBackward()));
-    travelatorOutBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
+    // travelatorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton10);
+    // travelatorOutBtn.whileTrue(new RunCommand(() -> sTravelator.MoveBackward()));
+    // travelatorOutBtn.onFalse(new InstantCommand(() -> sTravelator.Stop()));
 
-    armBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton7);
-    armBtn.whileTrue(new RunCommand(() -> sArm.armLiftIn()));
-    armBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
+    armForwardBtn = new JoystickButton(coopStick, 7);
+    armForwardBtn.whileTrue(sArm.cmdArmLiftForward());
 
-    armOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton8);
-    armOutBtn.whileTrue(new RunCommand(() -> sArm.armLiftOut()));
-    armOutBtn.onFalse(new InstantCommand(() -> sArm.armLiftStop()));
+    armBackwardBtn = new JoystickButton(coopStick,8);
+    armBackwardBtn.whileTrue(sArm.cmdArmLiftBackward());
 
-    // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
-    // autoVisionBtn.whileTrue(new DriveVision(controller, sDrivetrain, sLimeLight));
+    armWristForwardBtn = new JoystickButton(coopStick, 5);
+    armWristForwardBtn.whileTrue(sArm.cmdArmWristForward());
 
-    gearBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftJoystickButton);
-    gearBtn.onFalse(new InstantCommand(() -> sDrivetrain.Gear()));
+    armWristBackwardBtn = new JoystickButton(coopStick,3);
+    armWristBackwardBtn.whileTrue(sArm.cmdArmWristBackward());
 
-    armWristBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton5);
-    armWristBtn.whileTrue(new RunCommand(() -> sArm.armWristIn()));
-    armWristBtn.onFalse(new InstantCommand(() -> sArm.armWristStop()));
+    armKnuckleForwardBtn = new JoystickButton(coopStick, 6);
+    armKnuckleForwardBtn.whileTrue(sArm.cmdArmKnuckleIn());
 
-    armWristOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
-    armWristOutBtn.whileTrue(new RunCommand(() -> sArm.armWristOut()));
-    armWristOutBtn.onFalse(new InstantCommand(() -> sArm.armWristStop()));
+    armKnuckleBackwardBtn = new JoystickButton(coopStick, 4);
+    armKnuckleBackwardBtn.whileTrue(sArm.cmdArmKnuckleOut());
 
-    armKnuckleBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton6);
-    armKnuckleBtn.whileTrue(new RunCommand(() -> sArm.armKnuckleIn()));
-    armKnuckleBtn.onFalse(new InstantCommand(() -> sArm.armKnuckleStop()));
-
-    armKnuckleOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
-    armKnuckleOutBtn.whileTrue(new RunCommand(() -> sArm.armKnuckleOut()));
-    armKnuckleOutBtn.onFalse(new InstantCommand(() -> sArm.armKnuckleStop()));
-
-    extendParkingBrake = new JoystickButton(stick, ctrlConstants.kJoystickButton11);
+    extendParkingBrake = new JoystickButton(opStick, 3);
     extendParkingBrake.onTrue(sDrivetrain.extendParkingBrake());
 
-    retractParkingBrake = new JoystickButton(stick, ctrlConstants.kJoystickButton12);
+    retractParkingBrake = new JoystickButton(opStick, 5);
     retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
 
-    grabBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
+    grabBtn = new JoystickButton(coopStick, 1);
     grabBtn.onTrue(sArm.Grab());
 
-    // middleTravelator = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    // middleTravelator.onTrue(new RunCommand(() -> sTravelator.goToMiddleTravelator()));
+    //Travelator Button
+    travelatorForwardBtn = new JoystickButton(opStick, 7);
+    travelatorForwardBtn.whileTrue(sTravelator.cmdMoveForward());
 
-    // grabBtnRetract = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    // grabBtnRetract.onTrue(sArm.grabRetract());
+    travelatorBackwardBtn = new JoystickButton(opStick, 11);
+    travelatorBackwardBtn.whileTrue(sTravelator.cmdMoveBackward());
+
+    travelatorBackPosBtn = new JoystickButton(opStick, 12);
+    travelatorBackPosBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
+
+    travelatorMiddlePosBtn = new JoystickButton(opStick, 10);
+    travelatorMiddlePosBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, sTravelator));
+
+    travelatorFrontPosBtn = new JoystickButton(opStick, 8);
+    travelatorFrontPosBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
+
+
   }
 
   /**
@@ -163,7 +170,7 @@ public class RobotContainer {
   public Travelator gTravelator() { return sTravelator; }
   public LimeLight getLimeLight() { return sLimeLight; }
 
-  public Joystick getStick() { return stick; }
-  public Joystick getController() { return controller; }
+  public Joystick getCoopStick() { return coopStick; }
+  public Joystick getOpStick() { return opStick; }
   
 }

@@ -270,4 +270,9 @@ public class Drivetrain extends SubsystemBase {
   public Command retractParkingBrake() {
    return this.runOnce(() -> parkingBrake.set(Value.kReverse));
  }
+
+ public double getRoll() {
+  return NavX.getRoll();
+}
+
 }
