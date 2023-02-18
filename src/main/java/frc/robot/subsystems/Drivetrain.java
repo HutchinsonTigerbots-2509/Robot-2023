@@ -7,49 +7,48 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ctrlConstants;
 import frc.robot.Constants.opConstants;
 
 public class Drivetrain extends SubsystemBase {
-
-  // ***** Making Variables ***** //
   public double Strafe;
-  public double z;
-
-  // ***** Setting up Drivetrain ***** //
-  public WPI_TalonFX backLeftMotor = new WPI_TalonFX(opConstants.kFrontRightID);
-  public WPI_TalonFX backRightMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
-  public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kRearRightID);
-  public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kRearLeftID);
-  public MecanumDrive drivetrain =
-      new MecanumDrive(frontLeftMotor, backLeftMotor, frontRightMotor, backRightMotor);
-
-  // Speed
   private double speedValue = opConstants.kMaxSpeed;
-  private double speedValueStrafe = opConstants.kHighSpeedStrafe;
 
-  // ***** NavX ***** //
-  private AHRS NavX = new AHRS();
-  float DisplacementX = NavX.getDisplacementX();
-  float DisplacementY = NavX.getDisplacementY();
-  float DisplacementZ = NavX.getDisplacementZ();
-  float DisplacementRoll = NavX.getRoll();
-  float DisplacementPitch = NavX.getPitch();
-  float DisplacementYaw = NavX.getYaw();
+  // Setting up Motors
+  public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
+  public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
+  public WPI_TalonFX rearRightMotor = new WPI_TalonFX(opConstants.kRearRightID);
+  public WPI_TalonFX rearLeftMotor = new WPI_TalonFX(opConstants.kRearLeftID);
+
+  // Putting all the motors into a Drivetrain
+  public MecanumDrive drivetrain =
+      new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+
+  // Nav-X
+  private AHRS navx = new AHRS();
+
+  // Parking Brake Cylinders
+  private DoubleSolenoid parkingBrake =
+      new DoubleSolenoid(
+          PneumaticsModuleType.CTREPCM,
+          opConstants.kParkingBrakeExtend,
+          opConstants.kParkingBrakeRetract);
 
   // Kinematics
   // The locations for the wheels must be relative to the center of the robot.
@@ -59,11 +58,6 @@ public class Drivetrain extends SubsystemBase {
   private Translation2d frontRightTranslate = new Translation2d(0.2921, -0.3175);
   private Translation2d rearLeftTranslate = new Translation2d(-0.2921, 0.3175);
   private Translation2d rearRightTranslate = new Translation2d(-0.2921, -0.3175);
-
-  /** Solenoids */
-  private DoubleSolenoid parkingBrake =
-      new DoubleSolenoid(
-          PneumaticsModuleType.CTREPCM, opConstants.kParkingBrakeP1, opConstants.kParkingBrakeP2);
 
   // Creating my kinematics object using the wheel locations.
   private MecanumDriveKinematics kinematics =
@@ -80,27 +74,25 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
+    this.setName("Drivetrain");
+    this.addChild("Mecanum Drive", drivetrain);
 
-    // ***** Inverts all the motors that need to be inverted ***** //
+    // Inverts all the motors that need to be inverted
     frontRightMotor.setInverted(false);
     frontLeftMotor.setInverted(true);
-    backRightMotor.setInverted(false);
-    backLeftMotor.setInverted(true);
+    rearRightMotor.setInverted(false);
+    rearLeftMotor.setInverted(true);
 
-    // ***** Sets the motors to break when at 0 ***** //
+    // Sets the motors to break when stopped
     frontRightMotor.setNeutralMode(NeutralMode.Brake);
     frontLeftMotor.setNeutralMode(NeutralMode.Brake);
-    backRightMotor.setNeutralMode(NeutralMode.Brake);
-    backLeftMotor.setNeutralMode(NeutralMode.Brake);
-
-    GearUp();
-
-    NavX.calibrate();
+    rearRightMotor.setNeutralMode(NeutralMode.Brake);
+    rearLeftMotor.setNeutralMode(NeutralMode.Brake);
 
     // Setup Odeometry
     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
-        new MecanumDriveOdometry(kinematics, NavX.getRotation2d(), getWheelPositions(), robotPose);
+        new MecanumDriveOdometry(kinematics, navx.getRotation2d(), getWheelPositions(), robotPose);
     SmartDashboard.putData("Field", field);
     SmartDashboard.putNumber("Odom X", robotPose.getX());
     SmartDashboard.putNumber("Odom Y", robotPose.getY());
@@ -112,31 +104,42 @@ public class Drivetrain extends SubsystemBase {
     // Get my wheel positions
     MecanumDriveWheelPositions wheelPositions = getWheelPositions();
     // Get the rotation of the robot from the gyro.
-    Rotation2d gyroAngle = NavX.getRotation2d();
+    Rotation2d gyroAngle = navx.getRotation2d();
     // Update the pose
     robotPose = odometry.update(gyroAngle, wheelPositions);
 
     // Display Telemetry
     field.setRobotPose(odometry.getPoseMeters());
-    SmartDashboard.putNumber("Yaw", NavX.getYaw());
-    SmartDashboard.putNumber("Roll", NavX.getRoll());
-    SmartDashboard.putNumber("Pitch", NavX.getPitch());
+    SmartDashboard.putNumber("Yaw", navx.getYaw());
+    SmartDashboard.putNumber("Roll", navx.getRoll());
+    SmartDashboard.putNumber("Pitch", navx.getPitch());
     SmartDashboard.putNumber("X", field.getRobotPose().getX());
     SmartDashboard.putNumber("Y", field.getRobotPose().getY());
     SmartDashboard.updateValues();
   }
 
+  /**
+   * Constructs a MecanumDriveWheelPosisitons object for the drivetrain.
+   *
+   * @return MecanumDriveWheelPosisitons
+   */
   private MecanumDriveWheelPositions getWheelPositions() {
     double fLeftVal, fRightVal, rLeftVal, rRightVal;
 
     fLeftVal = getWheelDistance(this.frontLeftMotor);
     fRightVal = getWheelDistance(this.frontRightMotor);
-    rLeftVal = getWheelDistance(this.backLeftMotor);
-    rRightVal = getWheelDistance(this.backRightMotor);
+    rLeftVal = getWheelDistance(this.rearLeftMotor);
+    rRightVal = getWheelDistance(this.rearRightMotor);
 
     return new MecanumDriveWheelPositions(fLeftVal, fRightVal, rLeftVal, rRightVal);
   }
 
+  /**
+   * Calculates the distance the wheel has traveled.
+   *
+   * @param motor
+   * @return The distance in meters
+   */
   public double getWheelDistance(WPI_TalonFX motor) {
     double rawValue = motor.getSelectedSensorPosition();
     double distance =
@@ -145,10 +148,6 @@ public class Drivetrain extends SubsystemBase {
             * opConstants.kWheelDiameter
             * Math.PI;
     return distance / 100.0;
-  }
-
-  public double getAngle() {
-    return NavX.getYaw();
   }
 
   public void mecanumDrive(double x, double y, double z, boolean fieldRelative, boolean OnOff) {
@@ -163,76 +162,56 @@ public class Drivetrain extends SubsystemBase {
     }
   }
 
-  public void stopDrive() {
-    drivetrain.stopMotor();
-  }
-
   public Command setCurrentPose(Pose2d newPose) {
     return this.runOnce(() -> this.setRobotPose(newPose));
   }
 
   /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
-  public void MecDrive(Joystick stick) {
+  public void MecDrive(XboxController stick) {
     drivetrain.driveCartesian(
-        -stick.getRawAxis(ctrlConstants.kXboxLeftJoystickY) * speedValue,
-        stick.getRawAxis(ctrlConstants.kXboxRightJoystickX) * speedValue,
-        stick.getRawAxis(ctrlConstants.kXboxLeftJoystickX) * speedValue);
+        -stick.getLeftY() * speedValue,
+        stick.getRightX() * speedValue,
+        stick.getLeftX() * speedValue);
   }
 
   public void OrientDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y, x, z, NavX.getRotation2d());
-  }
-
-  public Pose2d getCurrentPose() {
-    return robotPose;
+    drivetrain.driveCartesian(y, x, z, navx.getRotation2d());
   }
 
   public void resetSensors() {
     // Reset encoder postionN
     frontLeftMotor.setSelectedSensorPosition(0);
     frontRightMotor.setSelectedSensorPosition(0);
-    backLeftMotor.setSelectedSensorPosition(0);
-    backRightMotor.setSelectedSensorPosition(0);
+    rearLeftMotor.setSelectedSensorPosition(0);
+    rearRightMotor.setSelectedSensorPosition(0);
 
     // Reset Nav-X
-    NavX.reset();
+    navx.reset();
   }
 
   public void TeleMecDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y * speedValue, x * speedValueStrafe, z * speedValue);
+    drivetrain.driveCartesian(y * speedValue, x * speedValue, z * speedValue);
   }
 
-  /** Drives the autonomous with the speed put into the AutoDrive */
-  public void AutoDrive(double xSpeed, double ySpeed, double zSpeed) {
-    drivetrain.driveCartesian(xSpeed, ySpeed, zSpeed);
+  /**
+   * Returns the current heading of the robot.
+   *
+   * @return value from -180 to 180 degrees.
+   */
+  public double getAngle() {
+    return navx.getYaw();
   }
 
-  /** Puts the gear down to be able to slow down driving */
-  public void GearDown() {
-    speedValue = opConstants.kLowSpeed;
-    return;
+  public void arcadeDrive(double forward, double rotation) {
+    drivetrain.driveCartesian(0, forward, rotation);
   }
 
-  /** Puts the gear up to be able speed up driving */
-  public void GearUp() {
-    speedValue = opConstants.kMaxSpeed;
-    return;
-  }
-
-  /** Toggles the gear */
-  public void Gear() {
-    if (speedValue > .5) {
-      speedValue = opConstants.kLowSpeed;
-      speedValueStrafe = opConstants.kLowSpeedStrafe;
+  public void mecanumDrive(double x, double y, double z, boolean fieldRelative) {
+    if (fieldRelative) {
+      drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
     } else {
-      speedValue = opConstants.kMaxSpeed;
-      speedValueStrafe = opConstants.kHighSpeedStrafe;
+      drivetrain.driveCartesian(x, y, z, new Rotation2d());
     }
-    return;
-  }
-
-  public double GetSpeedValue() {
-    return 0;
   }
 
   public double GetStrafeValue(Joystick XboxController) {
@@ -246,9 +225,17 @@ public class Drivetrain extends SubsystemBase {
     return Strafe;
   }
 
+  public void stopDrive() {
+    drivetrain.stopMotor();
+  }
+
+  public Pose2d getCurrentPose() {
+    return robotPose;
+  }
+
   public Pose2d setRobotPose(Pose2d newPose) {
     robotPose = newPose;
-    odometry.resetPosition(this.NavX.getRotation2d(), getWheelPositions(), newPose);
+    odometry.resetPosition(this.navx.getRotation2d(), getWheelPositions(), newPose);
     field.setRobotPose(odometry.getPoseMeters());
     return field.getRobotPose();
   }
@@ -262,6 +249,6 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getRoll() {
-    return NavX.getRoll();
+    return navx.getRoll();
   }
 }

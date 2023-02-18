@@ -89,10 +89,20 @@ public class Travelator extends SubsystemBase {
         / (2048 * opConstants.kTravelatorGearRatio / 2.70203);
   }
 
+  /**
+   * Move Travelator forwards command
+   *
+   * @return
+   */
   public Command cmdMoveForward() {
     return this.runEnd(this::MoveForward, this::Stop);
   }
 
+  /**
+   * Move Travelator backwards command
+   *
+   * @return
+   */
   public Command cmdMoveBackward() {
     return this.runEnd(this::MoveBackward, this::Stop);
   }
