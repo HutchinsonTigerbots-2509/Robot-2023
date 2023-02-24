@@ -4,11 +4,17 @@
 
 package frc.robot;
 
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.*;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Vision.PhotonVision;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -23,6 +29,7 @@ public class Robot extends TimedRobot {
 
   // Subsystems
   private Drivetrain sDrivetrain;
+  private PhotonVision sPhotonVision;
   private Travelator sTravelator;
 
   // Joysticks
@@ -39,10 +46,17 @@ public class Robot extends TimedRobot {
     // and put our autonomous chooser on the dashboard.
     mRobotContainer = new RobotContainer();
 
+    sPhotonVision = mRobotContainer.getPhotonVision();
     sDrivetrain = mRobotContainer.getDrivetrain();
 
-    stick = mRobotContainer.getOpStick();
-    controller = mRobotContainer.getCoopStick();
+    stick = mRobotContainer.getStick();
+    controller = mRobotContainer.getController();
+
+    sPhotonVision.setReferencePose(new Pose2d());
+
+    UsbCamera ConeCamera = CameraServer.startAutomaticCapture();
+    ConeCamera.setResolution(640, 480);
+    ConeCamera.setFPS(30);
   }
 
   /**
@@ -59,7 +73,8 @@ public class Robot extends TimedRobot {
     // running subsystem periodic() methods.  This must be called from the robot's periodic block in
     // order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-  }
+    sPhotonVision.PoseEstimating();
+    }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

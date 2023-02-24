@@ -4,6 +4,14 @@
 
 package frc.robot;
 
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -11,6 +19,28 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AutoDriveVision;
+import frc.robot.commands.Drive;
+import frc.robot.commands.DriveApril;
+import frc.robot.commands.DriveTele;
+import frc.robot.commands.DriveVision;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Vision.ConeVision;
+import frc.robot.subsystems.Vision.LimeLight;
+import frc.robot.subsystems.Vision.PhotonVision;
+import frc.robot.Constants.ctrlConstants;
+import frc.robot.Constants.opConstants;
+import frc.robot.Constants.camConstants;
+
+import java.util.List;
+import java.util.ResourceBundle.Control;
+
+import org.opencv.photo.Photo;
+
+import edu.wpi.first.wpilibj.SPI;
+
+//import frc.robot.AutoCommands;
+
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.opConstants;
@@ -38,9 +68,23 @@ import frc.robot.subsystems.Vision.LimeLight;
  */
 public class RobotContainer {
 
+  public static AprilTagFieldLayout aprilTagField = new AprilTagFieldLayout(
+  List.of(
+    new AprilTag(5, new Pose3d(Units.inchesToMeters(14.25), Units.inchesToMeters(265.74), Units.inchesToMeters(27.38), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+    new AprilTag(6, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(147.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+    new AprilTag(7, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(108.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+    new AprilTag(8, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0))))
+  ), camConstants.kFieldLength, camConstants.kFieldWidth);
+
+  
+  // ***** Select Auto ***** //
+  SendableChooser<Command> AutoSelect = new SendableChooser<>();
+
+
   // Subsystems
   private Drivetrain sDrivetrain = new Drivetrain();
   private LimeLight sLimeLight = new LimeLight();
+  
   private Shoulder sShoulder = new Shoulder();
   private Dislocator sDislocator = new Dislocator();
   private Elbow sElbow = new Elbow();
@@ -92,6 +136,7 @@ public class RobotContainer {
   private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
   private RightSingleCharger cmdRightCharge = new RightSingleCharger(sDrivetrain);
   private Path1Double cmdP1Double = new Path1Double(sDrivetrain);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -215,84 +260,16 @@ public class RobotContainer {
 
   // Getter Methods
 
-  /**
-   * Gets the {@link Drivetrain} subsystem.
-   *
-   * @return {@link Drivetrain}
-   */
-  public Drivetrain getDrivetrain() {
-    return sDrivetrain;
-  }
+  public Drivetrain getDrivetrain() { return sDrivetrain; }
+  public Intake getIntake() { return sIntake; }
+  public Shooter getShooter() { return sShooter; }
+  public Conveyor getConveyor() { return sConveyor; }
+  public Climb getClimb() { return sClimb; }
+  public LimeLight getLimeLight() { return sLimeLight; }
+  public PhotonVision getPhotonVision() { return sPhotonVision;}
+  public ConeVision getConeVision() { return sConeVision; }
 
-  /**
-   * Gets the {@link Shoulder} subsystem.
-   *
-   * @return {@link Shoulder}
-   */
-  public Shoulder getShoulder() {
-    return sShoulder;
-  }
-
-  /**
-   * Gets the {@link Dislocator} subsystem.
-   *
-   * @return {@link Dislocator}
-   */
-  public Dislocator getDislocator() {
-    return sDislocator;
-  }
-
-  /**
-   * Gets the {@link Elbow} subsystem.
-   *
-   * @return {@link Elbow}
-   */
-  public Elbow getElbow() {
-    return sElbow;
-  }
-
-  /**
-   * Gets the {@link Wrist} subsystem.
-   *
-   * @return {@link Wrist}
-   */
-  public Wrist getWrist() {
-    return sWrist;
-  }
-
-  /**
-   * Gets the {@link Travelator} subsystem.
-   *
-   * @return {@link Travelator}
-   */
-  public Travelator gTravelator() {
-    return sTravelator;
-  }
-
-  /**
-   * Gets the {@link LimeLight} subsystem.
-   *
-   * @return {@link LimeLight}
-   */
-  public LimeLight getLimeLight() {
-    return sLimeLight;
-  }
-
-  /**
-   * Gets the Co-Driver {@link Joystick}
-   *
-   * @return {@link Joystick}
-   */
-  public Joystick getCoopStick() {
-    return coopStick;
-  }
-
-  /**
-   * Gets the Driver {@link Joystick}
-   *
-   * @return {@link Joystick}
-   */
-  public Joystick getOpStick() {
-    return opStick;
-  }
+  public Joystick getStick() { return stick; }
+  public Joystick getController() { return controller; }
+  
 }

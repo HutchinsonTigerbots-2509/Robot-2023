@@ -68,6 +68,7 @@ public final class Constants {
     public static final int kArmSecondSensor1ID = 6;
     public static final int kArmSecondSensor2ID = 7;
 
+    // ***** Dislocator Constants ***** //
     public static final int kDislocatorID = 0; // Nom nom nom
     public static final double kDislocatorSpeed = .4;
 
@@ -79,6 +80,57 @@ public final class Constants {
     public static final int kParkingBrakeP2 = 3;
   }
 
+    public static final class ctrlConstants {
+
+
+        //#region ***** Xbox Controller Constants ***** //
+        public final static int kXboxLeftJoystickX = 0;
+        public final static int kXboxLeftJoystickY = 1;
+        
+        public final static int kXboxRightJoystickX = 4;
+        public final static int kXboxRightJoystickY = 5;
+        
+        public final static int kXboxLeftJoystickButton = 9;
+        public final static int kXboxRightJoystickButton = 10;
+
+        public final static int kXboxLeftTrigger = 2;
+        public final static int kXboxRightTrigger = 3;
+        
+        public final static int kXboxLeftBumper = 5;
+        public final static int kXboxRightBumper = 6;
+        
+        public final static int kXboxButtonA = 1;
+        public final static int kXboxButtonB = 2;
+        public final static int kXboxButtonX = 3;
+        public final static int kXboxButtonY = 4;
+        
+        //TODO Assign ID's for the Xbox DPad
+        
+        public final static int kXboxButtonBack = 7;
+        public final static int kXboxButtonStart = 8;
+        //#endregion
+
+        //#region ***** Joystick Buttons ***** //
+        public final static int kJoystickX = 0;
+        public final static int kJoystickY = 1;
+        public final static int kJoystickZ = 2;
+
+        public final static int kJoystickSlider = 3;
+
+        public final static int kJoystickButton1 = 1;
+        public final static int kJoystickButton2 = 2;
+        public final static int kJoystickButton3 = 3;
+        public final static int kJoystickButton4 = 4;
+        public final static int kJoystickButton5 = 5;
+        public final static int kJoystickButton6 = 6;
+        public final static int kJoystickButton7 = 7;
+        public final static int kJoystickButton8 = 8;
+        public final static int kJoystickButton9 = 9;
+        public final static int kJoystickButton10 = 10;
+        public final static int kJoystickButton11 = 11;
+        public final static int kJoystickButton12 = 12;
+    }
+    
   public static final class camConstants {
 
     // Network
