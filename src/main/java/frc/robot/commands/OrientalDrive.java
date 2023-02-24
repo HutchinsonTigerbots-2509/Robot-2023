@@ -8,12 +8,12 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
-public class DriveTele extends CommandBase {
+public class OrientalDrive extends CommandBase {
   private final Drivetrain m_Drivetrain;
   private Joystick m_joystick;
 
   /** Creates a new DriveTele. */
-  public DriveTele(Joystick stick, Drivetrain subsystem) {
+  public OrientalDrive(Joystick stick, Drivetrain subsystem) {
     m_Drivetrain = subsystem;
     m_joystick = stick;
     // Use addRequirements() here to declare subsystem dependencies.
@@ -29,13 +29,13 @@ public class DriveTele extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_Drivetrain.TeleMecDrive(-m_joystick.getX(), m_joystick.getY(), m_joystick.getZ());
+    m_Drivetrain.OrientDrive(-m_joystick.getX(), m_joystick.getY(), m_joystick.getZ());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Drivetrain.TeleMecDrive(0, 0, 0);
+    // Do nothing
   }
 
   // Returns true when the command should end.
