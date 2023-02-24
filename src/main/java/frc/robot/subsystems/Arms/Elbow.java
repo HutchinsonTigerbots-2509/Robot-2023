@@ -14,7 +14,8 @@ import frc.robot.Constants.opConstants;
 public class Elbow extends SubsystemBase {
 
   public WPI_TalonSRX armElbow = new WPI_TalonSRX(opConstants.kArmElbowID);
-  public Encoder ElbowEncoder = new Encoder(6, 7);
+  // public Encoder ElbowEncoder = new Encoder(6, 7);
+  private Encoder ElbowEncoder = new Encoder(opConstants.kArmSecondSensor1ID, opConstants.kArmSecondSensor2ID, false, Encoder.EncodingType.k4X);
 
   /** Creates a new Elbow. */
   public Elbow() {}

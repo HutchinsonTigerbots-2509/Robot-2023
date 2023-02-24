@@ -63,6 +63,10 @@ public final class Constants {
     public static final int kArmCounterID = 0;
     public static final int kArmElbowID = 10;
     public static final int kArmWristID = 11;
+    public static final int kArmFirstSensor1ID = 4;
+    public static final int kArmFirstSensor2ID = 5;
+    public static final int kArmSecondSensor1ID = 6;
+    public static final int kArmSecondSensor2ID = 7;
 
     public static final int kDislocatorID = 0; // Nom nom nom
     public static final double kDislocatorSpeed = .4;

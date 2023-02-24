@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
 public class Wrist extends SubsystemBase {
-  private Encoder JawEncoder = new Encoder(6, 7, false, Encoder.EncodingType.k4X);
+  private Encoder JawEncoder = new Encoder(opConstants.kArmFirstSensor1ID, opConstants.kArmFirstSensor2ID, false, Encoder.EncodingType.k4X);
 
   /** Creates a new Wrist. */
   public WPI_TalonSRX Wrist = new WPI_TalonSRX(opConstants.kArmWristID);
