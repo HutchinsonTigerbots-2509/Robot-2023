@@ -36,6 +36,7 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Vision.ConeVision;
 import frc.robot.subsystems.Vision.LimeLight;
 import frc.robot.subsystems.Vision.PhotonVision;
 import frc.robot.Constants.ctrlConstants;
@@ -84,6 +85,7 @@ public class RobotContainer {
   private Climb sClimb = new Climb();
   private LimeLight sLimeLight = new LimeLight();
   private PhotonVision sPhotonVision = new PhotonVision();
+  private ConeVision sConeVision = new ConeVision();
 
   // TODO Add in vision subsystems
 
@@ -393,6 +395,7 @@ public class RobotContainer {
   public Climb getClimb() { return sClimb; }
   public LimeLight getLimeLight() { return sLimeLight; }
   public PhotonVision getPhotonVision() { return sPhotonVision;}
+  public ConeVision getConeVision() { return sConeVision; }
 
   public Joystick getStick() { return stick; }
   public Joystick getController() { return controller; }
