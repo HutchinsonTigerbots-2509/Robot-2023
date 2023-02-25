@@ -31,10 +31,10 @@ public final class Constants {
     public static final int kFrontRightID = 1;
     public static final int kRearLeftID = 15;
     public static final int kRearRightID = 0;
-    public static final double kMaxSpeed = 0.8;
-    public static final double kMaxAngularSpeed = 0.8;
-    public static final double kHighSpeedStrafe = 1;
-    public static final double kLowSpeedStrafe = .6;
+    public static final double kMaxSpeed = 0.5;
+    public static final double kMaxAngularSpeed = 0.5;
+    public static final double kHighSpeedStrafe = 0.8;
+    public static final double kLowSpeedStrafe = .5;
     public static final double kSkewRateLimit = 0.8;
     public static final double kGearRatio = 12.0;
     public static final int kFalconUnitsPerRotation = 2048;
