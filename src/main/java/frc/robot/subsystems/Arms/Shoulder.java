@@ -16,7 +16,7 @@ import frc.robot.Constants.opConstants;
 public class Shoulder extends SubsystemBase {
 
   // Sets up the arm
-  public WPI_TalonFX armLift = new WPI_TalonFX(opConstants.kArmLiftID);
+  public WPI_TalonFX armLift = new WPI_TalonFX(opConstants.kShoulderID);
 
   public Counter normalCounter1 = new Counter();
   public Counter normalCounter2 = new Counter();

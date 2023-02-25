@@ -43,7 +43,7 @@ public final class Constants {
     public static final int kParkingBrakeRetract = 3;
 
     // Travelator Constants
-    public static final int kTravelatorID = 13;
+    public static final int kTravelatorID = 2;
     public static final double kTravelatorSpeed = .35;
     public static final int kBackRightLimitSwitchID = 0;
     public static final int kBackLeftLimitSwitchID = 1;
@@ -57,7 +57,7 @@ public final class Constants {
     public static final double kTravelatorFront = 20.75;
 
     // ***** Arm Constants ***** //
-    public static final int kArmLiftID = 3;
+    public static final int kShoulderID = 4;
     public static final int kGrabberP1 = 0;
     public static final int kGrabberP2 = 1;
     public static final int kArmCounterID = 0;
@@ -69,7 +69,7 @@ public final class Constants {
     public static final int kArmSecondSensor2ID = 7;
 
     // ***** Dislocator Constants ***** //
-    public static final int kDislocatorID = 0; // Nom nom nom
+    public static final int kDislocatorID = 3;
     public static final double kDislocatorSpeed = .4;
 
     public static final double kMaxArmSpeed = .45;
