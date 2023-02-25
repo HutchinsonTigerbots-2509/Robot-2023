@@ -10,8 +10,6 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,29 +17,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoDriveVision;
-import frc.robot.commands.DriveApril;
-import frc.robot.commands.DriveTele;
-import frc.robot.commands.DriveVision;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision.ConeVision;
-import frc.robot.subsystems.Vision.LimeLight;
-import frc.robot.subsystems.Vision.PhotonVision;
-import frc.robot.Constants.ctrlConstants;
-import frc.robot.Constants.opConstants;
-import frc.robot.Constants.camConstants;
-
-import java.util.List;
-import java.util.ResourceBundle.Control;
-
-import org.opencv.photo.Photo;
-
-import edu.wpi.first.wpilibj.SPI;
-
-//import frc.robot.AutoCommands;
-
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.camConstants;
 import frc.robot.Constants.opConstants;
 import frc.robot.commands.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.OrientalDrive;
@@ -57,7 +35,10 @@ import frc.robot.subsystems.Arms.Shoulder;
 import frc.robot.subsystems.Arms.Wrist;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
+import frc.robot.subsystems.Vision.ConeVision;
 import frc.robot.subsystems.Vision.LimeLight;
+import frc.robot.subsystems.Vision.PhotonVision;
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -67,15 +48,39 @@ import frc.robot.subsystems.Vision.LimeLight;
  */
 public class RobotContainer {
 
-  public static AprilTagFieldLayout aprilTagField = new AprilTagFieldLayout(
-  List.of(
-    new AprilTag(5, new Pose3d(Units.inchesToMeters(14.25), Units.inchesToMeters(265.74), Units.inchesToMeters(27.38), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
-    new AprilTag(6, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(147.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
-    new AprilTag(7, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(108.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
-    new AprilTag(8, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0))))
-  ), camConstants.kFieldLength, camConstants.kFieldWidth);
-
-
+  public static AprilTagFieldLayout aprilTagField =
+      new AprilTagFieldLayout(
+          List.of(
+              new AprilTag(
+                  5,
+                  new Pose3d(
+                      Units.inchesToMeters(14.25),
+                      Units.inchesToMeters(265.74),
+                      Units.inchesToMeters(27.38),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+              new AprilTag(
+                  6,
+                  new Pose3d(
+                      Units.inchesToMeters(40.45),
+                      Units.inchesToMeters(147.19),
+                      Units.inchesToMeters(18.22),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+              new AprilTag(
+                  7,
+                  new Pose3d(
+                      Units.inchesToMeters(40.45),
+                      Units.inchesToMeters(108.19),
+                      Units.inchesToMeters(18.22),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+              new AprilTag(
+                  8,
+                  new Pose3d(
+                      Units.inchesToMeters(40.45),
+                      Units.inchesToMeters(42.19),
+                      Units.inchesToMeters(18.22),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0))))),
+          camConstants.kFieldLength,
+          camConstants.kFieldWidth);
 
   // Subsystems
   private Drivetrain sDrivetrain = new Drivetrain();
@@ -122,7 +127,6 @@ public class RobotContainer {
   private Trigger grabBtn;
   private Trigger PresetGrabBtn;
 
-  // private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
   // Auto Chooser
   SendableChooser<Command> AutoSelect = new SendableChooser<>();
 
@@ -133,7 +137,6 @@ public class RobotContainer {
   private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
   private RightSingleCharger cmdRightCharge = new RightSingleCharger(sDrivetrain);
   private Path1Double cmdP1Double = new Path1Double(sDrivetrain);
-
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -154,7 +157,6 @@ public class RobotContainer {
 
     // Configure the button bindings
     configureButtonBindings();
-
   }
 
   /**
@@ -200,10 +202,10 @@ public class RobotContainer {
     // Wrist Buttons
 
     armWristForwardBtn = new POVButton(coopStick, 90);
-    armWristForwardBtn.whileTrue(sElbow.cmdArmElbowForward());
+    armWristForwardBtn.whileTrue(sWrist.cmdWristForward());
 
     armWristBackwardBtn = new POVButton(coopStick, 270);
-    armWristBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
+    armWristBackwardBtn.whileTrue(sWrist.cmdWristBackward());
 
     armWristZeroBtn = new POVButton(coopStick, 0);
     armWristZeroBtn.whileTrue(new WristMoveToPosition(0, sWrist));
@@ -230,13 +232,11 @@ public class RobotContainer {
     DislocatorBackwardBtn = new JoystickButton(coopStick, 3);
     DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
 
-    // Presets
     // Preset to set up for a come standing up on the ground
-
     PresetGrabBtn = new JoystickButton(coopStick, 2);
     PresetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorMax, sTravelator));
-    PresetGrabBtn.onTrue(new ShoulderMoveToPosition(0, sShoulder)); // TODO: GET EVERYTHING
-    PresetGrabBtn.onTrue(new ElbowMoveToPosition(0, sElbow)); // TODO: GET EVERYTHING
+    PresetGrabBtn.onTrue(new ShoulderMoveToPosition(0, sShoulder));
+    PresetGrabBtn.onTrue(new ElbowMoveToPosition(0, sElbow));
     PresetGrabBtn.onTrue(new WristMoveToPosition(90, sWrist));
     PresetGrabBtn.onTrue(sWrist.cmdGrabOpen());
   }
@@ -257,12 +257,27 @@ public class RobotContainer {
 
   // Getter Methods
 
-  public Drivetrain getDrivetrain() { return sDrivetrain; }
-  public LimeLight getLimeLight() { return sLimeLight; }
-  public PhotonVision getPhotonVision() { return sPhotonVision;}
-  public ConeVision getConeVision() { return sConeVision; }
+  public Drivetrain getDrivetrain() {
+    return sDrivetrain;
+  }
 
-  public Joystick getStick() { return opStick; }
-  public Joystick getController() { return coopStick; }
-  
+  public LimeLight getLimeLight() {
+    return sLimeLight;
+  }
+
+  public PhotonVision getPhotonVision() {
+    return sPhotonVision;
+  }
+
+  public ConeVision getConeVision() {
+    return sConeVision;
+  }
+
+  public Joystick getStick() {
+    return opStick;
+  }
+
+  public Joystick getController() {
+    return coopStick;
+  }
 }

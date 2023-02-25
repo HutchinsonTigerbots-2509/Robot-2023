@@ -7,6 +7,7 @@ package frc.robot.subsystems.Arms;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
@@ -15,15 +16,26 @@ public class Elbow extends SubsystemBase {
 
   public WPI_TalonSRX armElbow = new WPI_TalonSRX(opConstants.kArmElbowID);
   // public Encoder ElbowEncoder = new Encoder(6, 7);
-  private Encoder ElbowEncoder = new Encoder(opConstants.kArmSecondSensor1ID, opConstants.kArmSecondSensor2ID, false, Encoder.EncodingType.k4X);
+  private Encoder ElbowEncoder =
+      new Encoder(
+          opConstants.kElbowEncoder1ID,
+          opConstants.kElbowEncoder2ID,
+          false,
+          Encoder.EncodingType.k4X);
 
   /** Creates a new Elbow. */
-  public Elbow() {}
+  public Elbow() {
+    ElbowEncoder.setDistancePerPulse(4.4);
+    ElbowEncoder.setMinRate(1);
+    ElbowEncoder.setReverseDirection(false);
+    ElbowEncoder.setSamplesToAverage(5);
+    ElbowEncoder.reset();
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
+    SmartDashboard.putNumber("ElbowEncoder", ElbowEncoder.getDistance());
   }
 
   /** The Elbow */

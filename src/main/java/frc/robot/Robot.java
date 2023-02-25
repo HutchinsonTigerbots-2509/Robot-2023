@@ -4,11 +4,7 @@
 
 package frc.robot;
 
-
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -54,10 +50,6 @@ public class Robot extends TimedRobot {
     controller = mRobotContainer.getController();
 
     sPhotonVision.setReferencePose(new Pose2d());
-
-    UsbCamera ConeCamera = CameraServer.startAutomaticCapture();
-    ConeCamera.setResolution(640, 480);
-    ConeCamera.setFPS(30);
   }
 
   /**
@@ -75,7 +67,7 @@ public class Robot extends TimedRobot {
     // order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
     sPhotonVision.PoseEstimating();
-    }
+  }
 
   /** This function is called once each time the robot enters Disabled mode. */
   @Override

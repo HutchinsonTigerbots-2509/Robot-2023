@@ -40,6 +40,8 @@ public class Travelator extends SubsystemBase {
     //  SmartDashboard.putBoolean("TV Front SW", !LimitSwitch3.get()||! LimitSwitch4.get());
     // SmartDashboard.putNumber("TV Ticks", Travelator.getSelectedSensorPosition());
     // SmartDashboard.putNumber("TV Distance", getTravelatorPos());
+    SmartDashboard.putNumber("TravelPos", getTravelatorPos());
+    SmartDashboard.putNumber("TravelSensor", Travelator.getSelectedSensorPosition());
     SmartDashboard.updateValues();
 
     if (!LimitSwitch1.get() || !LimitSwitch2.get()) {

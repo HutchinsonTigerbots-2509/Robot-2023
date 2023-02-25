@@ -7,7 +7,6 @@ package frc.robot.subsystems.Arms;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,8 +21,6 @@ public class Shoulder extends SubsystemBase {
   public Counter normalCounter2 = new Counter();
   public Counter normalCounter3 = new Counter();
 
-  private Encoder JawEncoder = new Encoder(6, 7, false, Encoder.EncodingType.k4X);
-
   /** Creates a new arm. * */
   public Shoulder() {
 
@@ -37,12 +34,6 @@ public class Shoulder extends SubsystemBase {
     // normalCounter1.reset();
 
     armLift.setNeutralMode(NeutralMode.Brake);
-
-    JawEncoder.setDistancePerPulse(4.4);
-    JawEncoder.setMinRate(1);
-    JawEncoder.setReverseDirection(false);
-    JawEncoder.setSamplesToAverage(5);
-    JawEncoder.reset();
   }
 
   @Override
@@ -51,7 +42,6 @@ public class Shoulder extends SubsystemBase {
 
     SmartDashboard.putNumber("Counter", normalCounter1.get());
     SmartDashboard.putNumber("Degrees", normalCounter1.getDistance());
-    SmartDashboard.putNumber("Jaw Get", JawEncoder.getDistance());
     SmartDashboard.updateValues();
   }
 
@@ -59,7 +49,7 @@ public class Shoulder extends SubsystemBase {
 
   // Moves Shoulder Forward
   public void ShoulderForward() {
-    armLift.set(-opConstants.kMaxArmSpeed);
+    armLift.set(-opConstants.kShoulderSpeed);
   }
 
   // Command to move the shoulder forward function
@@ -69,7 +59,7 @@ public class Shoulder extends SubsystemBase {
 
   // Moves Shoulder backward
   public void ShoulderBackward() {
-    armLift.set(opConstants.kMaxArmSpeed);
+    armLift.set(opConstants.kShoulderSpeed);
   }
 
   // Command to move shoulder backward function

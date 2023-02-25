@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -44,29 +43,31 @@ public final class Constants {
 
     // Travelator Constants
     public static final int kTravelatorID = 2;
-    public static final double kTravelatorSpeed = .35;
+    public static final double kTravelatorSpeed = .4;
     public static final int kBackRightLimitSwitchID = 0;
     public static final int kBackLeftLimitSwitchID = 1;
     public static final int kFrontRightLimitSwitchID = 2;
     public static final int kFrontLeftLimitSwitchID = 3;
-    public static final double kTravelatorGearRatio = 29.118;
-    public static final double kTravelatorMax = 457950;
+    public static final double kTravelatorGearRatio = 1.9411764 * 4;
+    public static final double kTravelatorMax = 113800;
     public static final double kTravelatorMin = 0;
     public static final double kTravelatorBack = 0;
-    public static final double kTravelatorMiddle = 12;
-    public static final double kTravelatorFront = 20.75;
+    public static final double kTravelatorMiddle = 10;
+    public static final double kTravelatorFront = 19;
 
     // ***** Arm Constants ***** //
     public static final int kShoulderID = 4;
+    public static final int kShoulderGearRatio = 240; // 240:1
+    public static final double kShoulderSpeed = .7;
     public static final int kGrabberP1 = 0;
     public static final int kGrabberP2 = 1;
     public static final int kArmCounterID = 0;
-    public static final int kArmElbowID = 10;
-    public static final int kArmWristID = 11;
-    public static final int kArmFirstSensor1ID = 4;
-    public static final int kArmFirstSensor2ID = 5;
-    public static final int kArmSecondSensor1ID = 6;
-    public static final int kArmSecondSensor2ID = 7;
+    public static final int kArmElbowID = 11;
+    public static final int kElbowEncoder1ID = 6;
+    public static final int kElbowEncoder2ID = 7;
+    public static final int kArmWristID = 10;
+    public static final int kWristEncoder1ID = 4;
+    public static final int kWristEncoder2ID = 5;
 
     // ***** Dislocator Constants ***** //
     public static final int kDislocatorID = 3;
@@ -80,57 +81,6 @@ public final class Constants {
     public static final int kParkingBrakeP2 = 3;
   }
 
-    public static final class ctrlConstants {
-
-
-        //#region ***** Xbox Controller Constants ***** //
-        public final static int kXboxLeftJoystickX = 0;
-        public final static int kXboxLeftJoystickY = 1;
-        
-        public final static int kXboxRightJoystickX = 4;
-        public final static int kXboxRightJoystickY = 5;
-        
-        public final static int kXboxLeftJoystickButton = 9;
-        public final static int kXboxRightJoystickButton = 10;
-
-        public final static int kXboxLeftTrigger = 2;
-        public final static int kXboxRightTrigger = 3;
-        
-        public final static int kXboxLeftBumper = 5;
-        public final static int kXboxRightBumper = 6;
-        
-        public final static int kXboxButtonA = 1;
-        public final static int kXboxButtonB = 2;
-        public final static int kXboxButtonX = 3;
-        public final static int kXboxButtonY = 4;
-        
-        //TODO Assign ID's for the Xbox DPad
-        
-        public final static int kXboxButtonBack = 7;
-        public final static int kXboxButtonStart = 8;
-        //#endregion
-
-        //#region ***** Joystick Buttons ***** //
-        public final static int kJoystickX = 0;
-        public final static int kJoystickY = 1;
-        public final static int kJoystickZ = 2;
-
-        public final static int kJoystickSlider = 3;
-
-        public final static int kJoystickButton1 = 1;
-        public final static int kJoystickButton2 = 2;
-        public final static int kJoystickButton3 = 3;
-        public final static int kJoystickButton4 = 4;
-        public final static int kJoystickButton5 = 5;
-        public final static int kJoystickButton6 = 6;
-        public final static int kJoystickButton7 = 7;
-        public final static int kJoystickButton8 = 8;
-        public final static int kJoystickButton9 = 9;
-        public final static int kJoystickButton10 = 10;
-        public final static int kJoystickButton11 = 11;
-        public final static int kJoystickButton12 = 12;
-    }
-    
   public static final class camConstants {
 
     // Network
@@ -195,8 +145,8 @@ public final class Constants {
     // Set this to what we plan on using, probably should play around with a good distance.
     public static final double minClosestTargetDistance = 0; // Goes by meters
 
-    public static final AprilTagFieldLayout tagPlayground =
-        new AprilTagFieldLayout(null, kFieldLength, kFieldWidth);
+    // public static final AprilTagFieldLayout tagPlayground =
+    //     new AprilTagFieldLayout(null, kFieldLength, kFieldWidth);
 
     public static Transform3d robotToCamera =
         new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));

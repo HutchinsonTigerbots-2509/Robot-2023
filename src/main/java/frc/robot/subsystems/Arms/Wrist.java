@@ -9,12 +9,18 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
 public class Wrist extends SubsystemBase {
-  private Encoder JawEncoder = new Encoder(opConstants.kArmFirstSensor1ID, opConstants.kArmFirstSensor2ID, false, Encoder.EncodingType.k4X);
+  private Encoder WristEncoder =
+      new Encoder(
+          opConstants.kWristEncoder1ID,
+          opConstants.kWristEncoder2ID,
+          false,
+          Encoder.EncodingType.k4X);
 
   /** Creates a new Wrist. */
   public WPI_TalonSRX Wrist = new WPI_TalonSRX(opConstants.kArmWristID);
@@ -25,11 +31,18 @@ public class Wrist extends SubsystemBase {
 
   public Wrist() {
     Grabber.set(Value.kForward);
+
+    WristEncoder.setDistancePerPulse(4.4);
+    WristEncoder.setMinRate(1);
+    WristEncoder.setReverseDirection(false);
+    WristEncoder.setSamplesToAverage(5);
+    WristEncoder.reset();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("WristEncoder", WristEncoder.getDistance());
   }
 
   // Use commands and functions to open and close the grabber
@@ -93,6 +106,6 @@ public class Wrist extends SubsystemBase {
 
   // Fetches the encoder's (placed on the back of the jaw) distance
   public double getWristPose() {
-    return JawEncoder.getDistance(); // Return the shaft sensor position
+    return WristEncoder.getDistance(); // Return the shaft sensor position
   }
 }

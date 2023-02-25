@@ -1,33 +1,24 @@
 package frc.robot.subsystems.Vision;
 
-import java.util.Optional;
-
-import org.photonvision.EstimatedRobotPose;
-import org.photonvision.PhotonCamera;
-import org.photonvision.PhotonPoseEstimator;
-import org.photonvision.PhotonPoseEstimator.PoseStrategy;
-import org.photonvision.common.dataflow.structures.Packet;
-import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.networktables.DoubleArrayEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.camConstants;
 import frc.robot.RobotContainer;
+import java.util.Optional;
+import org.photonvision.EstimatedRobotPose;
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
-public class PhotonVision extends SubsystemBase{
+public class PhotonVision extends SubsystemBase {
   NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
-
-
 
   PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
   private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
@@ -35,9 +26,8 @@ public class PhotonVision extends SubsystemBase{
 
   PhotonPipelineResult result = camera.getLatestResult();
   PhotonTrackedTarget target = this.result.getBestTarget();
-  int getTargetID = target.getFiducialId();
+  // int getTargetID = target.getFiducialId();
   boolean chasTargets = this.result.hasTargets();
-
 
   // private Boolean _hasPose = false;
 
@@ -45,21 +35,22 @@ public class PhotonVision extends SubsystemBase{
   public void periodic() {
     // This method will be called once per scheduler run
 
-   // SmartDashboard.putString("Field Position of X", RobotContainer.aprilTagField.getTagPose(this.targetID).toString());
+    // SmartDashboard.putString("Field Position of X",
+    // RobotContainer.aprilTagField.getTagPose(this.targetID).toString());
   }
 
-/**
- * Constructs a packet with the given data.
- *
- * @param data The packet data.
- * @return 
- */
-  PhotonPoseEstimator estimatePose = new PhotonPoseEstimator(RobotContainer.aprilTagField,
-      PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
-      camera,
-      camConstants.robotToCamera);
-
-    
+  /**
+   * Constructs a packet with the given data.
+   *
+   * @param data The packet data.
+   * @return
+   */
+  PhotonPoseEstimator estimatePose =
+      new PhotonPoseEstimator(
+          RobotContainer.aprilTagField,
+          PoseStrategy.CLOSEST_TO_REFERENCE_POSE,
+          camera,
+          camConstants.robotToCamera);
 
   // Sets the pose that you want to be referred to
   public void setReferencePose(Pose2d pose) {
@@ -72,7 +63,6 @@ public class PhotonVision extends SubsystemBase{
 
   public void PoseEstimating() {
 
-
     // tell the robot when it sees an april tag
     // if (_hasPose == true){
     //   poseOnField = this.getPose;
@@ -81,21 +71,20 @@ public class PhotonVision extends SubsystemBase{
     // } else {
     //   poseOnField = Optional.empty();
     // }
-    
-    // SmartDashboard.putNumber("Target Seen", this.targetID); // Replaced with just the fudicial ID.
+
+    // SmartDashboard.putNumber("Target Seen", this.targetID); // Replaced with just the fudicial
+    // ID.
     SmartDashboard.putBoolean("Has Target", chasTargets);
     // this.getPose = estimatePose.update();
-    
-  }
 
+  }
 
   /** Clears the packet and resets the read and write positions. */
 
+  // See if the robot is looking at an april tag
 
-  // See if the robot is looking at an april tag 
-  
   // REPLACED WITH hasTargets
-  
+
   // public Boolean HasPose(){
   //   if(this.getPose == null) return false;
   //  if (this.getPose.isPresent()){
@@ -115,15 +104,13 @@ public class PhotonVision extends SubsystemBase{
 
   public NetworkTableEntry getDistance() {
     NetworkTableEntry mPTableTP = PhotonTable.getEntry(camConstants.kPhotonTargetPose);
-    Pose3d targetPose = (Pose3d)mPTableTP.getValue().getValue(); // Returns the april tag's pose
+    Pose3d targetPose = (Pose3d) mPTableTP.getValue().getValue(); // Returns the april tag's pose
 
     SmartDashboard.putNumber("relative X", targetPose.getX());
     SmartDashboard.putNumber("relative Y", targetPose.getY());
 
-
-    // Need to figure out distance from pose 
+    // Need to figure out distance from pose
 
     return mPTableTP;
-
   }
 }
