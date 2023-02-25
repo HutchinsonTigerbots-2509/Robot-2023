@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.AutoDriveVision;
-import frc.robot.commands.Drive;
 import frc.robot.commands.DriveApril;
 import frc.robot.commands.DriveTele;
 import frc.robot.commands.DriveVision;
@@ -76,20 +75,18 @@ public class RobotContainer {
     new AprilTag(8, new Pose3d(Units.inchesToMeters(40.45), Units.inchesToMeters(42.19), Units.inchesToMeters(18.22), new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0))))
   ), camConstants.kFieldLength, camConstants.kFieldWidth);
 
-  
-  // ***** Select Auto ***** //
-  SendableChooser<Command> AutoSelect = new SendableChooser<>();
 
 
   // Subsystems
   private Drivetrain sDrivetrain = new Drivetrain();
   private LimeLight sLimeLight = new LimeLight();
-  
+  private PhotonVision sPhotonVision = new PhotonVision();
   private Shoulder sShoulder = new Shoulder();
   private Dislocator sDislocator = new Dislocator();
   private Elbow sElbow = new Elbow();
   private Wrist sWrist = new Wrist();
   private Travelator sTravelator = new Travelator();
+  private ConeVision sConeVision = new ConeVision();
 
   //  Joysticks
   private Joystick coopStick = new Joystick(Constants.kCoopStickID);
@@ -261,15 +258,11 @@ public class RobotContainer {
   // Getter Methods
 
   public Drivetrain getDrivetrain() { return sDrivetrain; }
-  public Intake getIntake() { return sIntake; }
-  public Shooter getShooter() { return sShooter; }
-  public Conveyor getConveyor() { return sConveyor; }
-  public Climb getClimb() { return sClimb; }
   public LimeLight getLimeLight() { return sLimeLight; }
   public PhotonVision getPhotonVision() { return sPhotonVision;}
   public ConeVision getConeVision() { return sConeVision; }
 
-  public Joystick getStick() { return stick; }
-  public Joystick getController() { return controller; }
+  public Joystick getStick() { return opStick; }
+  public Joystick getController() { return coopStick; }
   
 }

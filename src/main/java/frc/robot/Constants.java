@@ -135,7 +135,7 @@ public final class Constants {
 
     // Network
     public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
-    public static final String kLimelightNetworkID = "limelight"; // Name of Camera on Network
+    public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
 
     // Settings
     // Sets LED. 0 = Set by Pipline, 1 = Force off, 2 = Force blink, 3 = Force on
@@ -185,8 +185,8 @@ public final class Constants {
     public static final double kTargetDistanceFromTarget = 24;
 
     // Constants for April Tags using PhotonVision below
-    private static final double kFieldLength = Units.inchesToMeters(651.2);
-    private static final double kFieldWidth = Units.inchesToMeters(315.75);
+    public static final double kFieldLength = Units.inchesToMeters(651.2);
+    public static final double kFieldWidth = Units.inchesToMeters(315.75);
 
     // needs to be replaced with what's in http://photonvision:5800 settings
     public static final double camFOV = 0;
@@ -200,5 +200,7 @@ public final class Constants {
 
     public static Transform3d robotToCamera =
         new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static String kPhotonTargetPose;
+    public static String kPhotonTargetXID;
   }
 }
