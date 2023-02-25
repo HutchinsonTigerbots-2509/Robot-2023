@@ -4,14 +4,14 @@
 
 package frc.robot.subsystems.Arms;
 
-import com.ctre.phoenixpro.hardware.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
 public class Dislocator extends SubsystemBase {
   /** Creates a new Dislocator. */
-  public TalonFX Dislocator = new TalonFX(opConstants.kDislocatorID);
+  public WPI_TalonFX Dislocator = new WPI_TalonFX(opConstants.kDislocatorID);
 
   public Dislocator() {}
 
@@ -22,7 +22,7 @@ public class Dislocator extends SubsystemBase {
 
   // Makes Extendor / Dislocator go forward
   public void DislocatorForward() {
-    Dislocator.set(opConstants.kDislocatorSpeed);
+    Dislocator.set(-opConstants.kDislocatorSpeed);
   }
 
   // Command to utilize the Dislocator moving forwards
@@ -32,7 +32,7 @@ public class Dislocator extends SubsystemBase {
 
   // Makes Extendor / Dislocator go backward
   public void DislocatorBackward() {
-    Dislocator.set(-opConstants.kDislocatorSpeed);
+    Dislocator.set(opConstants.kDislocatorSpeed);
   }
 
   // Command to utilize the Dislocator moving backwards

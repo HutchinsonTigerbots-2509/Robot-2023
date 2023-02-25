@@ -42,7 +42,7 @@ public class Elbow extends SubsystemBase {
 
   // Moves the Elbow forward
   public void armElbowForward() {
-    armElbow.set(opConstants.kMaxAngularSpeed);
+    armElbow.set(-opConstants.kElbowSpeed);
   }
 
   // Command to use elbow forward function
@@ -52,7 +52,7 @@ public class Elbow extends SubsystemBase {
 
   // Moves the Elbow backwards
   public void armElbowBackward() {
-    armElbow.set(-opConstants.kMaxAngularSpeed);
+    armElbow.set(opConstants.kElbowSpeed);
   }
 
   // Command to use the Elbow backward function

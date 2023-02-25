@@ -232,13 +232,13 @@ public class RobotContainer {
     DislocatorBackwardBtn = new JoystickButton(coopStick, 3);
     DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
 
-    // Preset to set up for a come standing up on the ground
-    PresetGrabBtn = new JoystickButton(coopStick, 2);
-    PresetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorMax, sTravelator));
-    PresetGrabBtn.onTrue(new ShoulderMoveToPosition(0, sShoulder));
-    PresetGrabBtn.onTrue(new ElbowMoveToPosition(0, sElbow));
-    PresetGrabBtn.onTrue(new WristMoveToPosition(90, sWrist));
-    PresetGrabBtn.onTrue(sWrist.cmdGrabOpen());
+    // // Preset to set up for a come standing up on the ground
+    // PresetGrabBtn = new JoystickButton(coopStick, 2);
+    // PresetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorMax, sTravelator));
+    // PresetGrabBtn.onTrue(new ShoulderMoveToPosition(0, sShoulder));
+    // PresetGrabBtn.onTrue(new ElbowMoveToPosition(0, sElbow));
+    // PresetGrabBtn.onTrue(new WristMoveToPosition(90, sWrist));
+    // PresetGrabBtn.onTrue(sWrist.cmdGrabOpen());
   }
 
   // Getter Methods

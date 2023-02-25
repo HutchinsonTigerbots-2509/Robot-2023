@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class ConeVision extends SubsystemBase {
 
   /** Creates a new ConeVision. */
-  UsbCamera ConeCamera = new UsbCamera("ConeCam", "");
+  
 
   public ConeVision() {}
 

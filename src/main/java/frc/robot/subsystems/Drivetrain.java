@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -76,6 +77,8 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     this.setName("Drivetrain");
     this.addChild("Mecanum Drive", drivetrain);
+
+    parkingBrake.set(Value.kForward);
 
     // Inverts all the motors that need to be inverted
     frontRightMotor.setInverted(false);
@@ -245,7 +248,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public Command cmdToggleBrake() {
-    return this.run(this::ToggleBrake);
+    return this.runOnce(this::ToggleBrake);
   }
 
   public double getRoll() {

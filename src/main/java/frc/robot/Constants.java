@@ -58,14 +58,18 @@ public final class Constants {
     // ***** Arm Constants ***** //
     public static final int kShoulderID = 4;
     public static final int kShoulderGearRatio = 240; // 240:1
-    public static final double kShoulderSpeed = .7;
+    public static final double kShoulderSpeed = 1;
     public static final int kGrabberP1 = 0;
     public static final int kGrabberP2 = 1;
     public static final int kArmCounterID = 0;
+
     public static final int kArmElbowID = 11;
+    public static final double kElbowSpeed = .8;
     public static final int kElbowEncoder1ID = 6;
     public static final int kElbowEncoder2ID = 7;
+
     public static final int kArmWristID = 10;
+    public static final double kWristSpeed = .8;
     public static final int kWristEncoder1ID = 4;
     public static final int kWristEncoder2ID = 5;
 

@@ -76,7 +76,7 @@ public class Wrist extends SubsystemBase {
 
   // Moves Wrist Forward
   public void WristForward() {
-    Wrist.set(opConstants.kMaxAngularSpeed);
+    Wrist.set(opConstants.kWristSpeed);
   }
 
   // Command to move the wrist forward function
@@ -86,7 +86,7 @@ public class Wrist extends SubsystemBase {
 
   // Moves Wrist Backward
   public void WristBackward() {
-    Wrist.set(-opConstants.kMaxAngularSpeed);
+    Wrist.set(-opConstants.kWristSpeed);
   }
 
   // Command to move the wrist backward function
