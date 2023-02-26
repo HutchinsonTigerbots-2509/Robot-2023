@@ -16,10 +16,13 @@ import frc.robot.subsystems.Drivetrain;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DriveToPosition extends CommandBase {
-  static final double kP = 0.2;
-  static final double kI = 0.001;
-  static final double kD = 0.00;
-  static final double minSpeed = 0.12;
+  static final double kPx = 0.2;
+  static final double kIx = 0.001;
+  static final double kDx = 0.00;
+  static final double kPy = 0.05;
+  static final double kIy = 0.0005;
+  static final double kDy = 0.00;
+  static final double minSpeed = 0.15;
 
   SlewRateLimiter xspeedLimiter;
   SlewRateLimiter yspeedLimiter;
@@ -32,12 +35,12 @@ public class DriveToPosition extends CommandBase {
   public DriveToPosition(Drivetrain sDrive, Pose2d targetPose) {
     this.drive = sDrive;
     this.targetPose = targetPose;
-    this.xController = new PIDController(kP, kI, kD);
-    this.yController = new PIDController(kP, kI, kD);
-    this.xController.setTolerance(0.02);
-    this.yController.setTolerance(0.02);
-    this.xspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
-    this.yspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
+    this.xController = new PIDController(kPx, kIx, kDx);
+    this.yController = new PIDController(kPy, kIy, kDy);
+    this.xController.setTolerance(0.05);
+    this.yController.setTolerance(0.05);
+    this.xspeedLimiter = new SlewRateLimiter(0.5);//opConstants.kSkewRateLimit);
+    this.yspeedLimiter = new SlewRateLimiter(0.5);//opConstants.kSkewRateLimit);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
 
@@ -61,27 +64,37 @@ public class DriveToPosition extends CommandBase {
     xSpeed = xController.calculate(this.currentPose.getX());
     ySpeed = yController.calculate(this.currentPose.getY());
 
-    if (Math.abs(targetPose.getX() - currentPose.getX()) < 0.02) {
+    if (Math.abs(targetPose.getX() - currentPose.getX()) < 0.05) {
       xSpeed = 0;
     } else {
-      double isNeg = Math.abs(xSpeed) / xSpeed;
-      xSpeed = Math.abs(Math.max(Math.abs(xSpeed), minSpeed));
-      xSpeed *= isNeg;
+      // double isNeg = Math.abs(xSpeed) / xSpeed;
+      // xSpeed = Math.abs(Math.max(Math.abs(xSpeed), minSpeed));
+      // xSpeed *= isNeg;
+      if(xSpeed > -minSpeed&& xSpeed <0){
+        xSpeed = -minSpeed;
+      }else if (xSpeed < minSpeed && xSpeed >0){
+        xSpeed = minSpeed;
+      }
     }
-    if (Math.abs(targetPose.getY() - currentPose.getY()) < 0.02) {
+    if (Math.abs(targetPose.getY() - currentPose.getY()) < 0.05) {
       ySpeed = 0;
     } else {
-      double isNeg = Math.abs(ySpeed) / ySpeed;
-      ySpeed = Math.abs(Math.max(Math.abs(ySpeed), minSpeed));
-      ySpeed *= isNeg;
+      // double isNeg = Math.abs(ySpeed) / ySpeed;
+      // ySpeed = Math.abs(Math.max(Math.abs(ySpeed), minSpeed));
+      // ySpeed *= isNeg;
+      if(ySpeed > -minSpeed&&ySpeed<0){
+        ySpeed = -minSpeed;
+      }else if (ySpeed < minSpeed&&ySpeed>0){
+        ySpeed = minSpeed;
+      }
     }
     SmartDashboard.putNumber("xSpeed", xSpeed);
     SmartDashboard.putNumber("ySpeed", ySpeed);
     // Filter through SkewRateLimiter
-    // xSpeed = xspeedLimiter.calculate(xSpeed) * opConstants.kMaxSpeed;
-    // ySpeed = yspeedLimiter.calculate(ySpeed) * opConstants.kMaxSpeed;
-
-    drive.mecanumDrive(xSpeed, -ySpeed, 0, true);
+    xSpeed = xspeedLimiter.calculate(xSpeed) * opConstants.kMaxSpeed;
+    ySpeed = yspeedLimiter.calculate(ySpeed) * opConstants.kMaxSpeed;
+    
+    drive.mecanumDrive(-xSpeed, ySpeed, 0, false);
   }
 
   // Called once the command ends or is interrupted.
@@ -93,8 +106,8 @@ public class DriveToPosition extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Math.abs(targetPose.getX() - currentPose.getX()) < 0.02
-        && Math.abs(targetPose.getY() - currentPose.getY()) < 0.02) {
+    if (Math.abs(targetPose.getX() - currentPose.getX()) < 0.05
+        && Math.abs(targetPose.getY() - currentPose.getY()) < 0.05) {
       return true;
     } else {
       return false;

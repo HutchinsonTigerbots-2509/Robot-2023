@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.*;
 import frc.robot.commands.auto.*;
-import frc.robot.commands.auto.RightSingle;
+import frc.robot.commands.auto.Path3SingleCharger;
 import frc.robot.commands.drivetrain.*;
 import frc.robot.commands.drivetrain.ResetDriveSensors;
 import frc.robot.subsystems.Arm;
@@ -42,15 +42,15 @@ public class RobotContainer {
 
   // Autonomous
   private Potato cmdPotato = new Potato(sDrivetrain);
-  private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger(sDrivetrain);
-  private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger(sDrivetrain);
-  private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
-  private RightSingleCharger cmdRightCharge = new RightSingleCharger(sDrivetrain);
-  private Path1Double cmdP1Double = new Path1Double(sDrivetrain);
+  private Path3Double cmdPath3Double = new Path3Double(sDrivetrain);
+  private Path2Charger cmdPath2Charger = new Path2Charger(sDrivetrain);
+  private Path3SingleCharger cmdPath3SingleCharger = new Path3SingleCharger(sDrivetrain);
+  private Path1SingleCharger cmdPath1SingleCharger = new Path1SingleCharger(sDrivetrain);
+  private Path1Double cmdPath1Double = new Path1Double(sDrivetrain);
 
   // Joysticks
-  private Joystick stick = new Joystick(Constants.kCoopStickID);
-  private CommandXboxController controller = new CommandXboxController(Constants.kOpStickID);
+  private Joystick opStick = new Joystick(Constants.kOpStickID);
+  private Joystick coopStick = new Joystick(Constants.kOpStickID);
 
   // Joystick Buttons
   private Trigger turnToZero;
@@ -72,15 +72,15 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Default Commands
-    sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, stick, true));
+    sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, opStick, false));
 
     // Create auto chooser
     AutoSelect.setDefaultOption("Potato", cmdPotato);
-    AutoSelect.addOption("P1", cmdP1Double); // Replaced Left Single
-    AutoSelect.addOption("Left Charge", cmdLeftCharge);
-    AutoSelect.addOption("Mid Charge", cmdMidCharge);
-    AutoSelect.addOption("Right Single", cmdRightSing);
-    AutoSelect.addOption("Right Charge", cmdRightCharge);
+    AutoSelect.addOption("P1 Double", cmdPath1Double); // Replaced Left Single
+    AutoSelect.addOption("P3 Double", cmdPath3Double);
+    AutoSelect.addOption("P2 Charger", cmdPath2Charger);
+    AutoSelect.addOption("P3 Single", cmdPath3SingleCharger);
+    AutoSelect.addOption("P1 Single", cmdPath1SingleCharger);
 
     // ShuffleBoard
     SmartDashboard.putData(AutoSelect); // Adds auto select to dashboard.
@@ -97,23 +97,23 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    turnToZero = new JoystickButton(stick, 1);
+    turnToZero = new JoystickButton(opStick, 1);
     turnToZero.whileTrue(new RotateToAngle(0, this.sDrivetrain));
 
     // DO NOT USE THIS UNLESS YOU KNOW WHAT YOU ARE DOING!!!
     // driveToZero = new JoystickButton(stick, 2);
     // driveToZero.onTrue(new DriveToPosition(sDrivetrain, new Pose2d(0, 0, new Rotation2d())));
 
-    travelatorForward = new JoystickButton(stick, 8);
+    travelatorForward = new JoystickButton(opStick, 8);
     travelatorForward.whileTrue(sTravelator.moveTravelatorForward());
 
-    travelatorBackward = new JoystickButton(stick, 9);
+    travelatorBackward = new JoystickButton(opStick, 9);
     travelatorBackward.whileTrue(sTravelator.moveTravelatorBackward());
 
-    extendParkingBrake = new JoystickButton(stick, 3);
+    extendParkingBrake = new JoystickButton(opStick, 3);
     extendParkingBrake.onTrue(sDrivetrain.extendParkingBrake());
 
-    retractParkingBrake = new JoystickButton(stick, 4);
+    retractParkingBrake = new JoystickButton(opStick, 4);
     retractParkingBrake.onTrue(sDrivetrain.retractParkingBrake());
 
     // travelatorInBtn = new JoystickButton(stick, 2);
@@ -124,19 +124,19 @@ public class RobotContainer {
     // travelatorOutBtn.whileHeld(new RunCommand(() -> sTravelator.MoveBackward()));
     // travelatorOutBtn.whenReleased(new InstantCommand(() -> sTravelator.Stop()));
 
-    arm1Btn = new JoystickButton(stick, 2);
+    arm1Btn = new JoystickButton(coopStick, 2);
     arm1Btn.whileTrue(sArm.arm1Up());
 
-    arm1OutBtn = new JoystickButton(stick, 3);
+    arm1OutBtn = new JoystickButton(coopStick, 3);
     arm1OutBtn.whileTrue(sArm.arm1Down());
 
-    arm2Btn = new JoystickButton(stick, 4);
+    arm2Btn = new JoystickButton(coopStick, 4);
     arm2Btn.whileTrue(sArm.arm2Up());
 
-    arm2OutBtn = new JoystickButton(stick, 6);
+    arm2OutBtn = new JoystickButton(coopStick, 6);
     arm2OutBtn.whileTrue(sArm.arm1Down());
 
-    armGrabBtn = new JoystickButton(stick, 1);
+    armGrabBtn = new JoystickButton(coopStick, 1);
     armGrabBtn.onTrue(sArm.toggleGrip());
 
     // autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
@@ -197,8 +197,8 @@ public class RobotContainer {
    *
    * @return {@link Joystick}
    */
-  public Joystick getStick() {
-    return this.stick;
+  public Joystick getOpStick() {
+    return this.opStick;
   }
 
   /**
@@ -206,7 +206,7 @@ public class RobotContainer {
    *
    * @return {@link CommandXboxController}
    */
-  public CommandXboxController getController() {
-    return controller;
+  public Joystick getCoopStick() {
+    return coopStick;
   }
 }

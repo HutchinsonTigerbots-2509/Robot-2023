@@ -4,11 +4,14 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.drivetrain.DriveToPosition;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -21,7 +24,9 @@ public class Potato extends InstantCommand {
   /** Creates a new LeftSingleCharger. */
   public Potato(Drivetrain sDrivetrain) {
 
-    blueCommandSequence = Commands.sequence();
+    blueCommandSequence = Commands.sequence( 
+      sDrivetrain.setCurrentPose(new Pose2d(0,0,sDrivetrain.getCurrentPose().getRotation())),
+      new DriveToPosition(sDrivetrain, new Pose2d(2,2, sDrivetrain.getCurrentPose().getRotation())));
     redCommandSequence = Commands.sequence();
     // Use addRequirements() here to declare subsystem dependencies.
   }

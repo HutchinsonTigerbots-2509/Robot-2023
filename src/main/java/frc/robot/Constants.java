@@ -27,18 +27,18 @@ public final class Constants {
   public static final class opConstants {
 
     // Drivetrain Constants
-    public static final int kFrontLeftID = 14;
-    public static final int kFrontRightID = 1;
-    public static final int kRearLeftID = 15;
-    public static final int kRearRightID = 0;
+    public static final int kRearLeftID = 1;
+    public static final int kRearRightID = 14;
+    public static final int kFrontLeftID = 0;
+    public static final int kFrontRightID = 15;
     public static final double kMaxSpeed = 0.8;
     public static final double kMaxAngularSpeed = 0.8;
     public static final double kHighSpeedStrafe = 1;
     public static final double kLowSpeedStrafe = .6;
     public static final double kSkewRateLimit = 0.8;
-    public static final double kGearRatio = 12.0;
+    public static final double kGearRatio = 9.0;
     public static final int kFalconUnitsPerRotation = 2048;
-    public static final double kWheelDiameter = 15.24; // This is in centimeters.
+    public static final double kWheelDiameter = 15.5; // This is in centimeters.
     public static final int kParkingBrakeExtend = 2;
     public static final int kParkingBrakeRetract = 3;
 
@@ -53,7 +53,7 @@ public final class Constants {
     // Arm Constants
     public static final int kArmMotor1ID = 3;
     public static final int kArmMotor2ID = 2;
-    public static final int kArmMotor3ID = 0;
+    public static final int kArmMotor3ID = 5;
     public static final double kMaxArm1Speed = .3;
     public static final double kMaxArm2Speed = .6;
     public static final int kGrabberP1 = 0;

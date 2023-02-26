@@ -10,6 +10,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -32,11 +33,9 @@ public class Drivetrain extends SubsystemBase {
   public WPI_TalonFX rearLeftMotor = new WPI_TalonFX(opConstants.kRearLeftID);
 
   // Putting all the motors into a Drivetrain
-  public MecanumDrive drivetrain =
-      new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
-
+  public MecanumDrive drivetrain ;
   // Nav-X
-  private AHRS navx = new AHRS();
+  public AHRS navx = new AHRS();
 
   // Parking Brake Cylinders
   private DoubleSolenoid parkingBrake =
@@ -70,6 +69,7 @@ public class Drivetrain extends SubsystemBase {
     this.setName("Drivetrain");
     this.addChild("Mecanum Drive", drivetrain);
 
+
     // Inverts all the motors that need to be inverted
     frontRightMotor.setInverted(false);
     frontLeftMotor.setInverted(true);
@@ -82,10 +82,15 @@ public class Drivetrain extends SubsystemBase {
     rearRightMotor.setNeutralMode(NeutralMode.Brake);
     rearLeftMotor.setNeutralMode(NeutralMode.Brake);
 
+    drivetrain =    new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+    drivetrain.setSafetyEnabled(false);
+
+    resetSensors();
+
     // Setup Odeometry
     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
-        new MecanumDriveOdometry(kinematics, navx.getRotation2d(), getWheelPositions(), robotPose);
+        new MecanumDriveOdometry(kinematics, getRotation2d(), getWheelPositions(), robotPose);
     SmartDashboard.putData("Field", field);
     SmartDashboard.putNumber("Odom X", robotPose.getX());
     SmartDashboard.putNumber("Odom Y", robotPose.getY());
@@ -97,7 +102,7 @@ public class Drivetrain extends SubsystemBase {
     // Get my wheel positions
     MecanumDriveWheelPositions wheelPositions = getWheelPositions();
     // Get the rotation of the robot from the gyro.
-    Rotation2d gyroAngle = navx.getRotation2d();
+    Rotation2d gyroAngle = getRotation2d();
     // Update the pose
     robotPose = odometry.update(gyroAngle, wheelPositions);
 
@@ -108,23 +113,14 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putNumber("Pitch", navx.getPitch());
     SmartDashboard.putNumber("X", field.getRobotPose().getX());
     SmartDashboard.putNumber("Y", field.getRobotPose().getY());
+    SmartDashboard.putNumber("Angel", navx.getAngle());
     SmartDashboard.updateValues();
+
+  
   }
 
   public void OrientDrive(double y, double x, double z) {
     drivetrain.driveCartesian(y, x, z, navx.getRotation2d());
-  }
-
-  /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
-  public void MecDrive(XboxController stick) {
-    drivetrain.driveCartesian(
-        -stick.getLeftY() * speedValue,
-        stick.getRightX() * speedValue,
-        stick.getLeftX() * speedValue);
-  }
-
-  public void TeleMecDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y * speedValue, x * speedValue, z * speedValue);
   }
 
   /**
@@ -136,15 +132,19 @@ public class Drivetrain extends SubsystemBase {
     return navx.getYaw();
   }
 
+  public Rotation2d getRotation2d(){
+    return new Rotation2d(Math.toRadians(navx.getAngle()));
+  }
+
   public void arcadeDrive(double forward, double rotation) {
     drivetrain.driveCartesian(0, forward, rotation);
   }
 
   public void mecanumDrive(double x, double y, double z, boolean fieldRelative) {
     if (fieldRelative) {
-      drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
+      drivetrain.driveCartesian(x, y, z, getRotation2d());
     } else {
-      drivetrain.driveCartesian(x, y, z, new Rotation2d());
+      drivetrain.driveCartesian(x, y, z);
     }
   }
 
@@ -172,6 +172,7 @@ public class Drivetrain extends SubsystemBase {
 
     // Reset Nav-X
     navx.reset();
+    navx.zeroYaw();
   }
 
   /**
@@ -212,8 +213,11 @@ public class Drivetrain extends SubsystemBase {
 
   public Pose2d setRobotPose(Pose2d newPose) {
     robotPose = newPose;
-    odometry.resetPosition(this.navx.getRotation2d(), getWheelPositions(), newPose);
+    odometry.resetPosition(navx.getRotation2d(), getWheelPositions(), newPose);
     field.setRobotPose(odometry.getPoseMeters());
+    System.out.println(newPose.getX());
+    System.out.println(newPose.getY());
+    System.out.println(newPose.getRotation().getDegrees());
     return field.getRobotPose();
   }
 

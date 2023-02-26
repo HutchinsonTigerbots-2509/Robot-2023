@@ -4,8 +4,10 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -22,15 +24,6 @@ public class Robot extends TimedRobot {
   private Command mAutonomousCommand;
   private RobotContainer mRobotContainer;
 
-  // Subsystems
-  private Drivetrain sDrivetrain;
-  private Arm sArm;
-  private Travelator sTravelator;
-
-  // Joysticks
-  private Joystick stick;
-  private CommandXboxController controller;
-
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -40,12 +33,6 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings,
     // and put our autonomous chooser on the dashboard.
     mRobotContainer = new RobotContainer();
-
-    sDrivetrain = mRobotContainer.getDrivetrain();
-    sArm = mRobotContainer.getArm();
-
-    stick = mRobotContainer.getStick();
-    controller = mRobotContainer.getController();
   }
 
   /**
@@ -78,6 +65,12 @@ public class Robot extends TimedRobot {
   /** This autonomous runs the autonomous command selected by your {@link RobotContainer} class. */
   @Override
   public void autonomousInit() {
+    // mRobotContainer.getDrivetrain().resetSensors();
+    if (DriverStation.getAlliance() == Alliance.Blue) {
+      mRobotContainer.getDrivetrain().navx.setAngleAdjustment(180);
+    }else{      
+      mRobotContainer.getDrivetrain().navx.setAngleAdjustment(0);
+    }
     mAutonomousCommand = mRobotContainer.getAutonomousCommand();
     if (mAutonomousCommand != null) {
       mAutonomousCommand.schedule();

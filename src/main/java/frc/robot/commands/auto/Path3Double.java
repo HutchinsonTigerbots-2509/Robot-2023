@@ -17,29 +17,29 @@ import frc.robot.subsystems.Drivetrain;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class LeftSingleCharger extends InstantCommand {
+public class Path3Double extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
   /** Creates a new LeftSingleCharger. */
-  public LeftSingleCharger(Drivetrain sDrivetrain) {
+  public Path3Double(Drivetrain sDrivetrain) {
 
     blueCommandSequence =
         Commands.sequence(
             // This is your starting location on the field. The blue corner is 0,0
             // When choosing target poses, you only need 3 decimal places.
-            sDrivetrain.setCurrentPose(new Pose2d(1.5, 5.0, new Rotation2d())),
-            new DriveToPosition(sDrivetrain, new Pose2d(1.81, 4.97, new Rotation2d())),
-            new DriveToPosition(sDrivetrain, new Pose2d(6.49, 4.57, new Rotation2d())),
-            new DriveToPosition(sDrivetrain, new Pose2d(1.76, 4.45, new Rotation2d())));
+            sDrivetrain.setCurrentPose(new Pose2d(1.73, 5.03, new Rotation2d())),
+            //new DriveToPosition(sDrivetrain, new Pose2d(1.81, 4.97, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(6.5, 4.57, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(1.73, 5, new Rotation2d())));
     redCommandSequence =
         Commands.sequence(
             // This is your starting location on the field. The blue corner is 0,0
             // When choosing target poses, you only need 3 decimal places.
             sDrivetrain.setCurrentPose(new Pose2d(14.75, 5.0, new Rotation2d())),
-            new DriveToPosition(sDrivetrain, new Pose2d(14.72, 4.95, new Rotation2d())),
-            new DriveToPosition(sDrivetrain, new Pose2d(10.23, 4.65, new Rotation2d())),
-            new DriveToPosition(sDrivetrain, new Pose2d(14.84, 4.38, new Rotation2d())));
+            //new DriveToPosition(sDrivetrain, new Pose2d(14.72, 4.95, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(10.23, 4.57, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(14.84, 5, new Rotation2d())));
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(sDrivetrain);
   }
