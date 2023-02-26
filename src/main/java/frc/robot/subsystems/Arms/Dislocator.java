@@ -4,7 +4,9 @@
 
 package frc.robot.subsystems.Arms;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
@@ -18,6 +20,10 @@ public class Dislocator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Dislocator Position", getDislocatorPos());
+    SmartDashboard.updateValues();
+
+    Dislocator.setSelectedSensorPosition(0);
   }
 
   // Makes Extendor / Dislocator go forward
@@ -43,5 +49,13 @@ public class Dislocator extends SubsystemBase {
   // Stops the Dislocator after movement
   public void DislocatorStop() {
     Dislocator.set(0);
+  }
+
+  public double getDislocatorPos() {
+    return Dislocator.getSelectedSensorPosition() / (2048 * opConstants.kDislocatorGearRatio / 4.4);
+  }
+
+  public void DislocatorMove(double Speed) {
+    Dislocator.set(ControlMode.PercentOutput, Speed);
   }
 }

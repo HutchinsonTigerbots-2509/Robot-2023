@@ -4,14 +4,11 @@
 
 package frc.robot.subsystems.Vision;
 
-import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ConeVision extends SubsystemBase {
 
   /** Creates a new ConeVision. */
-  
-
   public ConeVision() {}
 
   @Override

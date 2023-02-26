@@ -32,13 +32,16 @@ public class TravelatorLeveling extends PIDCommand {
           // Use the output here
           tv.Move(output);
         });
-    // Use addRequirements() here to declare subsystem dependencies.
+    // Use addRequirements() here to declare subsystem dependencies
+    addRequirements(tv);
     // Configure additional PID options by calling `getController` here.
+    this.getController().setTolerance(0.25);
+    this.getController().setSetpoint(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return getController().atSetpoint();
   }
 }

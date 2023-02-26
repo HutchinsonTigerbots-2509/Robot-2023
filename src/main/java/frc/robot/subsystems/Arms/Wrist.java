@@ -32,7 +32,7 @@ public class Wrist extends SubsystemBase {
   public Wrist() {
     Grabber.set(Value.kForward);
 
-    WristEncoder.setDistancePerPulse(4.4);
+    WristEncoder.setDistancePerPulse(3.63636);
     WristEncoder.setMinRate(1);
     WristEncoder.setReverseDirection(false);
     WristEncoder.setSamplesToAverage(5);

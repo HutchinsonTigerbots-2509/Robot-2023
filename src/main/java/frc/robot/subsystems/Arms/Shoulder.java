@@ -15,7 +15,7 @@ import frc.robot.Constants.opConstants;
 public class Shoulder extends SubsystemBase {
 
   // Sets up the arm
-  public WPI_TalonFX armLift = new WPI_TalonFX(opConstants.kShoulderID);
+  public WPI_TalonFX Shoulder = new WPI_TalonFX(opConstants.kShoulderID);
 
   public Counter normalCounter1 = new Counter();
   public Counter normalCounter2 = new Counter();
@@ -33,15 +33,18 @@ public class Shoulder extends SubsystemBase {
     // normalCounter1.setDistancePerPulse(2.0583);
     // normalCounter1.reset();
 
-    armLift.setNeutralMode(NeutralMode.Brake);
+    Shoulder.setNeutralMode(NeutralMode.Brake);
+
+    //Shoulder.setSelectedSensorPosition(-35 * (2048 * opConstants.kShoulderGearRatio / 360));
+    Shoulder.setSelectedSensorPosition(0);
+
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("Counter", normalCounter1.get());
-    SmartDashboard.putNumber("Degrees", normalCounter1.getDistance());
+    SmartDashboard.putNumber("ShoulderPos", getShoulderPos());
     SmartDashboard.updateValues();
   }
 
@@ -49,7 +52,7 @@ public class Shoulder extends SubsystemBase {
 
   // Moves Shoulder Forward
   public void ShoulderForward() {
-    armLift.set(-opConstants.kShoulderSpeed);
+    Shoulder.set(-opConstants.kShoulderSpeed);
   }
 
   // Command to move the shoulder forward function
@@ -59,7 +62,7 @@ public class Shoulder extends SubsystemBase {
 
   // Moves Shoulder backward
   public void ShoulderBackward() {
-    armLift.set(opConstants.kShoulderSpeed);
+    Shoulder.set(opConstants.kShoulderSpeed);
   }
 
   // Command to move shoulder backward function
@@ -69,16 +72,16 @@ public class Shoulder extends SubsystemBase {
 
   // Stops the arm after movement
   public void ShoulderStop() {
-    armLift.set(0);
+    Shoulder.set(0);
   }
 
   // Moves the shoulder so that it will move to a position
   public void ShoulderMove(Double Speed) {
-    armLift.set(Speed);
+    Shoulder.set(Speed);
   }
 
   // Gets the position of the shoulder for the move to position
   public double getShoulderPos() {
-    return armLift.getSelectedSensorPosition();
+    return Shoulder.getSelectedSensorPosition() / (2048 * opConstants.kShoulderGearRatio / 360);
   }
 }

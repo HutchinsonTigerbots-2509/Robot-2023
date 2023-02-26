@@ -12,7 +12,7 @@ import frc.robot.subsystems.Arms.Wrist;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class WristMoveToPosition extends PIDCommand {
-  static final double kP = 0.02;
+  static final double kP = 0.4;
   static final double kI = 0.0;
   static final double kD = 0.0;
   /** Creates a new WristMoveToPosition. */
@@ -29,13 +29,16 @@ public class WristMoveToPosition extends PIDCommand {
           // Use the output here
           wrist.WristMove(output);
         });
-    // Use addRequirements() here to declare subsystem dependencies.
+    // Use addRequirements() here to declare subsystem depePndencies.
+    addRequirements(wrist);
     // Configure additional PID options by calling `getController` here.
+    this.getController().setTolerance(4.0);
+    this.getController().setSetpoint(PreferredAngle);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return this.getController().atSetpoint();
   }
 }

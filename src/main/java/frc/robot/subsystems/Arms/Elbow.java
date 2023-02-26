@@ -36,6 +36,7 @@ public class Elbow extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ElbowEncoder", ElbowEncoder.getDistance());
+    SmartDashboard.updateValues();
   }
 
   /** The Elbow */

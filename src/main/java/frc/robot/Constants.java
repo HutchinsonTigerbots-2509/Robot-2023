@@ -30,7 +30,7 @@ public final class Constants {
     public static final int kFrontRightID = 1;
     public static final int kRearLeftID = 15;
     public static final int kRearRightID = 0;
-    public static final double kMaxSpeed = 0.5;
+    public static final double kMaxSpeed = 0.8;
     public static final double kMaxAngularSpeed = 0.5;
     public static final double kHighSpeedStrafe = 0.8;
     public static final double kLowSpeedStrafe = .5;
@@ -59,28 +59,31 @@ public final class Constants {
     public static final int kShoulderID = 4;
     public static final int kShoulderGearRatio = 240; // 240:1
     public static final double kShoulderSpeed = 1;
-    public static final int kGrabberP1 = 0;
-    public static final int kGrabberP2 = 1;
     public static final int kArmCounterID = 0;
 
+    // ** Elbow Constants */
     public static final int kArmElbowID = 11;
     public static final double kElbowSpeed = .8;
-    public static final int kElbowEncoder1ID = 6;
-    public static final int kElbowEncoder2ID = 7;
+    public static final int kElbowEncoder1ID = 4;
+    public static final int kElbowEncoder2ID = 5;
 
+    // ** Arm/Shoulder Constants */
     public static final int kArmWristID = 10;
     public static final double kWristSpeed = .8;
-    public static final int kWristEncoder1ID = 4;
-    public static final int kWristEncoder2ID = 5;
+    public static final int kWristEncoder1ID = 6;
+    public static final int kWristEncoder2ID = 7;
 
     // ***** Dislocator Constants ***** //
     public static final int kDislocatorID = 3;
     public static final double kDislocatorSpeed = .4;
+    public static final double kDislocatorGearRatio = 20; // 20
 
     public static final double kMaxArmSpeed = .45;
     public static final int kWristFullRotation = 90;
 
     // * Solenoids */
+    public static final int kGrabberP1 = 0;
+    public static final int kGrabberP2 = 1;
     public static final int kParkingBrakeP1 = 2;
     public static final int kParkingBrakeP2 = 3;
   }
