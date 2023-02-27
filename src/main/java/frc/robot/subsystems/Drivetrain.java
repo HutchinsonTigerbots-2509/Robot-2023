@@ -17,9 +17,9 @@ import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -28,18 +28,14 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
 public class Drivetrain extends SubsystemBase {
-  public double Strafe;
-  private double speedValue = opConstants.kMaxSpeed;
 
   // Setting up Motors
-  public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
-  public WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
-  public WPI_TalonFX rearRightMotor = new WPI_TalonFX(opConstants.kRearRightID);
-  public WPI_TalonFX rearLeftMotor = new WPI_TalonFX(opConstants.kRearLeftID);
+  private WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
+  private WPI_TalonFX frontLeftMotor = new WPI_TalonFX(opConstants.kFrontLeftID);
+  private WPI_TalonFX rearRightMotor = new WPI_TalonFX(opConstants.kRearRightID);
+  private WPI_TalonFX rearLeftMotor = new WPI_TalonFX(opConstants.kRearLeftID);
 
-  // Putting all the motors into a Drivetrain
-  public MecanumDrive drivetrain =
-      new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+  private MecanumDrive drivetrain;
 
   // Nav-X
   private AHRS navx = new AHRS();
@@ -75,8 +71,6 @@ public class Drivetrain extends SubsystemBase {
 
   /** Creates a new Drivetrain. */
   public Drivetrain() {
-    this.setName("Drivetrain");
-    this.addChild("Mecanum Drive", drivetrain);
 
     parkingBrake.set(Value.kForward);
 
@@ -92,13 +86,23 @@ public class Drivetrain extends SubsystemBase {
     rearRightMotor.setNeutralMode(NeutralMode.Brake);
     rearLeftMotor.setNeutralMode(NeutralMode.Brake);
 
+    // Putting all the motors into a Drivetrain
+    drivetrain = new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+
+    // Reset Sensors before defining Odom.
+    resetSensors();
+
     // Setup Odeometry
     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
-        new MecanumDriveOdometry(kinematics, navx.getRotation2d(), getWheelPositions(), robotPose);
+        new MecanumDriveOdometry(kinematics, getRotation2d(), getWheelPositions(), robotPose);
+
     SmartDashboard.putData("Field", field);
     SmartDashboard.putNumber("Odom X", robotPose.getX());
     SmartDashboard.putNumber("Odom Y", robotPose.getY());
+
+    this.setName("Drivetrain");
+    this.addChild("Mecanum Drive", drivetrain);
   }
 
   @Override
@@ -107,17 +111,18 @@ public class Drivetrain extends SubsystemBase {
     // Get my wheel positions
     MecanumDriveWheelPositions wheelPositions = getWheelPositions();
     // Get the rotation of the robot from the gyro.
-    Rotation2d gyroAngle = navx.getRotation2d();
+    Rotation2d gyroAngle = getRotation2d();
     // Update the pose
     robotPose = odometry.update(gyroAngle, wheelPositions);
+    field.setRobotPose(odometry.getPoseMeters());
 
     // Display Telemetry
-    field.setRobotPose(odometry.getPoseMeters());
     SmartDashboard.putNumber("Yaw", navx.getYaw());
     SmartDashboard.putNumber("Roll", navx.getRoll());
     SmartDashboard.putNumber("Pitch", navx.getPitch());
     SmartDashboard.putNumber("X", field.getRobotPose().getX());
     SmartDashboard.putNumber("Y", field.getRobotPose().getY());
+    SmartDashboard.putNumber("Angle", getRotation2d().getDegrees());
     SmartDashboard.updateValues();
   }
 
@@ -127,7 +132,10 @@ public class Drivetrain extends SubsystemBase {
    * @return MecanumDriveWheelPosisitons
    */
   private MecanumDriveWheelPositions getWheelPositions() {
-    double fLeftVal, fRightVal, rLeftVal, rRightVal;
+    double fLeftVal;
+    double fRightVal;
+    double rLeftVal;
+    double rRightVal;
 
     fLeftVal = getWheelDistance(this.frontLeftMotor);
     fRightVal = getWheelDistance(this.frontRightMotor);
@@ -153,34 +161,6 @@ public class Drivetrain extends SubsystemBase {
     return distance / 100.0;
   }
 
-  public void mecanumDrive(double x, double y, double z, boolean fieldRelative, boolean OnOff) {
-    if (OnOff = true) {
-      if (fieldRelative) {
-        drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
-      } else {
-        drivetrain.driveCartesian(x, y, z, new Rotation2d());
-      }
-    } else {
-      drivetrain.driveCartesian(x, y, z);
-    }
-  }
-
-  public Command setCurrentPose(Pose2d newPose) {
-    return this.runOnce(() -> this.setRobotPose(newPose));
-  }
-
-  /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
-  public void MecDrive(XboxController stick) {
-    drivetrain.driveCartesian(
-        -stick.getLeftY() * speedValue,
-        stick.getRightX() * speedValue,
-        stick.getLeftX() * speedValue);
-  }
-
-  public void OrientDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y, x, z, navx.getRotation2d());
-  }
-
   public void resetSensors() {
     // Reset encoder postionN
     frontLeftMotor.setSelectedSensorPosition(0);
@@ -192,8 +172,9 @@ public class Drivetrain extends SubsystemBase {
     navx.reset();
   }
 
-  public void TeleMecDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y * speedValue, x * speedValue, z * speedValue);
+  /** Gets the Nav-X */
+  public AHRS getNavX() {
+    return navx;
   }
 
   /**
@@ -205,27 +186,30 @@ public class Drivetrain extends SubsystemBase {
     return navx.getYaw();
   }
 
-  public void arcadeDrive(double forward, double rotation) {
-    drivetrain.driveCartesian(0, forward, rotation);
+  /**
+   * Returns the current rotation and considers if the start on red alliance
+   *
+   * @return
+   */
+  public Rotation2d getRotation2d() {
+    if (DriverStation.getAlliance() == Alliance.Blue) {
+      return new Rotation2d(navx.getAngle() + 180);
+    } else {
+      return new Rotation2d(navx.getAngle());
+    }
   }
 
+  public void arcadeDrive(double forward, double rotation) {
+    drivetrain.driveCartesian(forward, 0, rotation);
+  }
+
+  /** Runs the Drivetrain with driveCartesian with the values of the stick on the controller */
   public void mecanumDrive(double x, double y, double z, boolean fieldRelative) {
     if (fieldRelative) {
       drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
     } else {
       drivetrain.driveCartesian(x, y, z, new Rotation2d());
     }
-  }
-
-  public double GetStrafeValue(Joystick XboxController) {
-    if (XboxController.getRawAxis(3) > 0) {
-      Strafe = XboxController.getRawAxis(3);
-    } else if (XboxController.getRawAxis(2) > 0) {
-      Strafe = -XboxController.getRawAxis(2);
-    } else {
-      Strafe = 0;
-    }
-    return Strafe;
   }
 
   public void stopDrive() {
@@ -238,17 +222,17 @@ public class Drivetrain extends SubsystemBase {
 
   public Pose2d setRobotPose(Pose2d newPose) {
     robotPose = newPose;
-    odometry.resetPosition(this.navx.getRotation2d(), getWheelPositions(), newPose);
+    odometry.resetPosition(getRotation2d(), getWheelPositions(), newPose);
     field.setRobotPose(odometry.getPoseMeters());
     return field.getRobotPose();
   }
 
-  public void ToggleBrake() {
-    parkingBrake.toggle();
+  public Command setCurrentPose(Pose2d newPose) {
+    return this.runOnce(() -> this.setRobotPose(newPose));
   }
 
   public Command cmdToggleBrake() {
-    return this.runOnce(this::ToggleBrake);
+    return this.runOnce(parkingBrake::toggle);
   }
 
   public double getRoll() {

@@ -5,12 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Travelator;
 import frc.robot.subsystems.Vision.PhotonVision;
 
 /**
@@ -25,13 +22,7 @@ public class Robot extends TimedRobot {
   private RobotContainer mRobotContainer;
 
   // Subsystems
-  private Drivetrain sDrivetrain;
   private PhotonVision sPhotonVision;
-  private Travelator sTravelator;
-
-  // Joysticks
-  private Joystick stick;
-  private Joystick controller;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -44,11 +35,6 @@ public class Robot extends TimedRobot {
     mRobotContainer = new RobotContainer();
 
     sPhotonVision = mRobotContainer.getPhotonVision();
-    sDrivetrain = mRobotContainer.getDrivetrain();
-
-    stick = mRobotContainer.getStick();
-    controller = mRobotContainer.getController();
-
     sPhotonVision.setReferencePose(new Pose2d());
   }
 

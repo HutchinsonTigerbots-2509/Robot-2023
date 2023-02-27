@@ -46,7 +46,7 @@ public class DriveApril extends CommandBase {
 
     SmartDashboard.putNumber("x", m_Vision.fetchTargetX());
 
-    m_Drivetrain.TeleMecDrive(-m_joystick.getY(), m_joystick.getX(), turn);
+    m_Drivetrain.mecanumDrive(-m_joystick.getY(), m_joystick.getX(), turn, false);
     m_joystick.setRumble(RumbleType.kLeftRumble, 1);
     m_joystick.setRumble(RumbleType.kRightRumble, 1);
 
@@ -56,7 +56,7 @@ public class DriveApril extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Drivetrain.TeleMecDrive(0, 0, 0);
+    m_Drivetrain.stopDrive();
     m_joystick.setRumble(RumbleType.kLeftRumble, 0);
     m_joystick.setRumble(RumbleType.kRightRumble, 0);
   }

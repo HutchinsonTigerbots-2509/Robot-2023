@@ -38,15 +38,38 @@ public class OperatorDrive extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    // do nothing
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = xspeedLimiter.calculate(stick.getX()) * opConstants.kMaxSpeed;
-    double ySpeed = yspeedLimiter.calculate(-stick.getY()) * opConstants.kMaxSpeed;
-    double rot = rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
-    drive.mecanumDrive(ySpeed, xSpeed, rot, fieldRelative);
+    double xSpeed;
+    double ySpeed;
+    double rot;
+
+    if (Math.abs(stick.getX()) < 0.05) {
+      xSpeed = 0;
+    } else {
+      xSpeed = xspeedLimiter.calculate(stick.getX()) * opConstants.kMaxSpeed;
+    }
+
+    if (Math.abs(stick.getY()) < 0.05) {
+      ySpeed = 0;
+    } else {
+      ySpeed = yspeedLimiter.calculate(stick.getY()) * opConstants.kMaxSpeed;
+    }
+
+    if (Math.abs(stick.getZ()) < 0.05) {
+      rot = 0;
+    } else {
+      rot = rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
+    }
+
+    // Y is in the X spot for this because the Joystick Y-Axis is forward. The robot X is
+    // forward/reverse
+    drive.mecanumDrive(-ySpeed, xSpeed, rot, fieldRelative);
   }
 
   // Called once the command ends or is interrupted.

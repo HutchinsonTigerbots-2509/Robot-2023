@@ -23,12 +23,10 @@ import frc.robot.Constants.camConstants;
 import frc.robot.Constants.opConstants;
 import frc.robot.commands.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Elbow.ElbowMoveToPosition;
-import frc.robot.commands.OrientalDrive;
 import frc.robot.commands.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.Wrist.WristMoveToPosition;
 import frc.robot.commands.auto.*;
-import frc.robot.commands.auto.RightSingle;
 import frc.robot.commands.drivetrain.OperatorDrive;
 import frc.robot.commands.drivetrain.ResetDriveSensors;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -141,11 +139,11 @@ public class RobotContainer {
 
   // Autonomous
   private Potato cmdPotato = new Potato(sDrivetrain);
-  private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger(sDrivetrain);
-  private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger(sDrivetrain);
-  private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
-  private RightSingleCharger cmdRightCharge = new RightSingleCharger(sDrivetrain);
-  private Path1Double cmdP1Double = new Path1Double(sDrivetrain);
+  private Path3Double cmdPath3Double = new Path3Double(sDrivetrain);
+  private Path2Charger cmdPath2Charger = new Path2Charger(sDrivetrain);
+  private Path3SingleCharger cmdPath3SingleCharger = new Path3SingleCharger(sDrivetrain);
+  private Path1SingleCharger cmdPath1SingleCharger = new Path1SingleCharger(sDrivetrain);
+  private Path1Double cmdPath1Double = new Path1Double(sDrivetrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -154,11 +152,11 @@ public class RobotContainer {
 
     // Create auto chooser
     AutoSelect.setDefaultOption("Potato", cmdPotato);
-    AutoSelect.addOption("P1", cmdP1Double); // Replaced Left Single
-    AutoSelect.addOption("Left Charge", cmdLeftCharge);
-    AutoSelect.addOption("Mid Charge", cmdMidCharge);
-    AutoSelect.addOption("Right Single", cmdRightSing);
-    AutoSelect.addOption("Right Charge", cmdRightCharge);
+    AutoSelect.addOption("P1 Double", cmdPath1Double); // Replaced Left Single
+    AutoSelect.addOption("P3 Double", cmdPath3Double);
+    AutoSelect.addOption("P2 Charger", cmdPath2Charger);
+    AutoSelect.addOption("P3 Single", cmdPath3SingleCharger);
+    AutoSelect.addOption("P1 Single", cmdPath1SingleCharger);
 
     // ShuffleBoard
     SmartDashboard.putData(AutoSelect); // Adds auto select to dashboard.
@@ -253,15 +251,14 @@ public class RobotContainer {
     // Preset to set up for a come standing up on the ground
 
     presetZeroBtn = new JoystickButton(opStick, 1);
-    //presetZeroBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
+    // presetZeroBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorFront,sTravelator));
     presetZeroBtn.onTrue(new ShoulderMoveToPosition(0, sShoulder));
     presetZeroBtn.onTrue(new ElbowMoveToPosition(0, sElbow));
     presetZeroBtn.onTrue(new WristMoveToPosition(0, sWrist));
     presetZeroBtn.onTrue(sWrist.cmdGrabOpen());
 
     // PresetGrabBtn = new JoystickButton(coopStick, 2);
-    // PresetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorFront,
-    // sTravelator));
+    // PresetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
     // PresetGrabBtn.onTrue(new ShoulderMoveToPosition(0, sShoulder));
     // PresetGrabBtn.onTrue(new ElbowMoveToPosition(0, sElbow));
     // PresetGrabBtn.onTrue(new WristMoveToPosition(90, sWrist));
@@ -270,8 +267,7 @@ public class RobotContainer {
     // Preset Drop lowest
 
     // presetDropLowBtn = new JoystickButton(coopStick, 9);
-    // presetDropLowBtn.onTrue((new TravelatorMoveToPosition(opConstants.kTravelatorBack,
-    // sTravelator)));
+    // presetDropLowBtn.onTrue((new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator)));
     // presetDropLowBtn.onTrue(new ShoulderMoveToPosition())
 
   }
