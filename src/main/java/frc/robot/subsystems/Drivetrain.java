@@ -78,7 +78,7 @@ public class Drivetrain extends SubsystemBase {
     this.setName("Drivetrain");
     this.addChild("Mecanum Drive", drivetrain);
 
-    parkingBrake.set(Value.kForward);
+    parkingBrake.set(Value.kReverse);
 
     // Inverts all the motors that need to be inverted
     frontRightMotor.setInverted(false);
@@ -175,6 +175,10 @@ public class Drivetrain extends SubsystemBase {
         -stick.getLeftY() * speedValue,
         stick.getRightX() * speedValue,
         stick.getLeftX() * speedValue);
+  }
+
+  public void AutoMecDrive(double y, double x, double z) {
+    drivetrain.driveCartesian(x, y, z);
   }
 
   public void OrientDrive(double y, double x, double z) {

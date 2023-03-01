@@ -47,9 +47,13 @@ public class Wrist extends SubsystemBase {
 
   // Use commands and functions to open and close the grabber
 
+  public void ResetWristEncoder() {
+    WristEncoder.reset();
+  }
+
   // Function to initiate the grabber (claw) opening
   public void GrabOpen() {
-    Grabber.set(Value.kForward);
+    Grabber.set(Value.kReverse);
   }
 
   // Actual command to utilize the function
@@ -59,7 +63,7 @@ public class Wrist extends SubsystemBase {
 
   // Function to close the grabber
   public void GrabClose() {
-    Grabber.set(Value.kReverse);
+    Grabber.set(Value.kForward);
   }
 
   // Command to utilize the grabber closing

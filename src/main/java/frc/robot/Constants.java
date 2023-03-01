@@ -34,7 +34,7 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 0.5;
     public static final double kHighSpeedStrafe = 0.8;
     public static final double kLowSpeedStrafe = .5;
-    public static final double kSkewRateLimit = 0.8;
+    public static final double kSkewRateLimit = 0.9;
     public static final double kGearRatio = 12.0;
     public static final int kFalconUnitsPerRotation = 2048;
     public static final double kWheelDiameter = 15.24; // This is in centimeters.
@@ -55,10 +55,10 @@ public final class Constants {
     public static final double kTravelatorMiddle = 10;
     public static final double kTravelatorFront = 19;
 
-    // ***** Arm Constants ***** //
+    // ***** Shoulder Constants ***** //
     public static final int kShoulderID = 4;
-    public static final int kShoulderGearRatio = 240; // 240:1
-    public static final double kShoulderSpeed = 1;
+    public static final double kShoulderGearRatio = 192;
+    public static final double kShoulderSpeed = .8;
     public static final int kArmCounterID = 0;
 
     // ** Elbow Constants */
@@ -67,7 +67,7 @@ public final class Constants {
     public static final int kElbowEncoder1ID = 4;
     public static final int kElbowEncoder2ID = 5;
 
-    // ** Arm/Shoulder Constants */
+    // ** Wrist Constants */
     public static final int kArmWristID = 10;
     public static final double kWristSpeed = .8;
     public static final int kWristEncoder1ID = 6;
@@ -75,7 +75,7 @@ public final class Constants {
 
     // ***** Dislocator Constants ***** //
     public static final int kDislocatorID = 3;
-    public static final double kDislocatorSpeed = .4;
+    public static final double kDislocatorSpeed = .6;
     public static final double kDislocatorGearRatio = 20; // 20
 
     public static final double kMaxArmSpeed = .45;
@@ -91,8 +91,10 @@ public final class Constants {
   public static final class camConstants {
 
     // Network
-    public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
     public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
+    public static final String kLimelightCameraID = "limelight"; // Limelight Name
+    public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
+    
 
     // Settings
     // Sets LED. 0 = Set by Pipline, 1 = Force off, 2 = Force blink, 3 = Force on

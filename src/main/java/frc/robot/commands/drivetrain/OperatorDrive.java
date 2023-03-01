@@ -31,7 +31,7 @@ public class OperatorDrive extends CommandBase {
     // second
     this.xspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
     this.yspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
-    this.rotLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
+    this.rotLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit + .1);
 
     addRequirements(drive);
   }
@@ -43,9 +43,10 @@ public class OperatorDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = xspeedLimiter.calculate(stick.getX()) * opConstants.kMaxSpeed;
-    double ySpeed = yspeedLimiter.calculate(-stick.getY()) * opConstants.kMaxSpeed;
-    double rot = rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
+    double xSpeed = xspeedLimiter.calculate(-stick.getX()) * opConstants.kMaxSpeed;
+    double ySpeed = yspeedLimiter.calculate(stick.getY()) * opConstants.kMaxSpeed;
+    //double rot = rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
+    double rot = stick.getZ() * opConstants.kMaxAngularSpeed;
     drive.mecanumDrive(ySpeed, xSpeed, rot, fieldRelative);
   }
 

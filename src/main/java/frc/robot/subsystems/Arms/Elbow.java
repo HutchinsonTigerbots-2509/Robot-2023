@@ -41,6 +41,10 @@ public class Elbow extends SubsystemBase {
 
   /** The Elbow */
 
+  public void ResetElbowEncoder() {
+    ElbowEncoder.reset();
+  }
+
   // Moves the Elbow forward
   public void armElbowForward() {
     armElbow.set(-opConstants.kElbowSpeed);

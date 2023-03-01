@@ -11,6 +11,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
+import frc.robot.subsystems.Arms.Elbow;
+import frc.robot.subsystems.Arms.Shoulder;
+import frc.robot.subsystems.Arms.Wrist;
 import frc.robot.subsystems.Vision.PhotonVision;
 
 /**
@@ -28,6 +31,9 @@ public class Robot extends TimedRobot {
   private Drivetrain sDrivetrain;
   private PhotonVision sPhotonVision;
   private Travelator sTravelator;
+  private Elbow sElbow;
+  private Wrist sWrist;
+  private Shoulder shoulder;
 
   // Joysticks
   private Joystick stick;
@@ -50,6 +56,7 @@ public class Robot extends TimedRobot {
     controller = mRobotContainer.getController();
 
     sPhotonVision.setReferencePose(new Pose2d());
+    
   }
 
   /**
@@ -101,6 +108,10 @@ public class Robot extends TimedRobot {
     // If you want the autonomous to continue until interrupted by another command,
     // remove this line or comment it out.
     if (mAutonomousCommand != null) mAutonomousCommand.cancel();
+    
+    // sElbow.ResetElbowEncoder();
+    // sWrist.ResetWristEncoder();
+
   }
 
   /** This function is called periodically during operator control. */

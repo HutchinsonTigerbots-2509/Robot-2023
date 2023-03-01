@@ -5,29 +5,31 @@
 package frc.robot.commands.Shoulder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.subsystems.Arms.Shoulder;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class ShoulderMoveToPosition extends PIDCommand {
+public class ShoulderMoveToPositionTemp extends PIDCommand {
   static final double kP = 0.4;
   static final double kI = 0.00;
   static final double kD = 0.00;
   /** Creates a new Shoulder. */
-  public ShoulderMoveToPosition(double PreferredAngle, Shoulder shoulder) {
+  public ShoulderMoveToPositionTemp(double PreferredAngle, Shoulder shoulder) {
     super(
         // The controller that the command will use
         new PIDController(kP, kI, kD),
         // This should return the measurement
         shoulder::getShoulderPos,
         // This should return the setpoint (can also be a constant)
-        PreferredAngle,
+        shoulder.getShoulderDesirePos(),
         // This uses the output
         output -> {
           // Use the output here
           shoulder.ShoulderMove(output);
+          SmartDashboard.putNumber("DesirePosCom", shoulder.getShoulderDesirePos());
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shoulder);
@@ -39,7 +41,8 @@ public class ShoulderMoveToPosition extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.getController().atSetpoint();
+    SmartDashboard.putString("We finsished", "fuckkkk");
+    return false;
   }
 }
 

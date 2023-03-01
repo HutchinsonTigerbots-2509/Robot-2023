@@ -63,14 +63,6 @@ public class PhotonVision extends SubsystemBase {
 
   public void PoseEstimating() {
 
-    // tell the robot when it sees an april tag
-    // if (_hasPose == true){
-    //   poseOnField = this.getPose;
-    // } else if (_hasPose == false) {
-    //   poseOnField = Optional.empty();
-    // } else {
-    //   poseOnField = Optional.empty();
-    // }
 
     // SmartDashboard.putNumber("Target Seen", this.targetID); // Replaced with just the fudicial
     // ID.
@@ -79,22 +71,6 @@ public class PhotonVision extends SubsystemBase {
 
   }
 
-  /** Clears the packet and resets the read and write positions. */
-
-  // See if the robot is looking at an april tag
-
-  // REPLACED WITH hasTargets
-
-  // public Boolean HasPose(){
-  //   if(this.getPose == null) return false;
-  //  if (this.getPose.isPresent()){
-  //     _hasPose = true;
-  //   } else {
-  //     _hasPose = false;
-  //   }
-
-  //   return _hasPose;
-  // }
 
   public double fetchTargetX() {
     NetworkTableEntry mPTableX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);

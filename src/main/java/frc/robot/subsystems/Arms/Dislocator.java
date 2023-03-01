@@ -15,15 +15,15 @@ public class Dislocator extends SubsystemBase {
   /** Creates a new Dislocator. */
   public WPI_TalonFX Dislocator = new WPI_TalonFX(opConstants.kDislocatorID);
 
-  public Dislocator() {}
+  public Dislocator() {
+    Dislocator.setSelectedSensorPosition(0);
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Dislocator Position", getDislocatorPos());
     SmartDashboard.updateValues();
-
-    Dislocator.setSelectedSensorPosition(0);
   }
 
   // Makes Extendor / Dislocator go forward
