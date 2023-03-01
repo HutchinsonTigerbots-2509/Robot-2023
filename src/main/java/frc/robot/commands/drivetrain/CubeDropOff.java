@@ -39,7 +39,8 @@ public class CubeDropOff extends CommandBase {
     else {X = 0;}
 
     SmartDashboard.putNumber("x", m_Vision.fetchTargetX());
-    m_Drivetrain.AutoMecDrive(
+
+    m_Drivetrain.TeleMecDrive(
       stick.getY(),
       X,
       stick.getZ());
@@ -48,8 +49,7 @@ public class CubeDropOff extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Drivetrain.AutoMecDrive(0, 0, 0);
-
+    m_Drivetrain.TeleMecDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.

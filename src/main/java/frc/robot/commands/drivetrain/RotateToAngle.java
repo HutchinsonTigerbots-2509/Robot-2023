@@ -28,7 +28,7 @@ public class RotateToAngle extends PIDCommand {
         TargetAngle,
         // This uses the output
         output -> {
-          drive.mecanumDrive(0, 0, output, false);
+          drive.TeleMecDrive(0, 0, output);
         },
         drive);
     // Use addRequirements() here to declare subsystem dependencies.

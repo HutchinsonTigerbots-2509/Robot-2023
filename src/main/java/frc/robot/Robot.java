@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
   private RobotContainer mRobotContainer;
 
   // Subsystems
+  private Drivetrain sDrivetrain;
   private PhotonVision sPhotonVision;
   private Travelator sTravelator;
   private Elbow sElbow;
@@ -49,6 +50,11 @@ public class Robot extends TimedRobot {
     mRobotContainer = new RobotContainer();
 
     sPhotonVision = mRobotContainer.getPhotonVision();
+    sDrivetrain = mRobotContainer.getDrivetrain();
+
+    stick = mRobotContainer.getStick();
+    controller = mRobotContainer.getController();
+
     sPhotonVision.setReferencePose(new Pose2d());
     
   }
