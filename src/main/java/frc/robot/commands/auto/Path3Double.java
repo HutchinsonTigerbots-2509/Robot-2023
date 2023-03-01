@@ -4,26 +4,42 @@
 
 package frc.robot.commands.auto;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.drivetrain.DriveToPosition;
 import frc.robot.subsystems.Drivetrain;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class RightSingle extends InstantCommand {
+public class Path3Double extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
   /** Creates a new LeftSingleCharger. */
-  public RightSingle(Drivetrain sDrivetrain) {
+  public Path3Double(Drivetrain sDrivetrain) {
 
-    blueCommandSequence = Commands.sequence();
-    redCommandSequence = Commands.sequence();
+    blueCommandSequence =
+        Commands.sequence(
+            // This is your starting location on the field. The blue corner is 0,0
+            // When choosing target poses, you only need 3 decimal places.
+            sDrivetrain.setCurrentPose(new Pose2d(1.73, 5.03, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(6.5, 4.57, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(1.73, 5, new Rotation2d())));
+    redCommandSequence =
+        Commands.sequence(
+            // This is your starting location on the field. The blue corner is 0,0
+            // When choosing target poses, you only need 3 decimal places.
+            sDrivetrain.setCurrentPose(new Pose2d(14.75, 5.0, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(10.23, 4.57, new Rotation2d())),
+            new DriveToPosition(sDrivetrain, new Pose2d(14.84, 5, new Rotation2d())));
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(sDrivetrain);
   }
 
   // Called when the command is initially scheduled.
@@ -48,16 +64,3 @@ public class RightSingle extends InstantCommand {
 // Drive back
 
 // Deploy compressor
- // Drop sequence 3
-
-// Move grabber to oposite side
-
-// Drive forward and strafe left
-
-// Grab cube
-
-// Move grabber to drop position
-
-// Drive back
-
-// Drop cube

@@ -36,7 +36,6 @@ import frc.robot.commands.Shoulder.ShoulderMoveToPositionTemp;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.Wrist.WristMoveToPosition;
 import frc.robot.commands.auto.*;
-import frc.robot.commands.auto.RightSingle;
 import frc.robot.commands.drivetrain.OperatorDrive;
 import frc.robot.commands.drivetrain.ResetDriveSensors;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -158,11 +157,11 @@ public class RobotContainer {
 
   // Autonomous
   private Potato cmdPotato = new Potato(sDrivetrain);
-  private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger(sDrivetrain);
-  private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger(sDrivetrain);
-  private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
-  private RightSingleCharger cmdRightCharge = new RightSingleCharger(sDrivetrain);
-  private Path1Double cmdP1Double = new Path1Double(sDrivetrain);
+  private Path3Double cmdPath3Double = new Path3Double(sDrivetrain);
+  private Path2Charger cmdPath2Charger = new Path2Charger(sDrivetrain);
+  private Path3SingleCharger cmdPath3SingleCharger = new Path3SingleCharger(sDrivetrain);
+  private Path1SingleCharger cmdPath1SingleCharger = new Path1SingleCharger(sDrivetrain);
+  private Path1Double cmdPath1Double = new Path1Double(sDrivetrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -173,11 +172,11 @@ public class RobotContainer {
 
     // Create auto chooser
     AutoSelect.setDefaultOption("Potato", cmdPotato);
-    AutoSelect.addOption("P1", cmdP1Double); // Replaced Left Single
-    AutoSelect.addOption("Left Charge", cmdLeftCharge);
-    AutoSelect.addOption("Mid Charge", cmdMidCharge);
-    AutoSelect.addOption("Right Single", cmdRightSing);
-    AutoSelect.addOption("Right Charge", cmdRightCharge);
+    AutoSelect.addOption("P1 Double", cmdPath1Double); // Replaced Left Single
+    AutoSelect.addOption("P3 Double", cmdPath3Double);
+    AutoSelect.addOption("P2 Charger", cmdPath2Charger);
+    AutoSelect.addOption("P3 Single", cmdPath3SingleCharger);
+    AutoSelect.addOption("P1 Single", cmdPath1SingleCharger);
 
     // ShuffleBoard
     SmartDashboard.putData(AutoSelect); // Adds auto select to dashboard.
