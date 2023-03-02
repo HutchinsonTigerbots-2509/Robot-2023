@@ -9,7 +9,7 @@ import frc.robot.subsystems.Drivetrain;
 
 public class DriveAuto extends CommandBase {
 
-  //Makes the variables exist
+  // Makes the variables exist
   private Drivetrain sDt;
   private double xSpeed, ySpeed, zSpeed;
 
@@ -29,7 +29,7 @@ public class DriveAuto extends CommandBase {
     xSpeed = pxSpeed;
     ySpeed = pySpeed;
     zSpeed = pzSpeed;
-    
+
     addRequirements(sDt);
   }
 
@@ -41,7 +41,7 @@ public class DriveAuto extends CommandBase {
   @Override
   public void execute() {
 
-    //Calls the Drivetrain subsystem and calls AutoDrive with the speed input in Drive
+    // Calls the Drivetrain subsystem and calls AutoDrive with the speed input in Drive
     sDt.AutoMecDrive(xSpeed, ySpeed, zSpeed);
   }
 
@@ -49,7 +49,7 @@ public class DriveAuto extends CommandBase {
   @Override
   public void end(boolean interrupted) {
 
-    //Calls the Drivetrain subsytem and calls AutoDrive With the speed of 0 stopping it
+    // Calls the Drivetrain subsytem and calls AutoDrive With the speed of 0 stopping it
     sDt.AutoMecDrive(0, 0, 0);
   }
 

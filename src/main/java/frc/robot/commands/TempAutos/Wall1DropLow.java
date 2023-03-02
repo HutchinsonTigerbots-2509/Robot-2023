@@ -9,19 +9,19 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import frc.robot.commands.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Elbow.ElbowMoveToPosition;
-import frc.robot.commands.PresetPoses.DropHighPosition;
-import frc.robot.commands.PresetPoses.DropLowPosition;
-import frc.robot.commands.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Wrist.WristMoveToPosition;
+import frc.robot.Constants.opConstants;
+import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
+import frc.robot.commands.Arm.Grabber.GrabOpen;
+import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
+import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
+import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
-import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
 import frc.robot.subsystems.Arms.Wrist;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Travelator;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -35,37 +35,54 @@ public class Wall1DropLow extends InstantCommand {
   Elbow elbow;
   Shoulder shoulder;
   Wrist wrist;
+  Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
   public Wall1DropLow(
-    Drivetrain pDrivetrain, Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder, Wrist pWrist) {
+      Drivetrain pDrivetrain,
+      Dislocator pDislocator,
+      Elbow pElbow,
+      Shoulder pShoulder,
+      Wrist pWrist,
+      Travelator pTravelator) {
 
     drivetrain = pDrivetrain;
     dislocator = pDislocator;
     elbow = pElbow;
     shoulder = pShoulder;
     wrist = pWrist;
-  
+    travelator = pTravelator;
+
     blueCommandSequence =
         Commands.sequence(
-          Commands.parallel(
-            new DislocatorMoveToPosition(0, dislocator),
-            new ShoulderMoveToPosition(-200, shoulder).withTimeout(1),
-            //new ElbowMoveToPosition(13, elbow),
-            new WristMoveToPosition(0, wrist)
-            ).withTimeout(2),
-          new DriveAuto(pDrivetrain, -.3).withTimeout(3.25)
-        );
+            Commands.parallel(
+                    new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
+                    new DislocatorMoveToPosition(0, dislocator),
+                    new ShoulderMoveToPosition(-200, shoulder),
+                    // new ElbowMoveToPosition(13, elbow),
+                    new WristMoveToPosition(0, wrist))
+                .withTimeout(2),
+            new GrabOpen(wrist).withTimeout(1),
+            Commands.parallel(
+                new DriveAuto(pDrivetrain, -.3).withTimeout(3.25),
+                // new ElbowMoveToPosition(0, pElbow),
+                new ShoulderMoveToPosition(300, shoulder)));
+
     redCommandSequence =
         Commands.sequence(
-          Commands.parallel(
-            new DislocatorMoveToPosition(0, dislocator),
-            new ShoulderMoveToPosition(-200, shoulder).withTimeout(1),
-            //new ElbowMoveToPosition(13, elbow),
-            new WristMoveToPosition(0, wrist)
-            ).withTimeout(2),
-          new DriveAuto(pDrivetrain, -.3).withTimeout(3.25)
-        );
+            Commands.parallel(
+                    new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
+                    new DislocatorMoveToPosition(0, dislocator),
+                    new ShoulderMoveToPosition(-200, shoulder),
+                    // new ElbowMoveToPosition(13, elbow),
+                    new WristMoveToPosition(0, wrist))
+                .withTimeout(2),
+            new GrabOpen(wrist).withTimeout(1),
+            Commands.parallel(
+                new DriveAuto(pDrivetrain, -.3).withTimeout(3.25),
+                // new ElbowMoveToPosition(0, pElbow),
+                new ShoulderMoveToPosition(300, shoulder)));
+
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }
@@ -79,4 +96,4 @@ public class Wall1DropLow extends InstantCommand {
       redCommandSequence.schedule();
     }
   }
-} 
+}

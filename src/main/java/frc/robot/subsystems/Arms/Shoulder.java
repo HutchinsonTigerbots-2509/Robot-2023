@@ -5,15 +5,12 @@
 package frc.robot.subsystems.Arms;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
-import frc.robot.commands.Shoulder.ShoulderMoveToPosition;
+import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 
 public class Shoulder extends SubsystemBase {
 
@@ -28,9 +25,8 @@ public class Shoulder extends SubsystemBase {
   public Shoulder() {
     Shoulder.setNeutralMode(NeutralMode.Brake);
 
-    //Shoulder.setSelectedSensorPosition(-35 * (2048 * opConstants.kShoulderGearRatio / 360));
+    // Shoulder.setSelectedSensorPosition(-35 * (2048 * opConstants.kShoulderGearRatio / 360));
     Shoulder.setSelectedSensorPosition(0);
-
   }
 
   @Override
@@ -41,8 +37,8 @@ public class Shoulder extends SubsystemBase {
     SmartDashboard.putNumber("DesireShoulderPos", getShoulderDesirePos());
     SmartDashboard.updateValues();
 
-    //new ShoulderMoveToPosition(getShoulderDesirePos(), sShoulder);
-    
+    // new ShoulderMoveToPosition(getShoulderDesirePos(), sShoulder);
+
   }
 
   /** The tower/lift */
@@ -73,7 +69,7 @@ public class Shoulder extends SubsystemBase {
   }
 
   public void ShoulderPoseForward() {
-    if (position < 200){
+    if (position < 200) {
       position += .1;
     }
   }
@@ -84,7 +80,7 @@ public class Shoulder extends SubsystemBase {
   }
 
   public void ShoulderPoseBackward() {
-    if (position > -200){
+    if (position > -200) {
       position -= .1;
     }
   }
@@ -109,6 +105,7 @@ public class Shoulder extends SubsystemBase {
 
   // Gets the position of the shoulder for the move to position
   public double getShoulderPos() {
-    return (Shoulder.getSelectedSensorPosition() / (2048 * opConstants.kShoulderGearRatio / 360)) - opConstants.kShoudlerOffSet;
+    return (Shoulder.getSelectedSensorPosition() / (2048 * opConstants.kShoulderGearRatio / 360))
+        - opConstants.kShoudlerOffSet;
   }
 }

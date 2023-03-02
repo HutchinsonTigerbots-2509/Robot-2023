@@ -67,7 +67,7 @@ public final class Constants {
     public static final double kElbowSpeed = .8;
     public static final int kElbowEncoder1ID = 4;
     public static final int kElbowEncoder2ID = 5;
-    public static final double kElbowOffSet = -121;//-159;
+    public static final double kElbowOffSet = -121; // -159;
 
     // ** Wrist Constants */
     public static final int kArmWristID = 10;
@@ -96,7 +96,6 @@ public final class Constants {
     public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
     public static final String kLimelightCameraID = "limelight"; // Limelight Name
     public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
-    
 
     // Settings
     // Sets LED. 0 = Set by Pipline, 1 = Force off, 2 = Force blink, 3 = Force on

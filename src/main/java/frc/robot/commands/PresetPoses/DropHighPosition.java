@@ -5,10 +5,10 @@
 package frc.robot.commands.PresetPoses;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Elbow.ElbowMoveToPosition;
-import frc.robot.commands.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Wrist.WristMoveToPosition;
+import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
+import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
+import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
+import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
@@ -19,17 +19,16 @@ import frc.robot.subsystems.Arms.Wrist;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DropHighPosition extends InstantCommand {
 
-private Dislocator dislocator;
-private Elbow elbow;
-private Shoulder shoulder;
-private Wrist wrist;
+  private Dislocator dislocator;
+  private Elbow elbow;
+  private Shoulder shoulder;
+  private Wrist wrist;
 
   public DropHighPosition(Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder, Wrist pWrist) {
     this.dislocator = pDislocator;
     this.elbow = pElbow;
     this.shoulder = pShoulder;
     this.wrist = pWrist;
-
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -41,6 +40,5 @@ private Wrist wrist;
     new ShoulderMoveToPosition(-199.5, shoulder);
     new ElbowMoveToPosition(27.5, elbow);
     new WristMoveToPosition(0, wrist);
-
   }
 }

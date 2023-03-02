@@ -7,22 +7,18 @@ package frc.robot.commands.drivetrain;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Vision.LimeLight;
 
-public class ConeDropOff extends CommandBase {
-  private final Drivetrain m_Drivetrain;
-  private LimeLight m_Vision;
-  private double X;
+public class DrivetrainBalancing extends CommandBase {
+  private final Drivetrain Dt;
+  private double Y;
   private Joystick stick;
 
   /** Creates a new DriveTele. */
-  public ConeDropOff(Joystick pstick, Drivetrain subsystem, LimeLight pLimeLight) {
-    m_Drivetrain = subsystem;
-    m_Vision = pLimeLight;
+  public DrivetrainBalancing(Joystick pstick, Drivetrain pDt) {
+    Dt = pDt;
     stick = pstick;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_Drivetrain);
-    addRequirements(m_Vision);
+    addRequirements(Dt);
   }
 
   // Called when the command is initially scheduled.
@@ -32,21 +28,21 @@ public class ConeDropOff extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_Vision.getTargetX() < -2) {
-      X = (m_Vision.getTargetX() * .014) - .15;
-    } else if (m_Vision.getTargetX() > 2) {
-      X = (m_Vision.getTargetX() * .014) + .15;
+    if (Dt.getRoll() < -2) {
+      Y = (Dt.getRoll() * .014) - .15;
+    } else if (Dt.getRoll() > 2) {
+      Y = (Dt.getRoll() * .014) + .15;
     } else {
-      X = 0;
+      Y = 0;
     }
 
-    m_Drivetrain.TeleMecDrive(stick.getY(), -X, stick.getZ());
+    Dt.TeleMecDrive(Y, stick.getX(), stick.getZ());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Drivetrain.TeleMecDrive(0, 0, 0);
+    Dt.TeleMecDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.

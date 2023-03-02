@@ -40,7 +40,6 @@ public class Elbow extends SubsystemBase {
   }
 
   /** The Elbow */
-
   public void ResetElbowEncoder() {
     ElbowEncoder.reset();
   }

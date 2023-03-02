@@ -63,14 +63,12 @@ public class PhotonVision extends SubsystemBase {
 
   public void PoseEstimating() {
 
-
     // SmartDashboard.putNumber("Target Seen", this.targetID); // Replaced with just the fudicial
     // ID.
     SmartDashboard.putBoolean("Has Target", chasTargets);
     // this.getPose = estimatePose.update();
 
   }
-
 
   public double fetchTargetX() {
     NetworkTableEntry mPTableX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);
