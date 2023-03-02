@@ -4,7 +4,10 @@
 
 package frc.robot.commands.drivetrain;
 
+import java.lang.ModuleLayer.Controller;
+
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.LimeLight;
@@ -13,13 +16,13 @@ public class ConeDropOff extends CommandBase {
   private final Drivetrain m_Drivetrain;
   private LimeLight m_Vision;
   private double X;
-  private Joystick stick;
+  private XboxController Opcontroller;
 
   /** Creates a new DriveTele. */
-  public ConeDropOff(Joystick pstick, Drivetrain subsystem, LimeLight pLimeLight) {
+  public ConeDropOff(XboxController pController, Drivetrain subsystem, LimeLight pLimeLight) {
     m_Drivetrain = subsystem;
     m_Vision = pLimeLight;
-    stick = pstick;
+    Opcontroller = pController;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_Drivetrain);
     addRequirements(m_Vision);
@@ -40,7 +43,8 @@ public class ConeDropOff extends CommandBase {
       X = 0;
     }
 
-    m_Drivetrain.TeleMecDrive(stick.getY(), -X, stick.getZ());
+    //m_Drivetrain.TeleMecDrive(stick.getY(), -X, stick.getZ());
+    m_Drivetrain.mecanumDrive(X, Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
   }
 
   // Called once the command ends or is interrupted.

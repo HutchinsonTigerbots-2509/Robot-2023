@@ -5,33 +5,33 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.opConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class OperatorDrive extends CommandBase {
 
-  Joystick stick;
+  XboxController xboxController;
   Drivetrain drive;
   boolean fieldRelative;
 
   // Slew rate limiters to make joystick inputs more gentle; ex: 1/3 sec from 0 to 1.
-  private final SlewRateLimiter xspeedLimiter;
-  private final SlewRateLimiter yspeedLimiter;
-  private final SlewRateLimiter rotLimiter;
+  // private final SlewRateLimiter xspeedLimiter;
+  // private final SlewRateLimiter yspeedLimiter;
+  // private final SlewRateLimiter rotLimiter;
 
   /** Creates a new OperatorDrive. */
-  public OperatorDrive(Drivetrain drive, Joystick stick, boolean fieldRelative) {
+  public OperatorDrive(Drivetrain drive, XboxController xboxController, boolean fieldRelative) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.stick = stick;
+    this.xboxController = xboxController;
     this.drive = drive;
     this.fieldRelative = fieldRelative;
     // Creates a SlewRateLimiter that limits the rate of change of the signal to 0.5 units per
     // second
-    this.xspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
-    this.yspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
-    this.rotLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit + .1);
+    // this.xspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
+    // this.yspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
+    // this.rotLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
 
     addRequirements(drive);
   }
@@ -43,11 +43,10 @@ public class OperatorDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = xspeedLimiter.calculate(-stick.getX()) * opConstants.kMaxSpeed;
-    double ySpeed = yspeedLimiter.calculate(stick.getY()) * opConstants.kMaxSpeed;
-    // double rot = rotLimiter.calculate(stick.getZ()) * opConstants.kMaxAngularSpeed;
-    double rot = stick.getZ() * opConstants.kMaxAngularSpeed;
-    drive.mecanumDrive(ySpeed, xSpeed, rot, fieldRelative);
+    double xSpeed = xboxController.getRawAxis(0) * opConstants.kMaxSpeed;  //xspeedLimiter.calculate(xboxController.getRawAxis(0)) * opConstants.kMaxSpeed;
+    double ySpeed = xboxController.getRawAxis(1) * opConstants.kMaxSpeed;  //yspeedLimiter.calculate(xboxController.getRawAxis(1)) * opConstants.kMaxSpeed;
+    double rot = xboxController.getRawAxis(4) * opConstants.kMaxAngularSpeed;  //rotLimiter.calculate(xboxController.getRawAxis(4)) * opConstants.kMaxAngularSpeed;
+    drive.mecanumDrive(xSpeed, ySpeed, rot);
   }
 
   // Called once the command ends or is interrupted.

@@ -4,10 +4,16 @@
 
 package frc.robot;
 
+import org.opencv.photo.Photo;
+import org.photonvision.PhotonCamera;
+
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -21,15 +27,16 @@ public final class Constants {
 
   // Joystick ID's
   public static final int kOpStickID = 0;
-  public static final int kCoopStickID = 1;
+  public static final int kCoopStick1ID = 1;
+  public static final int kCoopStick2ID = 2;
 
   public static final class opConstants {
 
     // Drivetrain Constants
-    public static final int kFrontLeftID = 0;
-    public static final int kFrontRightID = 15;
-    public static final int kRearLeftID = 1;
-    public static final int kRearRightID = 14;
+    public static final int kFrontLeftID = 14;
+    public static final int kFrontRightID = 1;
+    public static final int kRearLeftID = 15;
+    public static final int kRearRightID = 0;
     public static final double kMaxSpeed = 0.8;
     public static final double kMaxAngularSpeed = 0.5;
     public static final double kHighSpeedStrafe = 0.8;
@@ -57,7 +64,7 @@ public final class Constants {
 
     // ***** Shoulder Constants ***** //
     public static final int kShoulderID = 4;
-    public static final double kShoulderGearRatio = 240;
+    public static final double kShoulderGearRatio = 240; //gear box ratio is 144:1...
     public static final double kShoulderSpeed = 1;
     public static final int kArmCounterID = 0;
     public static final double kShoudlerOffSet = 158;
@@ -92,10 +99,13 @@ public final class Constants {
 
   public static final class camConstants {
 
+    public static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
+
     // Network
     public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
     public static final String kLimelightCameraID = "limelight"; // Limelight Name
     public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
+    public static final PhotonCamera FrontWebCam = new PhotonCamera("Front Web Cam");
 
     // Settings
     // Sets LED. 0 = Set by Pipline, 1 = Force off, 2 = Force blink, 3 = Force on
@@ -148,12 +158,8 @@ public final class Constants {
     public static final double kFieldLength = Units.inchesToMeters(651.2);
     public static final double kFieldWidth = Units.inchesToMeters(315.75);
 
-    // needs to be replaced with what's in http://photonvision:5800 settings
-    public static final double camFOV = 0;
-    public static final int camResWidth = 0;
-    public static final int camResHeight = 0;
-    // Set this to what we plan on using, probably should play around with a good distance.
-    public static final double minClosestTargetDistance = 0; // Goes by meters
+    // Set this to what we plan on using, probably should play around with a good distance. TODO
+    public static final double minClosestTargetDistance = 2; // Goes by meters
 
     // public static final AprilTagFieldLayout tagPlayground =
     //     new AprilTagFieldLayout(null, kFieldLength, kFieldWidth);

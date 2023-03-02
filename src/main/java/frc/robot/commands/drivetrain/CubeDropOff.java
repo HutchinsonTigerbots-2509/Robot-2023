@@ -5,25 +5,26 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.PhotonVision;
 
 public class CubeDropOff extends CommandBase {
-  private final Drivetrain m_Drivetrain;
-  private PhotonVision m_Vision;
+  private final Drivetrain Dt;
+  private PhotonVision photonvision;
   private double X;
-  private Joystick stick;
+  private XboxController OpController;
 
   /** Creates a new DriveTele. */
-  public CubeDropOff(Joystick pstick, Drivetrain subsystem, PhotonVision pPhotonVision) {
-    m_Drivetrain = subsystem;
-    m_Vision = pPhotonVision;
-    stick = pstick;
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_Drivetrain);
-    addRequirements(m_Vision);
+  public CubeDropOff(XboxController pController, Drivetrain pDt, PhotonVision pPhotonVision) {
+    Dt = pDt;
+    photonvision = pPhotonVision;
+    OpController = pController;
+    // Use addRequirements() here to declare pDt dependencies.
+    addRequirements(Dt);
+    addRequirements(photonvision);
   }
 
   // Called when the command is initially scheduled.
@@ -33,23 +34,24 @@ public class CubeDropOff extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_Vision.fetchTargetX() < -4) {
-      X = (m_Vision.fetchTargetX() * .014) - .15;
-    } else if (m_Vision.fetchTargetX() > 4) {
-      X = (m_Vision.fetchTargetX() * .014) + .15;
+    if (photonvision.fetchTargetX() < -4) {
+      X = (photonvision.fetchTargetX() * .014) - .15;
+    } else if (photonvision.fetchTargetX() > 4) {
+      X = (photonvision.fetchTargetX() * .014) + .15;
     } else {
       X = 0;
     }
 
-    SmartDashboard.putNumber("x", m_Vision.fetchTargetX());
+    SmartDashboard.putNumber("Photon X", photonvision.fetchTargetX());
 
-    m_Drivetrain.TeleMecDrive(stick.getY(), X, stick.getZ());
+    //Dt.TeleMecDrive(stick.getY(), X, stick.getZ());
+    Dt.mecanumDrive(X, OpController.getRawAxis(1), OpController.getRawAxis(4));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Drivetrain.TeleMecDrive(0, 0, 0);
+    Dt.TeleMecDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.

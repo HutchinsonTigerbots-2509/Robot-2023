@@ -5,18 +5,33 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class DrivetrainBalancing extends CommandBase {
   private final Drivetrain Dt;
   private double Y;
-  private Joystick stick;
+  private double X;
+  private double Z;
+  private XboxController OpController;
+  private Boolean Auto;
 
   /** Creates a new DriveTele. */
-  public DrivetrainBalancing(Joystick pstick, Drivetrain pDt) {
+  public DrivetrainBalancing(XboxController pController, Drivetrain pDt) {
     Dt = pDt;
-    stick = pstick;
+    OpController = pController;
+    Auto = false;
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Dt);
+  }
+
+  /** Creates a new DriveTele. */
+  public DrivetrainBalancing(Drivetrain pDt, double pX, double pZ) {
+    Dt = pDt;
+    Auto = true;
+    X = pX;
+    Z = pZ;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Dt);
   }
@@ -28,21 +43,36 @@ public class DrivetrainBalancing extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (Dt.getRoll() < -2) {
-      Y = (Dt.getRoll() * .014) - .15;
-    } else if (Dt.getRoll() > 2) {
-      Y = (Dt.getRoll() * .014) + .15;
-    } else {
-      Y = 0;
-    }
+    if (Auto = false) {
+      if (Dt.getRoll() < -5) {
+        Y = (Dt.getRoll() * .005) - .08;
+      } else if (Dt.getRoll() > 5) {
+        Y = (Dt.getRoll() * .005) + .08;
+      } else {
+        Y = 0;
+      }
 
-    Dt.TeleMecDrive(Y, stick.getX(), stick.getZ());
+      Dt.mecanumDrive(OpController.getRawAxis(0), -Y, OpController.getRawAxis(4));
+
+    }
+    else {
+      if (Dt.getRoll() < -5) {
+        Y = (Dt.getRoll() * .005) - .08;
+      } else if (Dt.getRoll() > 5) {
+        Y = (Dt.getRoll() * .005) + .08;
+      } else {
+        Y = 0;
+      }
+
+      Dt.mecanumDrive(X, -Y, Z);
+      
+    }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Dt.TeleMecDrive(0, 0, 0);
+    Dt.mecanumDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.

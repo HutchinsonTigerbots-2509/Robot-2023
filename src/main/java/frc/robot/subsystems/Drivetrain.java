@@ -80,11 +80,13 @@ public class Drivetrain extends SubsystemBase {
 
     parkingBrake.set(Value.kReverse);
 
+    //drivetrain.setSafetyEnabled(false);
+
     // Inverts all the motors that need to be inverted
-    frontRightMotor.setInverted(true);
+    frontRightMotor.setInverted(false);
     frontLeftMotor.setInverted(true);
     rearRightMotor.setInverted(false);
-    rearLeftMotor.setInverted(false);
+    rearLeftMotor.setInverted(true);
 
     // Sets the motors to break when stopped
     frontRightMotor.setNeutralMode(NeutralMode.Brake);
@@ -219,6 +221,10 @@ public class Drivetrain extends SubsystemBase {
     } else {
       drivetrain.driveCartesian(x, y, z, new Rotation2d());
     }
+  }
+
+  public void mecanumDrive(double x, double y, double z) {
+    drivetrain.driveCartesian(-y, x, z);
   }
 
   public double GetStrafeValue(Joystick XboxController) {

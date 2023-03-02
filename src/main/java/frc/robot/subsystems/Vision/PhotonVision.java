@@ -18,9 +18,12 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVision extends SubsystemBase {
-  NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
+  private static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("Front Web Cam");
+  public static final NetworkTableEntry PhotonX = PhotonTable.getEntry("targetPixelsX");
+  public static final PhotonCamera FrontWebCam = new PhotonCamera("FrontWebCam");
 
-  PhotonCamera camera = new PhotonCamera(camConstants.kPhotonCameraID);
+  PhotonCamera camera = camConstants.FrontWebCam;
+
   private Optional<EstimatedRobotPose> poseOnField = Optional.empty();
   // private  Optional<EstimatedRobotPose> getPose;
 
@@ -71,9 +74,9 @@ public class PhotonVision extends SubsystemBase {
   }
 
   public double fetchTargetX() {
-    NetworkTableEntry mPTableX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);
-    double mPTargetX = mPTableX.getDouble(0.0);
-    return mPTargetX;
+    NetworkTableEntry PhotonX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);
+    double AprilTagX = PhotonX.getDouble(0.0);
+    return AprilTagX;
   }
 
   public NetworkTableEntry getDistance() {
