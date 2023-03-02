@@ -16,8 +16,8 @@ public class DriveAuto extends CommandBase {
   /** Is called and inputs the variables to set them to forward speed and drivetrain */
   public DriveAuto(Drivetrain pDt, double pSpeed) {
     sDt = pDt;
-    xSpeed = pSpeed;
-    ySpeed = 0;
+    xSpeed = 0;
+    ySpeed = pSpeed;
     zSpeed = 0;
 
     addRequirements(sDt);

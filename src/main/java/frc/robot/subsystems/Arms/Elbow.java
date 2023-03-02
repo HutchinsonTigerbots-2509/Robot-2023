@@ -35,7 +35,7 @@ public class Elbow extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("ElbowEncoder", ElbowEncoder.getDistance());
+    SmartDashboard.putNumber("ElbowEncoder", getElbowPose());
     SmartDashboard.updateValues();
   }
 
@@ -77,6 +77,6 @@ public class Elbow extends SubsystemBase {
 
   // Gets the position for the Elbow to move
   public double getElbowPose() {
-    return ElbowEncoder.getDistance();
+    return ElbowEncoder.getDistance() - opConstants.kElbowOffSet;
   }
 }

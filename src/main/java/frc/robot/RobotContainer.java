@@ -33,6 +33,9 @@ import frc.robot.commands.PresetPoses.StartingPosition;
 import frc.robot.commands.PresetPoses.ZeroPosition;
 import frc.robot.commands.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Shoulder.ShoulderMoveToPositionTemp;
+import frc.robot.commands.TempAutos.Middle1DropLow;
+import frc.robot.commands.TempAutos.Station1DropLow;
+import frc.robot.commands.TempAutos.Wall1DropLow;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.Wrist.WristMoveToPosition;
 import frc.robot.commands.drivetrain.OperatorDrive;
@@ -155,7 +158,10 @@ public class RobotContainer {
   SendableChooser<Command> AutoSelect = new SendableChooser<>();
 
   // Autonomous
-  // private Potato cmdPotato = new Potato(sDrivetrain);
+
+  private Station1DropLow  cmdStation1DropLow = new Station1DropLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist);
+  private Middle1DropLow  cmdMiddle1DropLow = new Middle1DropLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist);
+  private Wall1DropLow cmdWall1DropLow = new Wall1DropLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist);
   // private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger(sDrivetrain);
   // private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger(sDrivetrain);
   // private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
@@ -166,16 +172,14 @@ public class RobotContainer {
   public RobotContainer() {
     // Default Commands
     sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, opStick, false));
-    sShoulder.setDefaultCommand(new ShoulderMoveToPositionTemp(sShoulder.getShoulderDesirePos(), sShoulder));
+    //sShoulder.setDefaultCommand(new ShoulderMoveToPositionTemp(sShoulder.getShoulderDesirePos(), sShoulder));
 
 
     // Create auto chooser
-    // AutoSelect.setDefaultOption("Potato", cmdPotato);
-    // AutoSelect.addOption("P1", cmdP1Double); // Replaced Left Single
-    // AutoSelect.addOption("Left Charge", cmdLeftCharge);
-    // AutoSelect.addOption("Mid Charge", cmdMidCharge);
-    // AutoSelect.addOption("Right Single", cmdRightSing);
-    // AutoSelect.addOption("Right Charge", cmdRightCharge);
+
+      AutoSelect.setDefaultOption("Station1DropLow", cmdStation1DropLow);
+      AutoSelect.addOption("Middle1DropLow", cmdMiddle1DropLow);
+      AutoSelect.addOption("Wall1DropLow", cmdWall1DropLow);
 
     // ShuffleBoard
     SmartDashboard.putData(AutoSelect); // Adds auto select to dashboard.
@@ -210,12 +214,12 @@ public class RobotContainer {
     // Shoulder Buttons
 
     shoulderForwardBtn = new JoystickButton(coopStick, 7);
-    //shoulderForwardBtn.whileTrue(sShoulder.cmdShoulderForward());
-    shoulderForwardBtn.whileTrue(sShoulder.cmdShoulderPoseForward());
+    shoulderForwardBtn.whileTrue(sShoulder.cmdShoulderForward());
+    //shoulderForwardBtn.whileTrue(sShoulder.cmdShoulderPoseForward());
 
     shoulderBackwardBtn = new JoystickButton(coopStick, 8);
-    //shoulderBackwardBtn.whileTrue(sShoulder.cmdShoulderBackward());
-    shoulderBackwardBtn.whileTrue(sShoulder.cmdShoulderPoseBackward());
+    shoulderBackwardBtn.whileTrue(sShoulder.cmdShoulderBackward());
+    //shoulderBackwardBtn.whileTrue(sShoulder.cmdShoulderPoseBackward());
 
     // Travelator Buttons
 

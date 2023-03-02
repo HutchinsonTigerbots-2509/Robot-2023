@@ -9,8 +9,13 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.commands.Dislocator.DislocatorMoveToPosition;
+import frc.robot.commands.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.PresetPoses.DropHighPosition;
 import frc.robot.commands.PresetPoses.DropLowPosition;
+import frc.robot.commands.Shoulder.ShoulderMoveToPosition;
+import frc.robot.commands.Wrist.WristMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -39,17 +44,28 @@ public class Wall1DropLow extends InstantCommand {
     dislocator = pDislocator;
     elbow = pElbow;
     shoulder = pShoulder;
+    wrist = pWrist;
   
     blueCommandSequence =
         Commands.sequence(
-          new DropLowPosition(dislocator, elbow, shoulder, wrist),
-          new DriveAuto(pDrivetrain, -.6).withTimeout(1)
-          );
+          Commands.parallel(
+            new DislocatorMoveToPosition(0, dislocator),
+            new ShoulderMoveToPosition(-200, shoulder).withTimeout(1),
+            //new ElbowMoveToPosition(13, elbow),
+            new WristMoveToPosition(0, wrist)
+            ).withTimeout(2),
+          new DriveAuto(pDrivetrain, -.3).withTimeout(3.25)
+        );
     redCommandSequence =
         Commands.sequence(
-          new DropLowPosition(dislocator, elbow, shoulder, wrist),
-          new DriveAuto(pDrivetrain, -.6).withTimeout(1)
-          );
+          Commands.parallel(
+            new DislocatorMoveToPosition(0, dislocator),
+            new ShoulderMoveToPosition(-200, shoulder).withTimeout(1),
+            //new ElbowMoveToPosition(13, elbow),
+            new WristMoveToPosition(0, wrist)
+            ).withTimeout(2),
+          new DriveAuto(pDrivetrain, -.3).withTimeout(3.25)
+        );
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }
@@ -63,4 +79,4 @@ public class Wall1DropLow extends InstantCommand {
       redCommandSequence.schedule();
     }
   }
-}
+} 

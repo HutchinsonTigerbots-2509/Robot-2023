@@ -22,7 +22,7 @@ public class Shoulder extends SubsystemBase {
 
   Shoulder sShoulder;
 
-  double position = 30;
+  double position = 0;
 
   /** Creates a new arm. * */
   public Shoulder() {
@@ -99,12 +99,16 @@ public class Shoulder extends SubsystemBase {
     Shoulder.set(Speed);
   }
 
+  public void ShoulderPeriodMove() {
+    new ShoulderMoveToPosition(position, sShoulder);
+  }
+
   public double getShoulderDesirePos() {
     return position;
   }
 
   // Gets the position of the shoulder for the move to position
   public double getShoulderPos() {
-    return Shoulder.getSelectedSensorPosition() / (2048 * opConstants.kShoulderGearRatio / 360);
+    return (Shoulder.getSelectedSensorPosition() / (2048 * opConstants.kShoulderGearRatio / 360)) - opConstants.kShoudlerOffSet;
   }
 }

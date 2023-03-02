@@ -28,7 +28,7 @@ public class ElbowMoveToPosition extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          elbow.ElbowMove(-output);
+          elbow.ElbowMove(0); //TODO Put back in number when elbow works
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elbow);

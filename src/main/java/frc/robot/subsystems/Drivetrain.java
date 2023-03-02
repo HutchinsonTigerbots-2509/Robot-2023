@@ -81,10 +81,10 @@ public class Drivetrain extends SubsystemBase {
     parkingBrake.set(Value.kReverse);
 
     // Inverts all the motors that need to be inverted
-    frontRightMotor.setInverted(false);
+    frontRightMotor.setInverted(true);
     frontLeftMotor.setInverted(true);
     rearRightMotor.setInverted(false);
-    rearLeftMotor.setInverted(true);
+    rearLeftMotor.setInverted(false);
 
     // Sets the motors to break when stopped
     frontRightMotor.setNeutralMode(NeutralMode.Brake);
@@ -177,7 +177,7 @@ public class Drivetrain extends SubsystemBase {
         stick.getLeftX() * speedValue);
   }
 
-  public void AutoMecDrive(double y, double x, double z) {
+  public void AutoMecDrive(double x, double y, double z) {
     drivetrain.driveCartesian(x, y, z);
   }
 

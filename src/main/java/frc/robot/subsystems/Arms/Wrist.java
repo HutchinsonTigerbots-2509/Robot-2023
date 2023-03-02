@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.opConstants;
 
@@ -30,7 +31,7 @@ public class Wrist extends SubsystemBase {
           PneumaticsModuleType.CTREPCM, opConstants.kGrabberP1, opConstants.kGrabberP2);
 
   public Wrist() {
-    Grabber.set(Value.kForward);
+    Grabber.set(Value.kReverse);
 
     WristEncoder.setDistancePerPulse(3.63636);
     WristEncoder.setMinRate(1);
@@ -59,6 +60,11 @@ public class Wrist extends SubsystemBase {
   // Actual command to utilize the function
   public Command cmdGrabOpen() {
     return this.runOnce(this::GrabOpen);
+  }
+
+  // Actual command to utilize the function
+  public InstantCommand cmdTestGrabOpen() {
+    return (InstantCommand) this.runOnce(this::GrabOpen);
   }
 
   // Function to close the grabber

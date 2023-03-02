@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
   private Travelator sTravelator;
   private Elbow sElbow;
   private Wrist sWrist;
-  private Shoulder shoulder;
 
   // Joysticks
   private Joystick stick;
@@ -56,7 +55,6 @@ public class Robot extends TimedRobot {
     controller = mRobotContainer.getController();
 
     sPhotonVision.setReferencePose(new Pose2d());
-    
   }
 
   /**
