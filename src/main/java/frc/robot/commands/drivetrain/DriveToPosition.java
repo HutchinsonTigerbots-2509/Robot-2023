@@ -75,8 +75,8 @@ public class DriveToPosition extends CommandBase {
       ySpeed = Math.abs(Math.max(Math.abs(ySpeed), minSpeed));
       ySpeed *= isNeg;
     }
-    SmartDashboard.putNumber("xSpeed", xSpeed);
-    SmartDashboard.putNumber("ySpeed", ySpeed);
+    //SmartDashboard.putNumber("xSpeed", xSpeed);
+    //SmartDashboard.putNumber("ySpeed", ySpeed);
     // Filter through SkewRateLimiter
     // xSpeed = xspeedLimiter.calculate(xSpeed) * opConstants.kMaxSpeed;
     // ySpeed = yspeedLimiter.calculate(ySpeed) * opConstants.kMaxSpeed;

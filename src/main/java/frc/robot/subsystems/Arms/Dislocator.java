@@ -22,7 +22,6 @@ public class Dislocator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Dislocator Position", getDislocatorPos());
     SmartDashboard.updateValues();
   }
 

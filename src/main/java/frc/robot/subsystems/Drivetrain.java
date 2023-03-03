@@ -98,9 +98,9 @@ public class Drivetrain extends SubsystemBase {
     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
         new MecanumDriveOdometry(kinematics, navx.getRotation2d(), getWheelPositions(), robotPose);
-    SmartDashboard.putData("Field", field);
-    SmartDashboard.putNumber("Odom X", robotPose.getX());
-    SmartDashboard.putNumber("Odom Y", robotPose.getY());
+    // SmartDashboard.putData("Field", field);
+    // SmartDashboard.putNumber("Odom X", robotPose.getX());
+    // SmartDashboard.putNumber("Odom Y", robotPose.getY());
   }
 
   @Override
@@ -115,11 +115,11 @@ public class Drivetrain extends SubsystemBase {
 
     // Display Telemetry
     field.setRobotPose(odometry.getPoseMeters());
-    SmartDashboard.putNumber("Yaw", navx.getYaw());
-    SmartDashboard.putNumber("Roll", navx.getRoll());
-    SmartDashboard.putNumber("Pitch", navx.getPitch());
-    SmartDashboard.putNumber("X", field.getRobotPose().getX());
-    SmartDashboard.putNumber("Y", field.getRobotPose().getY());
+    // SmartDashboard.putNumber("Yaw", navx.getYaw());
+    // SmartDashboard.putNumber("Roll", navx.getRoll());
+    // SmartDashboard.putNumber("Pitch", navx.getPitch());
+    // SmartDashboard.putNumber("X", field.getRobotPose().getX());
+    // SmartDashboard.putNumber("Y", field.getRobotPose().getY());
     SmartDashboard.updateValues();
   }
 

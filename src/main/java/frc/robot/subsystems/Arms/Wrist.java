@@ -44,7 +44,6 @@ public class Wrist extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("WristEncoder", WristEncoder.getDistance());
   }
 
   // Use commands and functions to open and close the grabber
