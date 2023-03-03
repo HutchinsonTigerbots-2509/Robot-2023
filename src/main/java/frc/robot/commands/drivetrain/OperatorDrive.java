@@ -43,10 +43,10 @@ public class OperatorDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = xboxController.getRawAxis(0) * opConstants.kMaxSpeed;  //xspeedLimiter.calculate(xboxController.getRawAxis(0)) * opConstants.kMaxSpeed;
-    double ySpeed = xboxController.getRawAxis(1) * opConstants.kMaxSpeed;  //yspeedLimiter.calculate(xboxController.getRawAxis(1)) * opConstants.kMaxSpeed;
-    double rot = xboxController.getRawAxis(4) * opConstants.kMaxAngularSpeed;  //rotLimiter.calculate(xboxController.getRawAxis(4)) * opConstants.kMaxAngularSpeed;
-    drive.mecanumDrive(xSpeed, ySpeed, rot);
+    double xSpeed = xboxController.getRawAxis(0);  //xspeedLimiter.calculate(xboxController.getRawAxis(0)) * opConstants.kMaxSpeed;
+    double ySpeed = xboxController.getRawAxis(1);  //yspeedLimiter.calculate(xboxController.getRawAxis(1)) * opConstants.kMaxSpeed;
+    double rot = xboxController.getRawAxis(4);  //rotLimiter.calculate(xboxController.getRawAxis(4)) * opConstants.kMaxAngularSpeed;
+    drive.mecanumDrive(xSpeed, ySpeed, rot, drive.getSpeed());
   }
 
   // Called once the command ends or is interrupted.

@@ -29,7 +29,7 @@ import frc.robot.Constants.opConstants;
 
 public class Drivetrain extends SubsystemBase {
   public double Strafe;
-  private double speedValue = opConstants.kMaxSpeed;
+  private double speedValue = opConstants.kHighGear;
 
   // Setting up Motors
   public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
@@ -183,10 +183,6 @@ public class Drivetrain extends SubsystemBase {
     drivetrain.driveCartesian(x, y, z);
   }
 
-  public void OrientDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y, x, z, navx.getRotation2d());
-  }
-
   public void resetSensors() {
     // Reset encoder postionN
     frontLeftMotor.setSelectedSensorPosition(0);
@@ -198,23 +194,6 @@ public class Drivetrain extends SubsystemBase {
     navx.reset();
   }
 
-  public void TeleMecDrive(double y, double x, double z) {
-    drivetrain.driveCartesian(y * speedValue, x * speedValue, z * speedValue);
-  }
-
-  /**
-   * Returns the current heading of the robot.
-   *
-   * @return value from -180 to 180 degrees.
-   */
-  public double getAngle() {
-    return navx.getYaw();
-  }
-
-  public void arcadeDrive(double forward, double rotation) {
-    drivetrain.driveCartesian(0, forward, rotation);
-  }
-
   public void mecanumDrive(double x, double y, double z, boolean fieldRelative) {
     if (fieldRelative) {
       drivetrain.driveCartesian(x, y, z, Rotation2d.fromDegrees(getAngle()));
@@ -224,18 +203,30 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void mecanumDrive(double x, double y, double z) {
-    drivetrain.driveCartesian(-y, x, z);
+    drivetrain.driveCartesian(
+      -y, 
+      x, 
+      z);
   }
 
-  public double GetStrafeValue(Joystick XboxController) {
-    if (XboxController.getRawAxis(3) > 0) {
-      Strafe = XboxController.getRawAxis(3);
-    } else if (XboxController.getRawAxis(2) > 0) {
-      Strafe = -XboxController.getRawAxis(2);
-    } else {
-      Strafe = 0;
+  public void mecanumDrive(double x, double y, double z, double SpeedValue) {
+    drivetrain.driveCartesian(
+      -y * SpeedValue, 
+      x * SpeedValue, 
+      z * SpeedValue);
+  }
+
+  public void ToggleGear () {
+    if (speedValue == opConstants.kHighGear) {
+      speedValue = opConstants.kLowGear;
+    } 
+    else if (speedValue == opConstants.kLowGear) {
+      speedValue = opConstants.kHighGear;
     }
-    return Strafe;
+  }
+
+  public Command cmdToggleGear() {
+    return this.runOnce(this::ToggleGear);
   }
 
   public void stopDrive() {
@@ -263,5 +254,18 @@ public class Drivetrain extends SubsystemBase {
 
   public double getRoll() {
     return navx.getRoll();
+  }
+
+  /**
+   * Returns the current heading of the robot.
+   *
+   * @return value from -180 to 180 degrees.
+   */
+  public double getAngle() {
+    return navx.getYaw();
+  }
+
+  public double getSpeed() {
+    return speedValue;
   }
 }
