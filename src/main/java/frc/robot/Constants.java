@@ -74,7 +74,7 @@ public final class Constants {
     public static final double kElbowSpeed = .8;
     public static final int kElbowEncoder1ID = 4;
     public static final int kElbowEncoder2ID = 5;
-    public static final double kElbowOffSet = -121; // -159;
+    public static final double kElbowOffSet = -155; // -159;
 
     // ** Wrist Constants */
     public static final int kArmWristID = 10;
@@ -100,10 +100,14 @@ public final class Constants {
   public static final class camConstants {
 
     public static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
+    public static final NetworkTable LimelightOneTable = NetworkTableInstance.getDefault().getTable("limelight-one");
+    public static final NetworkTable LimelightTwoTable = NetworkTableInstance.getDefault().getTable("limelight-two");
 
     // Network
     public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
-    public static final String kLimelightCameraID = "limelight"; // Limelight Name
+    public static final String kPhotonIP = "10.25.9.2";
+    public static final String kLimelightCameraOneID = "limelight-one"; // Limelight Hostname of number 1
+    public static final String kLimelightCameraTwoID = "limelight-two"; // Limelight Hostname of number 2
     public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
     public static final PhotonCamera FrontWebCam = new PhotonCamera("Front Web Cam");
 

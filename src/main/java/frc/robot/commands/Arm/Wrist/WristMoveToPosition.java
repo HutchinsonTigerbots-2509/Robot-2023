@@ -21,7 +21,7 @@ public class WristMoveToPosition extends PIDCommand {
         // The controller that the command will use
         new PIDController(kP, kI, kD),
         // This should return the measurement
-        wrist::getWristPose, // TODO figure out why no work
+        wrist::getWristPose,
         // This should return the setpoint (can also be a constant)
         PreferredAngle,
         // This uses the output

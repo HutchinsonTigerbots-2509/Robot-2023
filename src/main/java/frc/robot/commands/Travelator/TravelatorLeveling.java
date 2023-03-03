@@ -13,8 +13,8 @@ import frc.robot.subsystems.Travelator;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TravelatorLeveling extends PIDCommand {
-  static final double kP = 0.1;
-  static final double kI = 0.05;
+  static final double kP = 0.01;
+  static final double kI = 0.005;
   static final double kD = 0.00;
   static final double kF = 0.00;
 
@@ -30,7 +30,7 @@ public class TravelatorLeveling extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          tv.Move(output);
+          tv.Move(-output);
         });
     // Use addRequirements() here to declare subsystem dependencies
     addRequirements(tv);
@@ -42,6 +42,6 @@ public class TravelatorLeveling extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return getController().atSetpoint();
+    return false;
   }
 }

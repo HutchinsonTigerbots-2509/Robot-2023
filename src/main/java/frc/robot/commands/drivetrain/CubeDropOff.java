@@ -34,10 +34,10 @@ public class CubeDropOff extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (photonvision.fetchTargetX() < -4) {
-      X = (photonvision.fetchTargetX() * .014) - .15;
-    } else if (photonvision.fetchTargetX() > 4) {
-      X = (photonvision.fetchTargetX() * .014) + .15;
+    if ((photonvision.fetchTargetX() - 380) < -4) {
+      X = ((photonvision.fetchTargetX() - 380)* .014) - .15;
+    } else if ((photonvision.fetchTargetX() - 380) > 4) {
+      X = ((photonvision.fetchTargetX() - 380 ) * .014) + .15;
     } else {
       X = 0;
     }

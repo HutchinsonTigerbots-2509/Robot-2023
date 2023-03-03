@@ -12,9 +12,8 @@ import frc.robot.Constants.camConstants;
 
 public class LimeLight extends SubsystemBase {
   public static double tTurn;
-  NetworkTable LimeLightTable = NetworkTableInstance.getDefault().getTable("limelight");
-
-  private NetworkTableEntry tx = LimeLightTable.getEntry("tx");
+  NetworkTable LimeLightTable = NetworkTableInstance.getDefault().getTable("limelight-one");
+  NetworkTable LimeLightTwoTable = NetworkTableInstance.getDefault().getTable("limelight-two");
 
   /** Creates a new LimeLight. */
   public LimeLight() {}
@@ -26,7 +25,7 @@ public class LimeLight extends SubsystemBase {
 
   public double getTargetX() {
     NetworkTableEntry mTableX = LimeLightTable.getEntry(camConstants.kLimelightTargetXID);
-    double mTargetX = mTableX.getDouble(1.0);
+    double mTargetX = mTableX.getDouble(0);
     return mTargetX;
   }
 }

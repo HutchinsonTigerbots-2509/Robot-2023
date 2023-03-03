@@ -29,7 +29,6 @@ public class ShoulderMoveToPositionTemp extends PIDCommand {
         output -> {
           // Use the output here
           shoulder.ShoulderMove(output);
-          SmartDashboard.putNumber("DesirePosCom", shoulder.getShoulderDesirePos());
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shoulder);
@@ -41,7 +40,6 @@ public class ShoulderMoveToPositionTemp extends PIDCommand {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    SmartDashboard.putString("We finsished", "h");
     return false;
   }
 }

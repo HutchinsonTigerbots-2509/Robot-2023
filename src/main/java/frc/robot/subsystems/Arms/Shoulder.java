@@ -34,10 +34,7 @@ public class Shoulder extends SubsystemBase {
     // This method will be called once per scheduler run
 
     SmartDashboard.putNumber("ShoulderPos", getShoulderPos());
-    SmartDashboard.putNumber("DesireShoulderPos", getShoulderDesirePos());
     SmartDashboard.updateValues();
-
-    // new ShoulderMoveToPosition(getShoulderDesirePos(), sShoulder);
 
   }
 

@@ -54,34 +54,36 @@ public class Station1DropLow extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-        Commands.sequence(
-            Commands.parallel(
-                    new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
-                    new DislocatorMoveToPosition(0, dislocator),
-                    new ShoulderMoveToPosition(-200, shoulder),
-                    // new ElbowMoveToPosition(13, elbow),
-                    new WristMoveToPosition(0, wrist))
-                .withTimeout(2),
-            new GrabOpen(wrist).withTimeout(1),
-            Commands.parallel(
-                new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),
-                // new ElbowMoveToPosition(0, pElbow),
-                new ShoulderMoveToPosition(300, shoulder)));
+    Commands.sequence(
+      Commands.parallel(
+        new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ShoulderMoveToPosition(-200, shoulder),
+        // new ElbowMoveToPosition(13, elbow),
+        new WristMoveToPosition(0, wrist)).withTimeout(2),
+
+      new GrabOpen(wrist).withTimeout(1),
+
+      Commands.parallel(
+        new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),
+        // new ElbowMoveToPosition(0, pElbow),
+        new ShoulderMoveToPosition(300, shoulder)));
 
     redCommandSequence =
-        Commands.sequence(
-            Commands.parallel(
-                    new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
-                    new DislocatorMoveToPosition(0, dislocator),
-                    new ShoulderMoveToPosition(-200, shoulder).withTimeout(1),
-                    // new ElbowMoveToPosition(13, elbow),
-                    new WristMoveToPosition(0, wrist))
-                .withTimeout(2),
-            new GrabOpen(wrist).withTimeout(1),
-            Commands.parallel(
-                new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),
-                // new ElbowMoveToPosition(0, pElbow),
-                new ShoulderMoveToPosition(300, shoulder)));
+    Commands.sequence(
+      Commands.parallel(
+        new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ShoulderMoveToPosition(-200, shoulder),
+        // new ElbowMoveToPosition(13, elbow),
+        new WristMoveToPosition(0, wrist)).withTimeout(2),
+
+      new GrabOpen(wrist).withTimeout(1),
+
+      Commands.parallel(
+        new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),
+        // new ElbowMoveToPosition(0, pElbow),
+        new ShoulderMoveToPosition(300, shoulder)));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

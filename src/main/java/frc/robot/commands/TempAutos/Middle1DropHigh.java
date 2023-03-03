@@ -11,11 +11,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.opConstants;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
+import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
+import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
@@ -26,7 +28,7 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Wall1DropLow extends InstantCommand {
+public class Middle1DropHigh extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
@@ -38,7 +40,7 @@ public class Wall1DropLow extends InstantCommand {
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
-  public Wall1DropLow(
+  public Middle1DropHigh(
       Drivetrain pDrivetrain,
       Dislocator pDislocator,
       Elbow pElbow,
@@ -55,36 +57,47 @@ public class Wall1DropLow extends InstantCommand {
 
     blueCommandSequence =
     Commands.sequence(
-      Commands.parallel(
-        new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
-        new DislocatorMoveToPosition(0, dislocator),
-        new ShoulderMoveToPosition(-200, shoulder),
-        // new ElbowMoveToPosition(13, elbow),
-        new WristMoveToPosition(0, wrist)).withTimeout(2),
 
-      new GrabOpen(wrist).withTimeout(1),
-      
-      Commands.parallel(
-        new DriveAuto(pDrivetrain, -.3).withTimeout(3.25),
+    Commands.parallel(
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
+      new DislocatorMoveToPosition(-22, dislocator),
+      new ShoulderMoveToPosition(-199.5, shoulder),
+      new ElbowMoveToPosition(27.5, elbow),
+      new WristMoveToPosition(0, wrist)).withTimeout(2),
+
+    new GrabOpen(wrist).withTimeout(1),
+
+    Commands.parallel(
+        new DriveAuto(drivetrain, -.3).withTimeout(3),
         // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)));
+        new ShoulderMoveToPosition(300, shoulder)), // ,
+        // new DrivetrainBalancing(0, pDrivetrain)
+
+    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(3)
+
+   );
 
     redCommandSequence =
     Commands.sequence(
-      Commands.parallel(
-        new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
-        new DislocatorMoveToPosition(0, dislocator),
-        new ShoulderMoveToPosition(-200, shoulder),
-        // new ElbowMoveToPosition(13, elbow),
-        new WristMoveToPosition(0, wrist)).withTimeout(2),
 
-      new GrabOpen(wrist).withTimeout(1),
-      
-      Commands.parallel(
-        new DriveAuto(pDrivetrain, -.3).withTimeout(3.25),
+    Commands.parallel(
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
+      new DislocatorMoveToPosition(-22, dislocator),
+      new ShoulderMoveToPosition(-199.5, shoulder),
+      new ElbowMoveToPosition(27.5, elbow),
+      new WristMoveToPosition(0, wrist)).withTimeout(2),
+
+    new GrabOpen(wrist).withTimeout(1),
+
+    Commands.parallel(
+        new DriveAuto(drivetrain, -.3).withTimeout(3),
         // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)));
+        new ShoulderMoveToPosition(300, shoulder)), // ,
+        // new DrivetrainBalancing(0, pDrivetrain)
 
+    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(3)
+
+   );
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
