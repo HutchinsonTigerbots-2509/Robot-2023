@@ -27,7 +27,7 @@ public class WristMoveToPosition extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          wrist.WristMove(output);
+          wrist.WristMove(-output);
         });
     // Use addRequirements() here to declare subsystem depePndencies.
     addRequirements(wrist);

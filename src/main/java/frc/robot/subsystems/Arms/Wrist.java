@@ -43,13 +43,22 @@ public class Wrist extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Wrist", getWristPose());
     // This method will be called once per scheduler run
   }
 
   // Use commands and functions to open and close the grabber
 
   public void ResetWristEncoder() {
+    WristEncoder.setDistancePerPulse(3.63636);
+    WristEncoder.setMinRate(1);
+    WristEncoder.setReverseDirection(false);
+    WristEncoder.setSamplesToAverage(5);
     WristEncoder.reset();
+  }
+
+  public Command cmdResetWristEncoder() {
+    return this.runOnce(this::ResetWristEncoder);
   }
 
   // Function to initiate the grabber (claw) opening

@@ -18,7 +18,8 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVision extends SubsystemBase {
-  private static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("Front Web Cam");
+  private static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
+  private static final NetworkTable PhotonCamera = NetworkTableInstance.getDefault().getTable("Front Web Cam");
   public static final NetworkTableEntry PhotonX = PhotonTable.getEntry("targetPixelsX");
   public static final PhotonCamera FrontWebCam = new PhotonCamera("FrontWebCam");
 
@@ -40,6 +41,7 @@ public class PhotonVision extends SubsystemBase {
 
     // SmartDashboard.putString("Field Position of X",
     // RobotContainer.aprilTagField.getTagPose(this.targetID).toString());
+    var results = FrontWebCam.getLatestResult();
   }
 
   /**
@@ -74,9 +76,9 @@ public class PhotonVision extends SubsystemBase {
   }
 
   public double fetchTargetX() {
-    NetworkTableEntry PhotonX = PhotonTable.getEntry(camConstants.kPhotonTargetXID);
-    double AprilTagX = PhotonX.getDouble(0.0);
-    return AprilTagX;
+    NetworkTableEntry mTableX = PhotonTable.getEntry("FrontWebCam/targetPixelsX");
+    double mTargetX = mTableX.getDouble(0);
+    return mTargetX;
   }
 
   public NetworkTableEntry getDistance() {

@@ -58,9 +58,9 @@ public class Station1DropLow extends InstantCommand {
       Commands.parallel(
         new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
         new DislocatorMoveToPosition(0, dislocator),
-        new ShoulderMoveToPosition(-200, shoulder),
+        new ShoulderMoveToPosition(-200, shoulder)).withTimeout(2),
         // new ElbowMoveToPosition(13, elbow),
-        new WristMoveToPosition(0, wrist)).withTimeout(2),
+        // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
       new GrabOpen(wrist).withTimeout(1),
 
@@ -74,9 +74,9 @@ public class Station1DropLow extends InstantCommand {
       Commands.parallel(
         new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
         new DislocatorMoveToPosition(0, dislocator),
-        new ShoulderMoveToPosition(-200, shoulder),
+        new ShoulderMoveToPosition(-200, shoulder)).withTimeout(2),
         // new ElbowMoveToPosition(13, elbow),
-        new WristMoveToPosition(0, wrist)).withTimeout(2),
+        // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
       new GrabOpen(wrist).withTimeout(1),
 

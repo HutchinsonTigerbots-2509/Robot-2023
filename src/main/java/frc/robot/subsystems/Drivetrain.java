@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import javax.management.openmbean.OpenMBeanConstructorInfo;
+
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -15,6 +17,7 @@ import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Joystick;
@@ -77,6 +80,7 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     this.setName("Drivetrain");
     this.addChild("Mecanum Drive", drivetrain);
+    SmartDashboard.putBoolean("Gear", true);
 
     parkingBrake.set(Value.kReverse);
 
@@ -219,9 +223,11 @@ public class Drivetrain extends SubsystemBase {
   public void ToggleGear () {
     if (speedValue == opConstants.kHighGear) {
       speedValue = opConstants.kLowGear;
+      SmartDashboard.putBoolean("Gear", false);
     } 
     else if (speedValue == opConstants.kLowGear) {
       speedValue = opConstants.kHighGear;
+      SmartDashboard.putBoolean("Gear", true);
     }
   }
 

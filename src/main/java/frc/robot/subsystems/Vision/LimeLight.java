@@ -28,4 +28,11 @@ public class LimeLight extends SubsystemBase {
     double mTargetX = mTableX.getDouble(0);
     return mTargetX;
   }
+
+  public double getTargetY() {
+    NetworkTableEntry mTableY = LimeLightTable.getEntry(camConstants.kLimelightTargetYID);
+    double mTargetY = mTableY.getDouble(0);
+    return mTargetY;
+  }
+
 }

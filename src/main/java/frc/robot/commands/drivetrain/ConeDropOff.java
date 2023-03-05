@@ -35,16 +35,38 @@ public class ConeDropOff extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_Vision.getTargetX() < -2) {
-      X = (m_Vision.getTargetX() * .014) - .15;
-    } else if (m_Vision.getTargetX() > 2) {
-      X = (m_Vision.getTargetX() * .014) + .15;
-    } else {
-      X = 0;
-    }
+    if (m_Vision.getTargetX() != 0) {
+      if (m_Vision.getTargetY() > 5){
 
-    //m_Drivetrain.TeleMecDrive(stick.getY(), -X, stick.getZ());
-    m_Drivetrain.mecanumDrive(X, Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
+        if ((m_Vision.getTargetX() + 8) < -2) {
+          X = ((m_Vision.getTargetX() + 8) * .014) - .15;
+        } else if ((m_Vision.getTargetX() + 8) > 2) {
+          X = ((m_Vision.getTargetX() + 8) * .014) + .15;
+        } else {
+          X = 0;
+        }
+
+        m_Drivetrain.mecanumDrive(X, Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
+      }
+      else {
+
+        if (m_Vision.getTargetX() < -2) {
+          X = (m_Vision.getTargetX() * .014) - .15;
+        } else if (m_Vision.getTargetX() > 2) {
+          X = (m_Vision.getTargetX() * .014) + .15;
+        } else {
+          X = 0;
+        }
+
+        m_Drivetrain.mecanumDrive(X, Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
+      }
+    }
+    else {
+      m_Drivetrain.mecanumDrive(
+        Opcontroller.getRawAxis(0), 
+        Opcontroller.getRawAxis(1), 
+        Opcontroller.getRawAxis(4));
+    }
   }
 
   // Called once the command ends or is interrupted.

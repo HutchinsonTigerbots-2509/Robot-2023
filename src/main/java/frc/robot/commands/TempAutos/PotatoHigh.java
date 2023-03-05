@@ -17,7 +17,6 @@ import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
-import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
@@ -28,7 +27,7 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Middle1DropHigh extends InstantCommand {
+public class PotatoHigh extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
@@ -40,7 +39,7 @@ public class Middle1DropHigh extends InstantCommand {
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
-  public Middle1DropHigh(
+  public PotatoHigh(
       Drivetrain pDrivetrain,
       Dislocator pDislocator,
       Elbow pElbow,
@@ -65,17 +64,9 @@ public class Middle1DropHigh extends InstantCommand {
       new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
       // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
-    new GrabOpen(wrist).withTimeout(1),
-
-    Commands.parallel(
-        new DriveAuto(drivetrain, -.3).withTimeout(3),
-        // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)), // ,
-        // new DrivetrainBalancing(0, pDrivetrain)
-
-    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(3)
-
-   );
+    new GrabOpen(wrist).withTimeout(1)
+    
+    );
 
     redCommandSequence =
     Commands.sequence(
@@ -87,17 +78,9 @@ public class Middle1DropHigh extends InstantCommand {
       new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
       // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
-    new GrabOpen(wrist).withTimeout(1),
-
-    Commands.parallel(
-        new DriveAuto(drivetrain, -.3).withTimeout(3),
-        // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)), // ,
-        // new DrivetrainBalancing(0, pDrivetrain)
-
-    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(3)
-
-   );
+    new GrabOpen(wrist).withTimeout(1)
+      
+    );
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

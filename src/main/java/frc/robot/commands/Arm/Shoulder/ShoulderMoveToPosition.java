@@ -13,7 +13,7 @@ import frc.robot.subsystems.Arms.Shoulder;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ShoulderMoveToPosition extends PIDCommand {
   static final double kP = 0.3;
-  static final double kI = 0.00;
+  static final double kI = 0.005;
   static final double kD = 0.00;
   /** Creates a new Shoulder. */
   public ShoulderMoveToPosition(double PreferredAngle, Shoulder shoulder) {

@@ -14,7 +14,6 @@ import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -59,10 +58,10 @@ public class Station1DropHigh extends InstantCommand {
 
     Commands.parallel(
       new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
-      new DislocatorMoveToPosition(-22, dislocator),
+      new DislocatorMoveToPosition(22, dislocator),
       new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow),
-      new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
+      // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
     new GrabOpen(wrist).withTimeout(1),
 
@@ -76,10 +75,10 @@ public class Station1DropHigh extends InstantCommand {
 
     Commands.parallel(
       new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
-      new DislocatorMoveToPosition(-22, dislocator),
+      new DislocatorMoveToPosition(22, dislocator),
       new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow),
-      new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
+      // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
     new GrabOpen(wrist).withTimeout(1),
 

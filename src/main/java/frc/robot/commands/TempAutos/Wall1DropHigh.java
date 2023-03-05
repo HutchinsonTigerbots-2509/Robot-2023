@@ -59,10 +59,10 @@ public class Wall1DropHigh extends InstantCommand {
 
     Commands.parallel(
       new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
-      new DislocatorMoveToPosition(-22, dislocator),
+      new DislocatorMoveToPosition(22, dislocator),
       new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow),
-      new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
+      // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
     new GrabOpen(wrist).withTimeout(1),
 
@@ -77,10 +77,10 @@ public class Wall1DropHigh extends InstantCommand {
 
     Commands.parallel(
       new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
-      new DislocatorMoveToPosition(-22, dislocator),
+      new DislocatorMoveToPosition(22, dislocator),
       new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow),
-      new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
+      // new WristMoveToPosition(0, wrist)).withTimeout(2),
 
     new GrabOpen(wrist).withTimeout(1),
 

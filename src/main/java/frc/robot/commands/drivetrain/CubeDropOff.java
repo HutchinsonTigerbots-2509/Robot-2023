@@ -34,18 +34,26 @@ public class CubeDropOff extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((photonvision.fetchTargetX() - 380) < -4) {
-      X = ((photonvision.fetchTargetX() - 380)* .014) - .15;
-    } else if ((photonvision.fetchTargetX() - 380) > 4) {
-      X = ((photonvision.fetchTargetX() - 380 ) * .014) + .15;
-    } else {
-      X = 0;
+    if (photonvision.fetchTargetX() != 0){
+      if ((photonvision.fetchTargetX() - 380) < -25) {
+        X = ((photonvision.fetchTargetX() - 380)* .00008) - .15;
+      } else if ((photonvision.fetchTargetX() - 380) > 25) {
+        X = ((photonvision.fetchTargetX() - 380 ) * .00008) + .15;
+      } else {
+        X = 0;
+      }
+
+      SmartDashboard.putNumber("Photon X", photonvision.fetchTargetX());
+
+      //Dt.TeleMecDrive(stick.getY(), X, stick.getZ());
+      Dt.mecanumDrive(X, OpController.getRawAxis(1), OpController.getRawAxis(4));
     }
-
-    SmartDashboard.putNumber("Photon X", photonvision.fetchTargetX());
-
-    //Dt.TeleMecDrive(stick.getY(), X, stick.getZ());
-    Dt.mecanumDrive(X, OpController.getRawAxis(1), OpController.getRawAxis(4));
+    else {
+      Dt.mecanumDrive(
+        OpController.getRawAxis(0), 
+        OpController.getRawAxis(1), 
+        OpController.getRawAxis(4));
+    }
   }
 
   // Called once the command ends or is interrupted.

@@ -35,12 +35,21 @@ public class Elbow extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Elbow", getElbowPose());
     SmartDashboard.updateValues();
   }
 
   /** The Elbow */
   public void ResetElbowEncoder() {
+    ElbowEncoder.setDistancePerPulse(4.4);
+    ElbowEncoder.setMinRate(1);
+    ElbowEncoder.setReverseDirection(false);
+    ElbowEncoder.setSamplesToAverage(5);
     ElbowEncoder.reset();
+  }
+
+  public Command cmdResetElbowEncoder() {
+    return this.runOnce(this::ResetElbowEncoder);
   }
 
   // Moves the Elbow forward

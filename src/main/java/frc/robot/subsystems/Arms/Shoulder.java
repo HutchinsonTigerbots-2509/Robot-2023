@@ -32,8 +32,17 @@ public class Shoulder extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Shoulder", getShoulderPos());
     SmartDashboard.updateValues();
 
+  }
+
+  public void ResetShoulderEncoder() {
+    Shoulder.setSelectedSensorPosition(0);
+  }
+
+  public Command cmdResetShoulderEncoder() {
+    return this.runOnce(this::ResetShoulderEncoder);
   }
 
   /** The tower/lift */

@@ -37,8 +37,8 @@ public final class Constants {
     public static final int kFrontRightID = 1;
     public static final int kRearLeftID = 15;
     public static final int kRearRightID = 0;
-    public static final double kHighGear = .8;
-    public static final double kLowGear = .5;
+    public static final double kHighGear = .7;
+    public static final double kLowGear = .4;
     public static final double kMaxSpeed = 0.8;
     public static final double kMaxAngularSpeed = 0.5;
     public static final double kHighSpeedStrafe = 0.8;
@@ -69,7 +69,7 @@ public final class Constants {
     public static final double kShoulderGearRatio = 240; //gear box ratio is 144:1...
     public static final double kShoulderSpeed = 1;
     public static final int kArmCounterID = 0;
-    public static final double kShoudlerOffSet = 158;
+    public static final double kShoudlerOffSet = 183;
 
     // ** Elbow Constants */
     public static final int kArmElbowID = 11;
@@ -86,7 +86,11 @@ public final class Constants {
 
     // ***** Dislocator Constants ***** //
     public static final int kDislocatorID = 3;
-    public static final double kDislocatorSpeed = .8;
+    public static final int kBackLimitSwitchID = 8;
+    public static final int kFrontLimitSwitchID = 9;
+    public static final double kDislocatorMax = 22;
+    public static final double kDislocatorMin = 0;
+    public static final double kDislocatorSpeed = .4;
     public static final double kDislocatorGearRatio = 20; // 20
 
     public static final double kMaxArmSpeed = .45;
@@ -174,5 +178,7 @@ public final class Constants {
         new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
     public static String kPhotonTargetPose;
     public static String kPhotonTargetXID;
+
+    public static  final String kPhotonTargetPixelsX = "targetPixelsX";
   }
 }
