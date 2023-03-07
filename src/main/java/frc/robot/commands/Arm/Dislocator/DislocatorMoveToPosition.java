@@ -32,7 +32,7 @@ public class DislocatorMoveToPosition extends PIDCommand {
     // Use addRequirements() here to declare subsystem depePndencies.
     addRequirements(dislocator);
     // Configure additional PID options by calling `getController` here.
-    this.getController().setTolerance(0.8);
+    this.getController().setTolerance(0.4);
     this.getController().setSetpoint(PreferredPosition);
   }
 

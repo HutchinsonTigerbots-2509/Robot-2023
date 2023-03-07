@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.opConstants;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
@@ -27,7 +26,7 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Station1DropHigh extends InstantCommand {
+public class StationMoveOut extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
@@ -39,7 +38,7 @@ public class Station1DropHigh extends InstantCommand {
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
-  public Station1DropHigh(
+  public StationMoveOut(
       Drivetrain pDrivetrain,
       Dislocator pDislocator,
       Elbow pElbow,
@@ -56,44 +55,12 @@ public class Station1DropHigh extends InstantCommand {
 
     blueCommandSequence =
     Commands.sequence(
-
-    Commands.parallel(
-      new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-190, shoulder),
-      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
-
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
-
-    new GrabOpen(wrist).withTimeout(1),
-
-    Commands.parallel(
-        new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),
-        new ShoulderMoveToPosition(-133, shoulder),
-        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
-        new DislocatorMoveToPosition(0, dislocator),
-        new ElbowMoveToPosition(154, elbow),
-        new WristMoveToPosition(0, wrist))
+        new DriveAuto(pDrivetrain, -.4).withTimeout(1.5)
     );
 
     redCommandSequence =
     Commands.sequence(
-
-    Commands.parallel(
-      new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-190, shoulder),
-      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
-
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
-
-    new GrabOpen(wrist).withTimeout(1),
-
-    Commands.parallel(
-        new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),
-        new ShoulderMoveToPosition(-133, shoulder),
-        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
-        new DislocatorMoveToPosition(0, dislocator),
-        new ElbowMoveToPosition(154, elbow),
-        new WristMoveToPosition(0, wrist))
+        new DriveAuto(pDrivetrain, -.4).withTimeout(1.5)
     );
 
     // Use addRequirements() here to declare subsystem dependencies.

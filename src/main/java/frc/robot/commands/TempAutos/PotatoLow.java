@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.opConstants;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
+import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
@@ -56,26 +57,42 @@ public class PotatoLow extends InstantCommand {
     blueCommandSequence =
     Commands.sequence(
       Commands.parallel(
-        new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
         new DislocatorMoveToPosition(0, dislocator),
-        new ShoulderMoveToPosition(-200, shoulder)).withTimeout(2),
-        // new ElbowMoveToPosition(13, elbow),
-        // new WristMoveToPosition(0, wrist)).withTimeout(2),
+        new ShoulderMoveToPosition(-200, shoulder),
+        new ElbowMoveToPosition(30, elbow),
+        new WristMoveToPosition(0, wrist)).withTimeout(2),
 
-      new GrabOpen(wrist).withTimeout(1)
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator).withTimeout(1),
+
+      new GrabOpen(wrist).withTimeout(1),
+
+      Commands.parallel(
+        new ShoulderMoveToPosition(-133, shoulder),
+        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ElbowMoveToPosition(154, elbow),
+        new WristMoveToPosition(0, wrist))
 
       );
 
     redCommandSequence =
     Commands.sequence(
       Commands.parallel(
-        new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator),
         new DislocatorMoveToPosition(0, dislocator),
-        new ShoulderMoveToPosition(-200, shoulder)).withTimeout(2),
-        // new ElbowMoveToPosition(13, elbow),
-        // new WristMoveToPosition(0, wrist)).withTimeout(2),
+        new ShoulderMoveToPosition(-200, shoulder),
+        new ElbowMoveToPosition(30, elbow),
+        new WristMoveToPosition(0, wrist)).withTimeout(2),
 
-      new GrabOpen(wrist).withTimeout(1)
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator).withTimeout(1),
+
+      new GrabOpen(wrist).withTimeout(1),
+
+      Commands.parallel(
+        new ShoulderMoveToPosition(-133, shoulder),
+        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ElbowMoveToPosition(154, elbow),
+        new WristMoveToPosition(0, wrist))
 
       );
 

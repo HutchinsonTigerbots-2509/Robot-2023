@@ -258,6 +258,22 @@ public class Drivetrain extends SubsystemBase {
     return this.runOnce(this::ToggleBrake);
   }
 
+  public void ParkingBrakeUp() {
+    parkingBrake.set(Value.kForward);
+  }
+
+  public Command cmdParkingBrakeUp() {
+    return this.runOnce(this::ParkingBrakeUp);
+  }
+
+  public void ParkingBrakeDown() {
+    parkingBrake.set(Value.kReverse);
+  }
+
+  public Command cmdParkingBrakeDown() {
+    return this.runOnce(this::ParkingBrakeDown);
+  }
+
   public double getRoll() {
     return navx.getRoll();
   }

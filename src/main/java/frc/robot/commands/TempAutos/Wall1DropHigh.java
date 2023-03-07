@@ -58,36 +58,44 @@ public class Wall1DropHigh extends InstantCommand {
     Commands.sequence(
 
     Commands.parallel(
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
       new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
-      // new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ShoulderMoveToPosition(-190, shoulder),
+      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
+
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
 
     new GrabOpen(wrist).withTimeout(1),
 
     Commands.parallel(
         new DriveAuto(pDrivetrain, -.3).withTimeout(3.25),
-        // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)));
+        new ShoulderMoveToPosition(-133, shoulder),
+        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ElbowMoveToPosition(154, elbow),
+        new WristMoveToPosition(0, wrist))
+    );
 
 
     redCommandSequence =
     Commands.sequence(
 
     Commands.parallel(
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
       new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
-      // new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ShoulderMoveToPosition(-190, shoulder),
+      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
+
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
 
     new GrabOpen(wrist).withTimeout(1),
 
     Commands.parallel(
         new DriveAuto(pDrivetrain, -.3).withTimeout(3.25),
-        // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)));
+        new ShoulderMoveToPosition(-133, shoulder),
+        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ElbowMoveToPosition(154, elbow),
+        new WristMoveToPosition(0, wrist))
+    );
 
 
     // Use addRequirements() here to declare subsystem dependencies.

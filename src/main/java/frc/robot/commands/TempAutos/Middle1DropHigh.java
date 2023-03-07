@@ -15,6 +15,7 @@ import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
+import frc.robot.commands.ParkingBrake.ParkingBrakeDown;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.commands.drivetrain.DrivetrainBalancing;
@@ -59,21 +60,23 @@ public class Middle1DropHigh extends InstantCommand {
     Commands.sequence(
 
     Commands.parallel(
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
       new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
-      // new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ShoulderMoveToPosition(-190, shoulder),
+      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
+
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
 
     new GrabOpen(wrist).withTimeout(1),
 
     Commands.parallel(
-        new DriveAuto(drivetrain, -.3).withTimeout(3),
-        // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)), // ,
-        // new DrivetrainBalancing(0, pDrivetrain)
+        new DriveAuto(pDrivetrain, -.3).withTimeout(2.5),
+        new ShoulderMoveToPosition(-133, shoulder),
+        new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ElbowMoveToPosition(154, elbow),
+        new WristMoveToPosition(0, wrist)),
 
-    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(3)
+    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8)
 
    );
 
@@ -81,21 +84,23 @@ public class Middle1DropHigh extends InstantCommand {
     Commands.sequence(
 
     Commands.parallel(
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator),
       new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-199.5, shoulder),
-      new ElbowMoveToPosition(27.5, elbow)).withTimeout(2),
-      // new WristMoveToPosition(0, wrist)).withTimeout(2),
+      new ShoulderMoveToPosition(-190, shoulder),
+      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
+
+      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
 
     new GrabOpen(wrist).withTimeout(1),
 
     Commands.parallel(
-        new DriveAuto(drivetrain, -.3).withTimeout(3),
-        // new ElbowMoveToPosition(0, pElbow),
-        new ShoulderMoveToPosition(300, shoulder)), // ,
-        // new DrivetrainBalancing(0, pDrivetrain)
+        new DriveAuto(pDrivetrain, -.3).withTimeout(2.5),
+        new ShoulderMoveToPosition(-133, shoulder),
+        new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
+        new DislocatorMoveToPosition(0, dislocator),
+        new ElbowMoveToPosition(154, elbow),
+        new WristMoveToPosition(0, wrist)),
 
-    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(3)
+    new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8)
 
    );
 

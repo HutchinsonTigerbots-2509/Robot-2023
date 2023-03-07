@@ -13,8 +13,8 @@ import frc.robot.subsystems.Travelator;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TravelatorLeveling extends PIDCommand {
-  static final double kP = 0.01;
-  static final double kI = 0.005;
+  static final double kP = 0.03;
+  static final double kI = 0.003;
   static final double kD = 0.00;
   static final double kF = 0.00;
 
