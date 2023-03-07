@@ -4,10 +4,8 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.opConstants;
 import frc.robot.subsystems.Drivetrain;
 
 public class OperatorDrive extends CommandBase {
@@ -43,9 +41,15 @@ public class OperatorDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = xboxController.getRawAxis(0);  //xspeedLimiter.calculate(xboxController.getRawAxis(0)) * opConstants.kMaxSpeed;
-    double ySpeed = xboxController.getRawAxis(1);  //yspeedLimiter.calculate(xboxController.getRawAxis(1)) * opConstants.kMaxSpeed;
-    double rot = xboxController.getRawAxis(4);  //rotLimiter.calculate(xboxController.getRawAxis(4)) * opConstants.kMaxAngularSpeed;
+    double xSpeed =
+        xboxController.getRawAxis(
+            0); // xspeedLimiter.calculate(xboxController.getRawAxis(0)) * opConstants.kMaxSpeed;
+    double ySpeed =
+        xboxController.getRawAxis(
+            1); // yspeedLimiter.calculate(xboxController.getRawAxis(1)) * opConstants.kMaxSpeed;
+    double rot =
+        xboxController.getRawAxis(4); // rotLimiter.calculate(xboxController.getRawAxis(4)) *
+    // opConstants.kMaxAngularSpeed;
     drive.mecanumDrive(xSpeed, ySpeed, rot, drive.getSpeed());
   }
 

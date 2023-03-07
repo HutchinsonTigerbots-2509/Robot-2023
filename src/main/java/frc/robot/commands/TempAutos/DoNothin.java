@@ -46,11 +46,9 @@ public class DoNothin extends InstantCommand {
     wrist = pWrist;
     travelator = pTravelator;
 
-    blueCommandSequence =
-    Commands.sequence();
+    blueCommandSequence = Commands.sequence();
 
-    redCommandSequence =
-    Commands.sequence();
+    redCommandSequence = Commands.sequence();
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

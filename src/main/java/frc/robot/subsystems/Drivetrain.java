@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-import javax.management.openmbean.OpenMBeanConstructorInfo;
-
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
@@ -17,10 +15,8 @@ import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.MecanumDrive;
@@ -84,7 +80,7 @@ public class Drivetrain extends SubsystemBase {
 
     parkingBrake.set(Value.kReverse);
 
-    //drivetrain.setSafetyEnabled(false);
+    // drivetrain.setSafetyEnabled(false);
 
     // Inverts all the motors that need to be inverted
     frontRightMotor.setInverted(false);
@@ -207,25 +203,18 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void mecanumDrive(double x, double y, double z) {
-    drivetrain.driveCartesian(
-      -y, 
-      x, 
-      z);
+    drivetrain.driveCartesian(-y, x, z);
   }
 
   public void mecanumDrive(double x, double y, double z, double SpeedValue) {
-    drivetrain.driveCartesian(
-      -y * SpeedValue, 
-      x * SpeedValue, 
-      z * SpeedValue);
+    drivetrain.driveCartesian(-y * SpeedValue, x * SpeedValue, z * SpeedValue);
   }
 
-  public void ToggleGear () {
+  public void ToggleGear() {
     if (speedValue == opConstants.kHighGear) {
       speedValue = opConstants.kLowGear;
       SmartDashboard.putBoolean("Gear", false);
-    } 
-    else if (speedValue == opConstants.kLowGear) {
+    } else if (speedValue == opConstants.kLowGear) {
       speedValue = opConstants.kHighGear;
       SmartDashboard.putBoolean("Gear", true);
     }

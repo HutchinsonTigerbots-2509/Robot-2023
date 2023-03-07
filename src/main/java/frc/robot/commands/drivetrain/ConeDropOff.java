@@ -4,9 +4,6 @@
 
 package frc.robot.commands.drivetrain;
 
-import java.lang.ModuleLayer.Controller;
-
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -36,7 +33,7 @@ public class ConeDropOff extends CommandBase {
   @Override
   public void execute() {
     if (m_Vision.getTargetX() != 0) {
-      if (m_Vision.getTargetY() > 5){
+      if (m_Vision.getTargetY() > 5) {
 
         if ((m_Vision.getTargetX() + 8) < -2) {
           X = ((m_Vision.getTargetX() + 8) * .014) - .15;
@@ -47,8 +44,7 @@ public class ConeDropOff extends CommandBase {
         }
 
         m_Drivetrain.mecanumDrive(X, Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
-      }
-      else {
+      } else {
 
         if (m_Vision.getTargetX() < -2) {
           X = (m_Vision.getTargetX() * .014) - .15;
@@ -60,19 +56,16 @@ public class ConeDropOff extends CommandBase {
 
         m_Drivetrain.mecanumDrive(X, Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
       }
-    }
-    else {
+    } else {
       m_Drivetrain.mecanumDrive(
-        Opcontroller.getRawAxis(0), 
-        Opcontroller.getRawAxis(1), 
-        Opcontroller.getRawAxis(4));
+          Opcontroller.getRawAxis(0), Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_Drivetrain.mecanumDrive( 0 , 0 , 0);
+    m_Drivetrain.mecanumDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.

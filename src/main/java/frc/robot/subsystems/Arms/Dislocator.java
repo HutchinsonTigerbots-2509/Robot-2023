@@ -6,7 +6,6 @@ package frc.robot.subsystems.Arms;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,7 +18,6 @@ public class Dislocator extends SubsystemBase {
 
   public DigitalInput FrontLimitSwitch = new DigitalInput(opConstants.kFrontLimitSwitchID);
   public DigitalInput BackLimitSwitch = new DigitalInput(opConstants.kBackLimitSwitchID);
-
 
   public Dislocator() {
     Dislocator.setInverted(false);
@@ -40,7 +38,6 @@ public class Dislocator extends SubsystemBase {
       Dislocator.setSelectedSensorPosition(opConstants.kDislocatorMin);
       Dislocator.set(ControlMode.PercentOutput, 0);
     }
-
   }
 
   // Makes Extendor / Dislocator go forward
@@ -75,9 +72,10 @@ public class Dislocator extends SubsystemBase {
   public void DislocatorStop() {
     Dislocator.set(0);
   }
-  
+
   public double getDislocatorPos() {
-    return (Dislocator.getSelectedSensorPosition() / (2048 * 48 / 6.25)) * 3.66666666666666666; //BS numbers ignore we just needed what we want
+    return (Dislocator.getSelectedSensorPosition() / (2048 * 48 / 6.25))
+        * 3.66666666666666666; // BS numbers ignore we just needed what we want
   }
 
   public void DislocatorMove(double Speed) {

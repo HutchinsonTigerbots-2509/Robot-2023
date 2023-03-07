@@ -34,7 +34,6 @@ public class Shoulder extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shoulder", getShoulderPos());
     SmartDashboard.updateValues();
-
   }
 
   public void ResetShoulderEncoder() {

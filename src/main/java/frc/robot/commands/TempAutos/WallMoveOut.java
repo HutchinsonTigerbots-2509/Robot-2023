@@ -9,13 +9,6 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.opConstants;
-import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
-import frc.robot.commands.Arm.Grabber.GrabOpen;
-import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
-import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
@@ -54,16 +47,9 @@ public class WallMoveOut extends InstantCommand {
     wrist = pWrist;
     travelator = pTravelator;
 
-    blueCommandSequence =
-    Commands.sequence(
-        new DriveAuto(pDrivetrain, -.3).withTimeout(3.25)
-    );
+    blueCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.3).withTimeout(3.25));
 
-    redCommandSequence =
-    Commands.sequence(
-
-        new DriveAuto(pDrivetrain, -.3).withTimeout(3.25)
-    );
+    redCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.3).withTimeout(3.25));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

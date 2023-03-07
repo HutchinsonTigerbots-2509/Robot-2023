@@ -4,7 +4,6 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -34,32 +33,29 @@ public class CubeDropOff extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (photonvision.fetchTargetX() != 0){
+    if (photonvision.fetchTargetX() != 0) {
       if ((photonvision.fetchTargetX() - 380) < -25) {
-        X = ((photonvision.fetchTargetX() - 380)* .00008) - .15;
+        X = ((photonvision.fetchTargetX() - 380) * .00008) - .15;
       } else if ((photonvision.fetchTargetX() - 380) > 25) {
-        X = ((photonvision.fetchTargetX() - 380 ) * .00008) + .15;
+        X = ((photonvision.fetchTargetX() - 380) * .00008) + .15;
       } else {
         X = 0;
       }
 
       SmartDashboard.putNumber("Photon X", photonvision.fetchTargetX());
 
-      //Dt.TeleMecDrive(stick.getY(), X, stick.getZ());
+      // Dt.TeleMecDrive(stick.getY(), X, stick.getZ());
       Dt.mecanumDrive(X, OpController.getRawAxis(1), OpController.getRawAxis(4));
-    }
-    else {
+    } else {
       Dt.mecanumDrive(
-        OpController.getRawAxis(0), 
-        OpController.getRawAxis(1), 
-        OpController.getRawAxis(4));
+          OpController.getRawAxis(0), OpController.getRawAxis(1), OpController.getRawAxis(4));
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    Dt.mecanumDrive( 0 , 0 , 0);
+    Dt.mecanumDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.

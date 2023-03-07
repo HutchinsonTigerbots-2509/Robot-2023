@@ -10,11 +10,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.opConstants;
-import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Arm.Grabber.GrabOpen;
-import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
-import frc.robot.commands.ParkingBrake.ParkingBrakeDown;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.commands.drivetrain.DrivetrainBalancing;
@@ -56,21 +51,16 @@ public class MiddleMoveOut extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-      new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
-      new DriveAuto(drivetrain, -.3).withTimeout(2.5),
-
-      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8)
-      
-   );
+        Commands.sequence(
+            new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
+            new DriveAuto(drivetrain, -.3).withTimeout(2.5),
+            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     redCommandSequence =
-    Commands.sequence(
-      new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
-      new DriveAuto(drivetrain, -.3).withTimeout(2.5),
-        
-      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8)
-   );
+        Commands.sequence(
+            new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
+            new DriveAuto(drivetrain, -.3).withTimeout(2.5),
+            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

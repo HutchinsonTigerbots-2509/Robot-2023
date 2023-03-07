@@ -34,5 +34,4 @@ public class LimeLight extends SubsystemBase {
     double mTargetY = mTableY.getDouble(0);
     return mTargetY;
   }
-
 }

@@ -18,8 +18,10 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVision extends SubsystemBase {
-  private static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
-  private static final NetworkTable PhotonCamera = NetworkTableInstance.getDefault().getTable("Front Web Cam");
+  private static final NetworkTable PhotonTable =
+      NetworkTableInstance.getDefault().getTable("photonvision");
+  private static final NetworkTable PhotonCamera =
+      NetworkTableInstance.getDefault().getTable("Front Web Cam");
   public static final NetworkTableEntry PhotonX = PhotonTable.getEntry("targetPixelsX");
   public static final PhotonCamera FrontWebCam = new PhotonCamera("FrontWebCam");
 

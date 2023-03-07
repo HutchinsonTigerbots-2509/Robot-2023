@@ -4,7 +4,6 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
@@ -54,8 +53,7 @@ public class DrivetrainBalancing extends CommandBase {
 
       Dt.mecanumDrive(OpController.getRawAxis(0), -Y, OpController.getRawAxis(4));
 
-    }
-    else {
+    } else {
       if (Dt.getRoll() < -5) {
         Y = (Dt.getRoll() * .007) - .06;
       } else if (Dt.getRoll() > 5) {
@@ -65,7 +63,6 @@ public class DrivetrainBalancing extends CommandBase {
       }
 
       Dt.mecanumDrive(X, -Y, Z);
-      
     }
   }
 

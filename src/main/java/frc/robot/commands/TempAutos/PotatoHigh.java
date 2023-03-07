@@ -16,7 +16,6 @@ import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
-import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
@@ -55,45 +54,36 @@ public class PotatoHigh extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-
-    Commands.parallel(
-      new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-190, shoulder),
-      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
-
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
-
-    new GrabOpen(wrist).withTimeout(1),
-    Commands.parallel(
-        new ShoulderMoveToPosition(-133, shoulder),
-        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
-        new DislocatorMoveToPosition(0, dislocator),
-        new ElbowMoveToPosition(154, elbow),
-        new WristMoveToPosition(0, wrist))
-    
-    );
+        Commands.sequence(
+            Commands.parallel(
+                    new DislocatorMoveToPosition(22, dislocator),
+                    new ShoulderMoveToPosition(-190, shoulder),
+                    new ElbowMoveToPosition(25, elbow))
+                .withTimeout(2),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
+            new GrabOpen(wrist).withTimeout(1),
+            Commands.parallel(
+                new ShoulderMoveToPosition(-133, shoulder),
+                new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
+                new DislocatorMoveToPosition(0, dislocator),
+                new ElbowMoveToPosition(154, elbow),
+                new WristMoveToPosition(0, wrist)));
 
     redCommandSequence =
-    Commands.sequence(
-
-    Commands.parallel(
-      new DislocatorMoveToPosition(22, dislocator),
-      new ShoulderMoveToPosition(-190, shoulder),
-      new ElbowMoveToPosition(25, elbow)).withTimeout(2),
-
-      new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
-
-    new GrabOpen(wrist).withTimeout(1),
-
-    Commands.parallel(
-        new ShoulderMoveToPosition(-133, shoulder),
-        new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
-        new DislocatorMoveToPosition(0, dislocator),
-        new ElbowMoveToPosition(154, elbow),
-        new WristMoveToPosition(0, wrist))
-      
-    );
+        Commands.sequence(
+            Commands.parallel(
+                    new DislocatorMoveToPosition(22, dislocator),
+                    new ShoulderMoveToPosition(-190, shoulder),
+                    new ElbowMoveToPosition(25, elbow))
+                .withTimeout(2),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
+            new GrabOpen(wrist).withTimeout(1),
+            Commands.parallel(
+                new ShoulderMoveToPosition(-133, shoulder),
+                new TravelatorMoveToPosition(opConstants.kTravelatorBack, travelator),
+                new DislocatorMoveToPosition(0, dislocator),
+                new ElbowMoveToPosition(154, elbow),
+                new WristMoveToPosition(0, wrist)));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

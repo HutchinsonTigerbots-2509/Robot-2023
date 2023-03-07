@@ -4,16 +4,13 @@
 
 package frc.robot;
 
-import org.opencv.photo.Photo;
-import org.photonvision.PhotonCamera;
-
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import org.photonvision.PhotonCamera;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -66,14 +63,14 @@ public final class Constants {
 
     // ***** Shoulder Constants ***** //
     public static final int kShoulderID = 4;
-    public static final double kShoulderGearRatio = 240; //gear box ratio is 144:1...
+    public static final double kShoulderGearRatio = 240; // gear box ratio is 144:1...
     public static final double kShoulderSpeed = 1;
     public static final int kArmCounterID = 0;
     public static final double kShoudlerOffSet = 183;
 
     // ** Elbow Constants */
     public static final int kArmElbowID = 11;
-    public static final double kElbowSpeed = .8;
+    public static final double kElbowSpeed = 1;
     public static final int kElbowEncoder1ID = 4;
     public static final int kElbowEncoder2ID = 5;
     public static final double kElbowOffSet = -155; // -159;
@@ -105,15 +102,20 @@ public final class Constants {
 
   public static final class camConstants {
 
-    public static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
-    public static final NetworkTable LimelightOneTable = NetworkTableInstance.getDefault().getTable("limelight-one");
-    public static final NetworkTable LimelightTwoTable = NetworkTableInstance.getDefault().getTable("limelight-two");
+    public static final NetworkTable PhotonTable =
+        NetworkTableInstance.getDefault().getTable("photonvision");
+    public static final NetworkTable LimelightOneTable =
+        NetworkTableInstance.getDefault().getTable("limelight-one");
+    public static final NetworkTable LimelightTwoTable =
+        NetworkTableInstance.getDefault().getTable("limelight-two");
 
     // Network
     public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
     public static final String kPhotonIP = "10.25.9.2";
-    public static final String kLimelightCameraOneID = "limelight-one"; // Limelight Hostname of number 1
-    public static final String kLimelightCameraTwoID = "limelight-two"; // Limelight Hostname of number 2
+    public static final String kLimelightCameraOneID =
+        "limelight-one"; // Limelight Hostname of number 1
+    public static final String kLimelightCameraTwoID =
+        "limelight-two"; // Limelight Hostname of number 2
     public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
     public static final PhotonCamera FrontWebCam = new PhotonCamera("Front Web Cam");
 
@@ -179,6 +181,6 @@ public final class Constants {
     public static String kPhotonTargetPose;
     public static String kPhotonTargetXID;
 
-    public static  final String kPhotonTargetPixelsX = "targetPixelsX";
+    public static final String kPhotonTargetPixelsX = "targetPixelsX";
   }
 }
