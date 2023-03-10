@@ -58,10 +58,10 @@ public class Station1DropHigh extends InstantCommand {
         Commands.sequence(
             Commands.parallel(
                     new DislocatorMoveToPosition(22, dislocator),
-                    new ShoulderMoveToPosition(-190, shoulder),
+                    new ShoulderMoveToPosition(-200, shoulder),
                     new ElbowMoveToPosition(25, elbow))
                 .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),
@@ -75,10 +75,10 @@ public class Station1DropHigh extends InstantCommand {
         Commands.sequence(
             Commands.parallel(
                     new DislocatorMoveToPosition(22, dislocator),
-                    new ShoulderMoveToPosition(-190, shoulder),
+                    new ShoulderMoveToPosition(-200, shoulder),
                     new ElbowMoveToPosition(25, elbow))
                 .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.4).withTimeout(1.5),

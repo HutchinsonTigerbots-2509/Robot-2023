@@ -23,6 +23,7 @@ import frc.robot.Constants.camConstants;
 import frc.robot.Constants.opConstants;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
+import frc.robot.commands.Arm.Elbow.ElbowMoveToPositionTele;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.PresetPoses.StartingPosition;
@@ -329,7 +330,7 @@ public class RobotContainer {
     presetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
     presetGrabBtn.onTrue(new DislocatorMoveToPosition(17, sDislocator));
     presetGrabBtn.onTrue(new ShoulderMoveToPosition(-460, sShoulder));
-    presetGrabBtn.onTrue(new ElbowMoveToPosition(-39, sElbow));
+    presetGrabBtn.onTrue(new ElbowMoveToPositionTele(-39, sElbow));
     presetGrabBtn.onTrue(new WristMoveToPosition(0, sWrist));
 
     // Grab at station button
@@ -338,7 +339,7 @@ public class RobotContainer {
     presetStationBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
     presetStationBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
     presetStationBtn.onTrue(new ShoulderMoveToPosition(-133, sShoulder));
-    presetStationBtn.onTrue(new ElbowMoveToPosition(30, sElbow));
+    presetStationBtn.onTrue(new ElbowMoveToPositionTele(30, sElbow));
     presetStationBtn.onTrue(new WristMoveToPosition(0, sWrist));
 
     // Preset the robot to safe driving position
@@ -356,7 +357,7 @@ public class RobotContainer {
         new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, sTravelator));
     presetDropLowBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
     presetDropLowBtn.onTrue(new ShoulderMoveToPosition(-199.5, sShoulder));
-    presetDropLowBtn.onTrue(new ElbowMoveToPosition(30, sElbow));
+    presetDropLowBtn.onTrue(new ElbowMoveToPositionTele(30, sElbow));
     presetDropLowBtn.onTrue(new WristMoveToPosition(0, sWrist));
 
     // Preset the robot to drop a cone on the higher pipe
@@ -366,7 +367,7 @@ public class RobotContainer {
         new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
     presetDropHighBtn.onTrue(new DislocatorMoveToPosition(22, sDislocator));
     presetDropHighBtn.onTrue(new ShoulderMoveToPosition(-150, sShoulder));
-    presetDropHighBtn.onTrue(new ElbowMoveToPosition(30, sElbow));
+    presetDropHighBtn.onTrue(new ElbowMoveToPositionTele(30, sElbow));
     presetDropHighBtn.onTrue(new WristMoveToPosition(0, sWrist));
 
     // Preset to start balancing on the Charge Station
@@ -376,7 +377,7 @@ public class RobotContainer {
         new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, sTravelator));
     presetBalanceBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
     presetBalanceBtn.onTrue(new ShoulderMoveToPosition(-330, sShoulder));
-    presetBalanceBtn.onTrue(new ElbowMoveToPosition(90, sElbow));
+    presetBalanceBtn.onTrue(new ElbowMoveToPositionTele(90, sElbow));
     presetBalanceBtn.onTrue(new WristMoveToPosition(0, sWrist));
   }
 
