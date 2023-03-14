@@ -4,12 +4,13 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.apriltag.AprilTag;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import org.photonvision.PhotonCamera;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -21,151 +22,165 @@ import edu.wpi.first.math.geometry.Rotation3d;
  */
 public final class Constants {
 
-    // ***** Joystick ID's ***** //
-    public final static int kOpStickID = 0;
-    public final static int kCoopStickID = 1;
+  // Joystick ID's
+  public static final int kOpStickID = 0;
+  public static final int kCoopStick1ID = 1;
+  public static final int kCoopStick2ID = 2;
 
-    public static final class opConstants {
+  public static final class opConstants {
 
+    // Drivetrain Constants
+    public static final int kFrontLeftID = 14;
+    public static final int kFrontRightID = 1;
+    public static final int kRearLeftID = 15;
+    public static final int kRearRightID = 0;
+    public static final double kHighGear = 1;
+    public static final double kLowGear = .6;
+    public static final double kMaxSpeed = 0.8;
+    public static final double kMaxAngularSpeed = 0.5;
+    public static final double kHighSpeedStrafe = 0.8;
+    public static final double kLowSpeedStrafe = .5;
+    public static final double kSkewRateLimit = 0.9;
+    public static final double kGearRatio = 12.0;
+    public static final int kFalconUnitsPerRotation = 2048;
+    public static final double kWheelDiameter = 15.24; // This is in centimeters.
+    public static final int kParkingBrakeExtend = 2;
+    public static final int kParkingBrakeRetract = 3;
 
-        // ***** Drivetrain Constants ***** //
-        public final static int kFrontLeftID = 14; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static int kFrontRightID = 1; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static int kRearLeftID = 15; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static int kRearRightID = 0; // Verified that the Motor Ids were set to the correct values 3/19/22
-        public final static double kHighSpeed = 0.6; // You are going to want to slow this down significantly, even for fast speed it is very high - S. Collins
-        public final static double kLowSpeed = 0.4;
-        public final static double kHighSpeedStrafe = 1;
-        public final static double kLowSpeedStrafe = .6;
+    // Travelator Constants
+    public static final int kTravelatorID = 2;
+    public static final double kTravelatorSpeed = .4;
+    public static final int kBackRightLimitSwitchID = 0;
+    public static final int kBackLeftLimitSwitchID = 1;
+    public static final int kFrontRightLimitSwitchID = 2;
+    public static final int kFrontLeftLimitSwitchID = 3;
+    public static final double kTravelatorGearRatio = 1.9411764 * 4;
+    public static final double kTravelatorMax = 113800;
+    public static final double kTravelatorMin = 0;
+    public static final double kTravelatorBack = 0;
+    public static final double kTravelatorMiddle = 10;
+    public static final double kTravelatorFront = 19;
 
-        // ***** Intake Constants ***** //
-        public final static int kIntakeMotorID_0 = 11; //Motor ID for the front intake - S. COllins
-        public final static int kIntakeMotorID_1 = 12; //Motor ID for the running intake to shooter - S.Collins
-        public final static double kIntakeSpeed = .5;
+    // ***** Shoulder Constants ***** //
+    public static final int kShoulderID = 4;
+    public static final double kShoulderGearRatio = 240; // gear box ratio is 144:1...
+    public static final double kShoulderSpeed = 1;
+    public static final int kArmCounterID = 0;
+    public static final double kShoudlerOffSet = 183;
 
-        // ***** Shooter Constants ***** //
-        public final static int kShooterMotorID = 13;
-        public final static int kFlapperMotorID = 8;
-        public final static int kShooterDistance = 5;
-        public final static double kFlapGoalPosition = 24;
-        public final static double kShootingSpeed = .6;      // Changed to .6 3/19/22  // <------------ TO CHANGE SHOOTING SPEED
+    // ** Elbow Constants */
+    public static final int kArmElbowID = 11;
+    public static final double kElbowSpeed = 1;
+    public static final int kElbowEncoder1ID = 4;
+    public static final int kElbowEncoder2ID = 5;
+    public static final double kElbowOffSet = -155; // -159;
 
-        // ***** Conveyor Constants ***** //
-        public final static int kConveyorMotorID = 12;
-        public final static double kMaxConveyorSpeed = .75;
-        public final static int kLightSensor = 1;
+    // ** Wrist Constants */
+    public static final int kArmWristID = 10;
+    public static final double kWristSpeed = .8;
+    public static final int kWristEncoder1ID = 6;
+    public static final int kWristEncoder2ID = 7;
 
-        // ***** Climb Constants ***** //
-        public final static int kClimberMotorID = 2;
+    // ***** Dislocator Constants ***** //
+    public static final int kDislocatorID = 3;
+    public static final int kBackLimitSwitchID = 8;
+    public static final int kFrontLimitSwitchID = 9;
+    public static final double kDislocatorMax = 22;
+    public static final double kDislocatorMin = 0;
+    public static final double kDislocatorSpeed = .4;
+    public static final double kDislocatorGearRatio = 20; // 20
 
-        // ***** Arm Constants ***** //
-        public final static int kArmMotor1ID = 0;
-    }
+    public static final double kMaxArmSpeed = .45;
+    public static final int kWristFullRotation = 90;
 
+    // * Solenoids */
+    public static final int kGrabberP1 = 0;
+    public static final int kGrabberP2 = 1;
+    public static final int kParkingBrakeP1 = 2;
+    public static final int kParkingBrakeP2 = 3;
+  }
 
-    public static final class camConstants {
+  public static final class camConstants {
 
+    public static final NetworkTable PhotonTable =
+        NetworkTableInstance.getDefault().getTable("photonvision");
+    public static final NetworkTable LimelightOneTable =
+        NetworkTableInstance.getDefault().getTable("limelight-one");
+    public static final NetworkTable LimelightTwoTable =
+        NetworkTableInstance.getDefault().getTable("limelight-two");
 
-        //#region ***** Vision Constants ***** //
+    // Network
+    public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
+    public static final String kPhotonIP = "10.25.9.2";
+    public static final String kLimelightCameraOneID =
+        "limelight-one"; // Limelight Hostname of number 1
+    public static final String kLimelightCameraTwoID =
+        "limelight-two"; // Limelight Hostname of number 2
+    public static final String kLimelightIP = "10.25.9.11"; // IP Address of Camera
+    public static final PhotonCamera FrontWebCam = new PhotonCamera("Front Web Cam");
 
-        // Network
-        public final static String kLimelightIP = "10.25.9.11";        // IP Address of Camera
-        public final static String kLimelightNetworkID = "limelight";  // Name of Camera on Network
-        
-        // Settings
-        public final static int kLimelightLED = 0;                     // Sets LED. 0 = Set by Pipline, 1 = Force off, 2 = Force blink, 3 = Force on
-        public final static int kLimelightMode = 0;                    // Sets camera mode. 0 = Vision processor, 1 = Driver Camera
-        public final static int kLimelightStream = 0;                  // Sets streaming mode. 0 = Side-by-Side, 1 = PiP main, 2 = PiP secondary
-        public final static int kLimelightStartingPipeline = 1;        // The default pipeline to stream
+    // Settings
+    // Sets LED. 0 = Set by Pipline, 1 = Force off, 2 = Force blink, 3 = Force on
+    public static final int kLimelightLED = 0;
 
-        // Table IDs (for getting values from the Network Table)
-        public final static String kLimelightLatencyID = "tl";         // Pipeline latency in milliseconds
-        public final static String kLimelightTargetID = "tv";          // Whether or not a valid target is found (0 or 1)
-        public final static String kLimelightTargetXID = "tx";         // Horizontal offset from crosshair to target (+/- 27 degrees)
-        public final static String kLimelightTargetYID = "ty";         // Vertical offset from crosshair to target (+/- 20.5 degrees)
-        public final static String kLimelightTargetAreaID = "ta";      // Target area (0-100 % of image)
-        public final static String kLimelightTargetSkewID = "ts";      // Target skew/rotation (-90 to 0 degrees)
-        public final static String kLimelightTargetVertID = "tvert";   // Vertical sidelength of bounding box (0-320 pixels)
-        public final static String kLimelightTargetHorID = "thor";     // Horizontal sidelength of bounding box (0-320 pixels)
+    // Sets camera mode. 0 = Vision processor, 1 = Driver Camera
+    public static final int kLimelightMode = 0;
 
-        // Camera Variables
-        public final static double kCameraHeight = 4;
-        //public static double kCameraAngle = -28.23744554;
-        public final static double kCameraAngle = -31.47286489;
-        public final static double kTargetHeight = 31.5;
-        public final static double kpAim = -0.02;
-        public final static double kpDistance = -0.05;
-        public final static double kmin_aim_command = -0.5;
-        public final static double kdistance_command = -0.5;
-        public final static double kTargetDistanceFromTarget = 24;
-        //#endregion
+    // Sets streaming mode. 0 = Side-by-Side, 1 = PiP main, 2 = PiP secondary
+    public static final int kLimelightStream = 0;
 
-        // Constants for April Tags using PhotonVision below
+    // The default pipeline to stream
+    public static final int kLimelightStartingPipeline = 1;
 
-        private static final double kFieldLength = Units.inchesToMeters(651.2);
-        private static final double kFieldWidth = Units.inchesToMeters(315.75);
+    // Pipeline latency in milliseconds
+    public static final String kLimelightLatencyID = "tl";
 
-        public static final double camFOV = 0; // needs to be replaced with what's in http://photonvision:5800 settings
-        public static final int camResWidth = 0; // "
-        public static final int camResHeight = 0; // "
-        public static final double minClosestTargetDistance = 0; // Set this to what we plan on using, probably should play around with a good distance. Goes by meters
+    // Whether or not a valid target is found (0 or 1)
+    public static final String kLimelightTargetID = "tv";
 
-        public static final AprilTagFieldLayout tagPlayground = new AprilTagFieldLayout(null, kFieldLength, kFieldWidth);
-        
-        public static Transform3d robotToCamera = new Transform3d(
-            new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0)
-        );
-        
-    }
+    // Horizontal offset from crosshair to target (+/- 27 degrees)
+    public static final String kLimelightTargetXID = "tx";
 
-    public static final class ctrlConstants {
+    // Vertical offset from crosshair to target (+/- 20.5 degrees)
+    public static final String kLimelightTargetYID = "ty";
 
+    // Target area (0-100 % of image)
+    public static final String kLimelightTargetAreaID = "ta";
 
-        //#region ***** Xbox Controller Constants ***** //
-        public final static int kXboxLeftJoystickX = 0;
-        public final static int kXboxLeftJoystickY = 1;
-        
-        public final static int kXboxRightJoystickX = 4;
-        public final static int kXboxRightJoystickY = 5;
-        
-        public final static int kXboxLeftJoystickButton = 9;
-        public final static int kXboxRightJoystickButton = 10;
+    // Target skew/rotation (-90 to 0 degrees)
+    public static final String kLimelightTargetSkewID = "ts";
 
-        public final static int kXboxLeftTrigger = 2;
-        public final static int kXboxRightTrigger = 3;
-        
-        public final static int kXboxLeftBumper = 5;
-        public final static int kXboxRightBumper = 6;
-        
-        public final static int kXboxButtonA = 1;
-        public final static int kXboxButtonB = 2;
-        public final static int kXboxButtonX = 3;
-        public final static int kXboxButtonY = 4;
-        
-        //TODO Assign ID's for the Xbox DPad
-        
-        public final static int kXboxButtonBack = 7;
-        public final static int kXboxButtonStart = 8;
-        //#endregion
+    // Vertical sidelength of bounding box (0-320 pixels)
+    public static final String kLimelightTargetVertID = "tvert";
 
-        //#region ***** Joystick Buttons ***** //
-        public final static int kJoystickX = 0;
-        public final static int kJoystickY = 1;
-        public final static int kJoystickZ = 2;
+    // Horizontal sidelength of bounding box (0-320 pixels)
+    public static final String kLimelightTargetHorID = "thor";
 
-        public final static int kJoystickSlider = 3;
+    // Camera Variables
+    public static final double kCameraHeight = 4;
+    public static final double kCameraAngle = -31.47286489; // -28.23744554
+    public static final double kTargetHeight = 31.5;
+    public static final double kpAim = -0.02;
+    public static final double kpDistance = -0.05;
+    public static final double kmin_aim_command = -0.5;
+    public static final double kdistance_command = -0.5;
+    public static final double kTargetDistanceFromTarget = 24;
 
-        public final static int kJoystickButton1 = 1;
-        public final static int kJoystickButton2 = 2;
-        public final static int kJoystickButton3 = 3;
-        public final static int kJoystickButton4 = 4;
-        public final static int kJoystickButton5 = 5;
-        public final static int kJoystickButton6 = 6;
-        public final static int kJoystickButton7 = 7;
-        public final static int kJoystickButton8 = 8;
-        public final static int kJoystickButton9 = 9;
-        public final static int kJoystickButton10 = 10;
-        public final static int kJoystickButton11 = 11;
-        public final static int kJoystickButton12 = 12;
-    }
+    // Constants for April Tags using PhotonVision below
+    public static final double kFieldLength = Units.inchesToMeters(651.2);
+    public static final double kFieldWidth = Units.inchesToMeters(315.75);
+
+    // Set this to what we plan on using, probably should play around with a good distance. TODO
+    public static final double minClosestTargetDistance = 2; // Goes by meters
+
+    // public static final AprilTagFieldLayout tagPlayground =
+    //     new AprilTagFieldLayout(null, kFieldLength, kFieldWidth);
+
+    public static Transform3d robotToCamera =
+        new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
+    public static String kPhotonTargetPose;
+    public static String kPhotonTargetXID;
+
+    public static final String kPhotonTargetPixelsX = "targetPixelsX";
+  }
 }

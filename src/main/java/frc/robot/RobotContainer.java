@@ -4,40 +4,54 @@
 
 package frc.robot;
 
-import edu.wpi.first.util.sendable.Sendable;
-import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.apriltag.AprilTag;
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SelectCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.AutoDriveVision;
-import frc.robot.commands.Drive;
-import frc.robot.commands.DriveTele;
-import frc.robot.commands.DriveVision;
-import frc.robot.subsystems.Climb;
-import frc.robot.subsystems.Conveyor;
-import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Vision.LimeLight;
-import frc.robot.Constants.ctrlConstants;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.camConstants;
 import frc.robot.Constants.opConstants;
-
-import java.util.ResourceBundle.Control;
-
-import edu.wpi.first.wpilibj.SPI;
-
-//import frc.robot.AutoCommands;
+import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
+import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
+import frc.robot.commands.Arm.Elbow.ElbowMoveToPositionTele;
+import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
+import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
+import frc.robot.commands.PresetPoses.StartingPosition;
+import frc.robot.commands.TempAutos.DoNothin;
+import frc.robot.commands.TempAutos.Middle1DropHigh;
+import frc.robot.commands.TempAutos.Middle1DropLow;
+import frc.robot.commands.TempAutos.MiddleMoveOut;
+import frc.robot.commands.TempAutos.PotatoHigh;
+import frc.robot.commands.TempAutos.PotatoLow;
+import frc.robot.commands.TempAutos.Station1DropHigh;
+import frc.robot.commands.TempAutos.Station1DropLow;
+import frc.robot.commands.TempAutos.StationMoveOut;
+import frc.robot.commands.TempAutos.Wall1DropHigh;
+import frc.robot.commands.TempAutos.Wall1DropLow;
+import frc.robot.commands.TempAutos.WallMoveOut;
+import frc.robot.commands.Travelator.TravelatorLeveling;
+import frc.robot.commands.Travelator.TravelatorMoveToPosition;
+import frc.robot.commands.drivetrain.OperatorDrive;
+import frc.robot.commands.drivetrain.ResetDriveSensors;
+import frc.robot.subsystems.Arms.Dislocator;
+import frc.robot.subsystems.Arms.Elbow;
+import frc.robot.subsystems.Arms.Shoulder;
+import frc.robot.subsystems.Arms.Wrist;
+import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Travelator;
+import frc.robot.subsystems.Vision.LimeLight;
+import frc.robot.subsystems.Vision.PhotonVision;
+import java.util.List;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,274 +60,166 @@ import edu.wpi.first.wpilibj.SPI;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-  // ***** Select Auto ***** //
+
+  public static AprilTagFieldLayout aprilTagField =
+      new AprilTagFieldLayout(
+          List.of(
+              new AprilTag(
+                  5,
+                  new Pose3d(
+                      Units.inchesToMeters(14.25),
+                      Units.inchesToMeters(265.74),
+                      Units.inchesToMeters(27.38),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+              new AprilTag(
+                  6,
+                  new Pose3d(
+                      Units.inchesToMeters(40.45),
+                      Units.inchesToMeters(147.19),
+                      Units.inchesToMeters(18.22),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+              new AprilTag(
+                  7,
+                  new Pose3d(
+                      Units.inchesToMeters(40.45),
+                      Units.inchesToMeters(108.19),
+                      Units.inchesToMeters(18.22),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0)))),
+              new AprilTag(
+                  8,
+                  new Pose3d(
+                      Units.inchesToMeters(40.45),
+                      Units.inchesToMeters(42.19),
+                      Units.inchesToMeters(18.22),
+                      new Rotation3d(VecBuilder.fill(0, 0, 1), Units.degreesToRadians(0))))),
+          camConstants.kFieldLength,
+          camConstants.kFieldWidth);
+
+  // Subsystems
+  private Drivetrain sDrivetrain = new Drivetrain();
+  private LimeLight sLimeLight = new LimeLight();
+  private PhotonVision sPhotonVision = new PhotonVision();
+  private Shoulder sShoulder = new Shoulder();
+  private Dislocator sDislocator = new Dislocator();
+  private Elbow sElbow = new Elbow();
+  private Wrist sWrist = new Wrist();
+  private Travelator sTravelator = new Travelator();
+
+  //  Joysticks
+  private XboxController OpController = new XboxController(Constants.kOpStickID);
+  private Joystick coopStick1 = new Joystick(Constants.kCoopStick1ID);
+  private Joystick coopStick2 = new Joystick(Constants.kCoopStick2ID);
+
+  // Joystick Buttons
+  private Trigger presetDropLowBtn;
+  private Trigger presetDropHighBtn;
+  private Trigger presetGrabBtn;
+  private Trigger presetMoveBtn;
+  private Trigger presetStartBtn;
+  private Trigger presetStationBtn;
+  private Trigger presetBalanceBtn;
+
+  // Driving modes
+  private Trigger coneDriveBtn;
+  private Trigger cubeDriveBtn;
+  private Trigger toggleGearBtn;
+
+  // Shoulder
+  private Trigger shoulderForwardBtn;
+  private Trigger shoulderBackwardBtn;
+
+  // Travelator
+  private Trigger travelatorForwardBtn;
+  private Trigger travelatorBackwardBtn;
+  private Trigger travelAutoFrontBtn;
+  private Trigger travelAutoBackBtn;
+  private Trigger travelLevelingBtn;
+
+  // Wrist
+  private Trigger armWristForwardBtn;
+  private Trigger armWristBackwardBtn;
+  private Trigger armWristZeroBtn;
+  private Trigger armWristNinetyBtn;
+
+  // Elbow
+  private Trigger ElbowForwardBtn;
+  private Trigger ElbowBackwardBtn;
+
+  // Dislocator
+  private Trigger DislocatorForwardBtn;
+  private Trigger DislocatorBackwardBtn;
+
+  // Misc
+  private Trigger fireParkingBrake;
+  private Trigger fireParkingBrakeWork;
+  private Trigger grabBtn;
+
+  // Auto Chooser
   SendableChooser<Command> AutoSelect = new SendableChooser<>();
 
+  // Autonomous
 
-  // ***** Nav X ***** //
-  //AHRS NavX;
-  //float DisplacementX = NavX.getDisplacementX();
-  //float DisplacementY = NavX.getDisplacementY();
-  
-  // ***** Subsystems ***** //
-  private Drivetrain sDrivetrain = new Drivetrain();
-  private Intake sIntake = new Intake();
-  private Shooter sShooter = new Shooter();
-  private Conveyor sConveyor = new Conveyor();
-  private Climb sClimb = new Climb();
-  private LimeLight sLimeLight = new LimeLight();
+  private Station1DropLow cmdStation1DropLow =
+      new Station1DropLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Middle1DropLow cmdMiddle1DropLow =
+      new Middle1DropLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Wall1DropLow cmdWall1DropLow =
+      new Wall1DropLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Station1DropHigh cmdStation1DropHigh =
+      new Station1DropHigh(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Middle1DropHigh cmdMiddle1DropHigh =
+      new Middle1DropHigh(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Wall1DropHigh cmdWall1DropHigh =
+      new Wall1DropHigh(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private StationMoveOut cmdStationMoveOut =
+      new StationMoveOut(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private MiddleMoveOut cmdMiddleMoveOut =
+      new MiddleMoveOut(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private WallMoveOut cmdWallMoveOut =
+      new WallMoveOut(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private PotatoLow cmdPotatoLow =
+      new PotatoLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private PotatoHigh cmdPotatoHigh =
+      new PotatoHigh(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private DoNothin cmdDoNothin =
+      new DoNothin(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
 
-  // TODO Add in vision subsystems
-
-  // ***** Joysticks ***** //
-  private Joystick stick = new Joystick(Constants.kCoopStickID);
-  private Joystick controller = new Joystick(Constants.kOpStickID);
-
-  // ***** Joystick Buttons ***** //
-  private JoystickButton conveyorBtn;
-  private JoystickButton conveyorOutBtn;
-  private JoystickButton shooterBtn;
-  private JoystickButton intakeToggleBtn;
-  private JoystickButton gearUpBtn;
-  private JoystickButton gearDownBtn;
-  private JoystickButton intakeBtn;
-  private JoystickButton intakeOutBtn;
-  private JoystickButton climbUpBtn;
-  private JoystickButton climbDownBtn;
-  private JoystickButton climbToggleBtn;
-  private JoystickButton shootSpeedBtn1;
-  private JoystickButton shootSpeedBtn2;
-  private JoystickButton shootSpeedBtn3;
-  private JoystickButton autoVisionBtn;
-  private JoystickButton gearBtn;
-
-
-
-
-                                                              // ***** WHERE YOU SET WHICH AUTO ***** //
-
-
-  private AutoCommands mAutoCommands2 = AutoCommands.LEFT2;
-
-
-
-
-
-
-  private Command Left = new SequentialCommandGroup(
-    new InstantCommand(() -> sShooter.Shoot()), //Starts Shooter
-    new InstantCommand(() -> sIntake.IntakeSetAuto()), //Puts Intake Down
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Starts The Intake
-    new Drive(sDrivetrain, .3).withTimeout(1.25), //Drives Forward Stops With Command
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(6), //Run Conveyor Into Shooter Stops With Command
-    new Drive(sDrivetrain, .3).withTimeout(.5), //Drives Forward Stops With Command
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.ShootStop()) //Stops Shooter
-  );
-
-  private Command Middle = new SequentialCommandGroup(
-    new InstantCommand(() -> sShooter.Shoot()), //Starts Shooter
-    new InstantCommand(() -> sIntake.IntakeSetAuto()), //Puts Intake Down
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Starts The Intake
-    new Drive(sDrivetrain, .3).withTimeout(1.5), //Drives Forward Stops With Command
-    new Drive(sDrivetrain, 0, 0, -.3).withTimeout(.10), //Drives Turnings Stops With Command
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(6), //Run Conveyor Into Shooter Stops With Command
-    new Drive(sDrivetrain, .3).withTimeout(.5), //Drives Forward Stops With Command
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.ShootStop()) //Stops Shooter
-  );
-
-  private Command Right = new SequentialCommandGroup(
-    new InstantCommand(() -> sShooter.Shoot(.6)), //Starts Shooter
-    new InstantCommand(() -> sIntake.IntakeSetAuto()), //Puts Intake Down
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Starts The Intake
-    new Drive(sDrivetrain, .3).withTimeout(1), //Drives Forward Stops With Command
-    new Drive(sDrivetrain, 0).withTimeout(1),
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(1), //Run Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()), //Pulls Up Intake
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.Shoot(.55)), //Slows Shooter
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(2), //Runs Conveyor Into Shooter Stops With 
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.ShootStop()), //Stops Shooter
-    new Drive(sDrivetrain, 0, 0, .3).withTimeout(1), //Drives Turning Stops With Command
-    new Drive(sDrivetrain, 0, -.5, 0).withTimeout(.5) //Drives Strafing Stops With Command
-  );
-
-  private Command Potato = new SequentialCommandGroup(
-    new InstantCommand(() -> sShooter.Shoot()), //Starts Shooter
-    new Drive(sDrivetrain, .3).withTimeout(1.5), //Drives Forward Stops With Command
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(1), //Run Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new InstantCommand(() -> sShooter.ShootStop()), //Stops Shooter
-    new Drive(sDrivetrain, -.6).withTimeout(1) //Drives Backward Stops With Command
-  );
-
-  private Command Double = new SequentialCommandGroup(
-    new InstantCommand(() -> sShooter.Shoot(.6)), //Starts Shooter
-    new InstantCommand(() -> sIntake.IntakeSetAuto()), //Puts Intake Down
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Starts The Intake
-    new Drive(sDrivetrain, .3).withTimeout(1), //Drives Forward Stops With Command
-    new Drive(sDrivetrain, 0).withTimeout(1),
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(1), //Run Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()), //Pulls Up Intake
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.Shoot(.55)), //Slows Shooter
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(2), //Runs Conveyor Into Shooter Stops With 
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new Drive(sDrivetrain, 0, 0, .4).withTimeout(.90), //Drives Turnings Stops With Command
-    new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()), //Puts Down Intake
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Turns On Intake
-    new Drive(sDrivetrain, .3).withTimeout(2.7), //Drives Forward Stops With Command
-    new Drive(sDrivetrain, 0, 0, -.3).withTimeout(.85), 
-    new InstantCommand(() -> sShooter.Shoot()),
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(3), //Runs Conveyor Into Shooter Stops With
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor 
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.ShootStop()) //Stops Shooter
-  );
-
-  private Command MiddleFar = new SequentialCommandGroup(
-    new InstantCommand(() -> sShooter.Shoot()), //Starts Shooter
-    new InstantCommand(() -> sIntake.IntakeSetAuto()), //Puts Intake Down
-    new InstantCommand(() -> sIntake.IntakeIn(.8)), //Starts The Intake
-    new Drive(sDrivetrain, .3).withTimeout(1), //Drives Forward Stops With Command
-    new Drive(sDrivetrain, 0, 0, -.3).withTimeout(.30), //Drives Turnings Stops With Command
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(2), //Run Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()), //Pulls Up Intake
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.Shoot(.55)), //Slows Shooter
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(1), //Runs Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new Drive(sDrivetrain, 0, 0, .2).withTimeout(.45), //Drives Turnings Stops With Command
-    new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()), //Puts Down Intake
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Turns On Intake
-    new Drive(sDrivetrain, .6).withTimeout(1.5), //Drives Forward Stops With Command
-    new Drive(sDrivetrain, .2, .5, -.1).withTimeout(.8), //Drives Forward Stops With Command
-    new InstantCommand(() -> sShooter.Shoot(.85)), //Starts Shooter
-    new Drive(sDrivetrain, .3).withTimeout(.6),
-    new Drive(sDrivetrain, -.3).withTimeout(.6),
-    new AutoDriveVision(0, 0, sDrivetrain, sLimeLight).withTimeout(1),
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(5), //Runs Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.ShootStop()) //Stops Shooter
-  );
-
-  private Command DoubleFar = new SequentialCommandGroup(
-    new InstantCommand(() -> sShooter.Shoot()), //Starts Shooter
-    new InstantCommand(() -> sIntake.IntakeSetAuto()), //Puts Intake Down
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Starts The Intake
-    new Drive(sDrivetrain, .3).withTimeout(1), //Drives Forward Stops With Command
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(2), //Run Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()), //Pulls Up Intake
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)).withTimeout(2), //Runs Conveyor Into Shooter Stops With Command
-    new InstantCommand(() -> sIntake.ConveyorStop()), //Stops Conveyor
-    new Drive(sDrivetrain, 0, 0, .4).withTimeout(1), //Drives Turnings Stops With Command
-    new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()), //Puts Down Intake
-    new InstantCommand(() -> sIntake.IntakeIn(.5)), //Turns On Intake
-    new Drive(sDrivetrain, .3).withTimeout(2), //Drives Forward Stops With Command
-    new InstantCommand(() -> sIntake.IntakeOff()), //Turns Off Intake
-    new InstantCommand(() -> sShooter.ShootStop()) //Stops Shooter
-  );
+  // private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger(sDrivetrain);
+  // private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger(sDrivetrain);
+  // private RightSingle cmdRightSing = new RightSingle(sDrivetrain);
+  // private RightSingleCharger cmdRightCharge = new RightSingleCharger(sDrivetrain);
+  // private Path1Double cmdP1Double = new Path1Double(sDrivetrain);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // Default Commands
+    sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, OpController, false));
+    // sShoulder.setDefaultCommand(new ShoulderMoveToPositionTemp(sShoulder.getShoulderDesirePos(),
+    // sShoulder));
 
-    sDrivetrain.setDefaultCommand(new DriveTele(controller, sDrivetrain));
+    // Create auto chooser
 
-    AutoSelect.setDefaultOption("Right3", Double);
-    AutoSelect.addOption("Middle2", Middle);
-    AutoSelect.addOption("Right2", Right);
-    AutoSelect.addOption("Left2", Left);
-    AutoSelect.addOption("Middle4", MiddleFar);
-    AutoSelect.addOption("Potato", Potato);
-    SmartDashboard.putData(AutoSelect);
-    
+    AutoSelect.setDefaultOption("Station1DropLow", cmdStation1DropLow);
+    AutoSelect.addOption("Middle1DropLow", cmdMiddle1DropLow);
+    AutoSelect.addOption("Wall1DropLow", cmdWall1DropLow);
+    AutoSelect.addOption("Station1DropHigh", cmdStation1DropHigh);
+    AutoSelect.addOption("Middle1DropHigh", cmdMiddle1DropHigh);
+    AutoSelect.addOption("Wall1DropHigh", cmdWall1DropHigh);
+    AutoSelect.addOption("StationMoveOut", cmdStationMoveOut);
+    AutoSelect.addOption("MiddleMoveOut", cmdMiddleMoveOut);
+    AutoSelect.addOption("WallMoveOut", cmdWallMoveOut);
+    AutoSelect.addOption("PotatoLow", cmdPotatoLow);
+    AutoSelect.addOption("PotatoHigh", cmdPotatoHigh);
+    AutoSelect.addOption("DoNothin", cmdDoNothin);
 
-    // try 
-    //   {NavX = new AHRS(SPI.Port.kMXP);}
-    // catch (RuntimeException ex ) 
-    //   {DriverStation.reportError("Error instantiating navX MXP:  " + ex.getMessage(), true);}
-
-    // autoSelect.setDefaultOption("RED_RIGHT", redRight);
-    // autoSelect.addOption("RED_MIDDLE", redMiddle);
-    // autoSelect.addOption("RED_LEFT", redLeft);
-    // autoSelect.addOption("BLUE_RIGHT", blueRight);
-    // autoSelect.addOption("BLUE_MIDDLE", blueMiddle);
-    // autoSelect.addOption("BLUE_LEFt", blueLeft);
-
-    /*public Command getAutoCommand(){
-      return autoSelect.getSelected();
-    }*/
+    // ShuffleBoard
+    SmartDashboard.putData(AutoSelect); // Adds auto select to dashboard.
+    SmartDashboard.putData("RESET DRIVE SENSORS", new ResetDriveSensors(sDrivetrain));
+    SmartDashboard.putData(
+        "Starting Position", new StartingPosition(sDislocator, sElbow, sShoulder, sWrist));
 
     // Configure the button bindings
     configureButtonBindings();
-
-    conveyorBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton2);
-    conveyorBtn.whileHeld(new RunCommand(() -> sIntake.ConveyorIn(opConstants.kMaxConveyorSpeed)));
-    conveyorBtn.whenReleased(new InstantCommand(() -> sIntake.ConveyorStop()));
-
-    conveyorOutBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton3);
-    conveyorOutBtn.whileHeld(new RunCommand(() -> sIntake.ConveyorOut(opConstants.kMaxConveyorSpeed)));
-    conveyorOutBtn.whenReleased(new InstantCommand(() -> sIntake.ConveyorStop()));
-
-    autoVisionBtn = new JoystickButton(controller, ctrlConstants.kXboxRightJoystickButton);
-    autoVisionBtn.toggleWhenPressed(new DriveVision(controller, sDrivetrain, sLimeLight));
-
-    intakeBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftBumper);
-    intakeBtn.whileHeld(new RunCommand(() -> sIntake.IntakeIn()));
-    intakeBtn.whenReleased(new RunCommand(() -> sIntake.IntakeOff()));
-    intakeBtn.whenReleased(new InstantCommand(() -> sIntake.ConveyorStop()));
-
-    intakeOutBtn = new JoystickButton(controller, ctrlConstants.kXboxButtonX);
-    intakeOutBtn.whileHeld(new RunCommand(() -> sIntake.IntakeOut(-opConstants.kIntakeSpeed)));
-    intakeOutBtn.whenReleased(new RunCommand(() -> sIntake.IntakeOff()));
-
-    shooterBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton1);
-    shooterBtn.whileHeld(new RunCommand(() -> sShooter.Shoot()));
-    shooterBtn.whenReleased(new InstantCommand(() -> sShooter.ShootStall()));
-
-    intakeToggleBtn = new JoystickButton(controller, ctrlConstants.kXboxRightBumper);
-    intakeToggleBtn.whenPressed(new InstantCommand(() -> sIntake.ToggleIntakeSolenoid()));
-
-    shootSpeedBtn1 = new JoystickButton(stick, ctrlConstants.kJoystickButton7);
-    shootSpeedBtn1.whenPressed(new InstantCommand(() -> sShooter.ShootSpeed1()));
-
-    shootSpeedBtn2 = new JoystickButton(stick, ctrlConstants.kJoystickButton8);
-    shootSpeedBtn2.whenPressed(new InstantCommand(() -> sShooter.ShootSpeed2()));
-
-    shootSpeedBtn3 = new JoystickButton(stick, ctrlConstants.kJoystickButton9);
-    shootSpeedBtn3.whenPressed(new InstantCommand(() -> sShooter.ShootSpeed3()));
-
-    // gearUpBtn = new JoystickButton(controller, Constants.kXboxButtonY);
-    // gearUpBtn.whenPressed(new InstantCommand(() -> sDrivetrain.GearUp()));
-
-    // gearDownBtn = new JoystickButton(controller, Constants.kXboxButtonA);
-    // gearDownBtn.whenPressed(new InstantCommand(() -> sDrivetrain.GearDown()));
-
-    gearBtn = new JoystickButton(controller, ctrlConstants.kXboxLeftJoystickButton);
-    gearBtn.whenPressed(new InstantCommand(() -> sDrivetrain.Gear()));
-
-    climbUpBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton6);
-    climbUpBtn.whenPressed(new InstantCommand(() -> sShooter.ShootStop()));
-    climbUpBtn.whenPressed(new InstantCommand(() -> sClimb.ClimbUp()));
-    climbUpBtn.whenReleased(new InstantCommand(() -> sClimb.ClimbStop()));
-
-    climbDownBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton4);
-    climbDownBtn.whenPressed(new InstantCommand(() -> sShooter.ShootStop()));
-    climbDownBtn.whenPressed(new InstantCommand(() -> sClimb.ClimbDown()));
-    climbDownBtn.whenReleased(new InstantCommand(() -> sClimb.ClimbStop()));
-
-    climbToggleBtn = new JoystickButton(stick, ctrlConstants.kJoystickButton11);
-    climbToggleBtn.whenPressed(new InstantCommand(() -> sShooter.ShootStop()));
-    climbToggleBtn.whenPressed(new InstantCommand(() -> sClimb.ClimbSolenoidToggle()));
-
   }
 
   /**
@@ -322,13 +228,160 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
    * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
 
-  /*public Command getAutoChoice()
-  {
-    return autoSelect.getSelected;
-  }*/
+    // Parking Break Buttons
 
+    fireParkingBrake = new POVButton(OpController, 180);
+    fireParkingBrake.onTrue(sDrivetrain.cmdToggleBrake());
+    // fireParkingBrake.toggleOnTrue(new TravelatorLeveling(sTravelator, sDrivetrain));
+
+    // fireParkingBrakeWork = new POVButton(OpController, 0);
+    // fireParkingBrakeWork.onTrue(sDrivetrain.cmdToggleBrake());
+
+    // fireParkingBrake.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack,
+    // sTravelator));
+    // fireParkingBrake.onTrue(new DislocatorMoveToPosition(0, sDislocator));
+    // fireParkingBrake.onTrue(new ShoulderMoveToPosition(0, sShoulder));
+    // fireParkingBrake.onTrue(new ElbowMoveToPosition(0, sElbow));
+    // fireParkingBrake.onTrue(sWrist.cmdGrabOpen());
+
+    // Driving modes
+
+    // coneDriveBtn = new JoystickButton(OpController, 6);
+    // coneDriveBtn.toggleOnTrue(new ConeDropOff(OpController, sDrivetrain, sLimeLight));
+
+    // cubeDriveBtn = new JoystickButton(OpController, 5);
+    // cubeDriveBtn.toggleOnTrue(new CubeDropOff(OpController, sDrivetrain, sPhotonVision));
+
+    toggleGearBtn = new JoystickButton(OpController, 9);
+    toggleGearBtn.onTrue(sDrivetrain.cmdToggleGear());
+
+    // Shoulder Buttons
+
+    shoulderForwardBtn = new JoystickButton(coopStick2, 4);
+    shoulderForwardBtn.whileTrue(sShoulder.cmdShoulderForward());
+
+    shoulderBackwardBtn = new JoystickButton(coopStick2, 6);
+    shoulderBackwardBtn.whileTrue(sShoulder.cmdShoulderBackward());
+
+    // Travelator Buttons
+
+    travelatorForwardBtn = new JoystickButton(coopStick2, 5);
+    travelatorForwardBtn.whileTrue(sTravelator.cmdMoveForward());
+
+    travelatorBackwardBtn = new JoystickButton(coopStick2, 3);
+    travelatorBackwardBtn.whileTrue(sTravelator.cmdMoveBackward());
+
+    // travelAutoFrontBtn = new POVButton(coopStick1, 0);
+    // travelAutoFrontBtn.onTrue(
+    //     new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
+
+    // travelAutoBackBtn = new POVButton(coopStick1, 180);
+    // travelAutoBackBtn.onTrue(
+    //     new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
+
+    travelLevelingBtn = new JoystickButton(coopStick1, 11);
+    travelLevelingBtn.onTrue(new TravelatorLeveling(sTravelator, sDrivetrain));
+
+    // Wrist Buttons
+
+    armWristForwardBtn = new POVButton(coopStick2, 90);
+    armWristForwardBtn.whileTrue(sWrist.cmdWristForward());
+
+    armWristBackwardBtn = new POVButton(coopStick2, 270);
+    armWristBackwardBtn.whileTrue(sWrist.cmdWristBackward());
+
+    armWristZeroBtn = new POVButton(coopStick2, 0);
+    armWristZeroBtn.onTrue(new WristMoveToPosition(0, sWrist));
+
+    armWristNinetyBtn = new POVButton(coopStick2, 180);
+    armWristNinetyBtn.onTrue(new WristMoveToPosition(90, sWrist));
+
+    grabBtn = new JoystickButton(coopStick2, 1);
+    grabBtn.onTrue(sWrist.GrabToggle());
+
+    // Elbow Buttons
+
+    ElbowForwardBtn = new JoystickButton(coopStick1, 6);
+    ElbowForwardBtn.whileTrue(sElbow.cmdArmElbowForward());
+
+    ElbowBackwardBtn = new JoystickButton(coopStick1, 4);
+    ElbowBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
+
+    // Dislocate your arm!
+
+    DislocatorForwardBtn = new JoystickButton(coopStick1, 5);
+    DislocatorForwardBtn.whileTrue(sDislocator.cmdDislocatorMoveForward());
+
+    DislocatorBackwardBtn = new JoystickButton(coopStick1, 3);
+    DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
+
+    // Preset Buttons
+
+    presetStartBtn = new JoystickButton(coopStick1, 7);
+    presetStartBtn.onTrue(sWrist.cmdResetWristEncoder());
+    presetStartBtn.onTrue(sElbow.cmdResetElbowEncoder());
+    presetStartBtn.onTrue(sShoulder.cmdResetShoulderEncoder());
+
+    // Preset the robot to grab upright
+
+    presetGrabBtn = new JoystickButton(OpController, 3);
+    presetGrabBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
+    presetGrabBtn.onTrue(new DislocatorMoveToPosition(17, sDislocator));
+    presetGrabBtn.onTrue(new ShoulderMoveToPosition(-460, sShoulder));
+    presetGrabBtn.onTrue(new ElbowMoveToPositionTele(-39, sElbow));
+    presetGrabBtn.onTrue(new WristMoveToPosition(0, sWrist));
+
+    // Grab at station button
+
+    presetStationBtn = new JoystickButton(coopStick1, 1);
+    presetStationBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack + 3, sTravelator));
+    presetStationBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
+    presetStationBtn.onTrue(new ShoulderMoveToPosition(-165, sShoulder));
+    presetStationBtn.onTrue(new ElbowMoveToPositionTele(65, sElbow));
+    presetStationBtn.onTrue(new WristMoveToPosition(0, sWrist));
+
+    // Preset the robot to safe driving position
+
+    presetMoveBtn = new JoystickButton(OpController, 2);
+    presetMoveBtn.onTrue(new ShoulderMoveToPosition(-183, sShoulder));
+    presetMoveBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
+    presetMoveBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
+    presetMoveBtn.onTrue(new WristMoveToPosition(0, sWrist));
+
+    // Preset the robot to drop a cone on the lower pipe
+
+    presetDropLowBtn = new JoystickButton(OpController, 1);
+    presetDropLowBtn.onTrue(
+        new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, sTravelator));
+    presetDropLowBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
+    presetDropLowBtn.onTrue(new ShoulderMoveToPosition(-199.5, sShoulder));
+    presetDropLowBtn.onTrue(new ElbowMoveToPositionTele(30, sElbow));
+    presetDropLowBtn.onTrue(new WristMoveToPosition(0, sWrist));
+
+    // Preset the robot to drop a cone on the higher pipe
+
+    presetDropHighBtn = new JoystickButton(OpController, 4);
+    presetDropHighBtn.onTrue(
+        new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
+    presetDropHighBtn.onTrue(new DislocatorMoveToPosition(22, sDislocator));
+    presetDropHighBtn.onTrue(new ShoulderMoveToPosition(-150, sShoulder));
+    presetDropHighBtn.onTrue(new ElbowMoveToPositionTele(30, sElbow));
+    presetDropHighBtn.onTrue(new WristMoveToPosition(0, sWrist));
+
+    // Preset to start balancing on the Charge Station
+
+    presetBalanceBtn = new JoystickButton(coopStick2, 2);
+    presetBalanceBtn.onTrue(
+        new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, sTravelator));
+    presetBalanceBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
+    presetBalanceBtn.onTrue(new ShoulderMoveToPosition(-330, sShoulder));
+    presetBalanceBtn.onTrue(new ElbowMoveToPositionTele(90, sElbow));
+    presetBalanceBtn.onTrue(new WristMoveToPosition(0, sWrist));
+  }
+
+  // Getter Methods
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
@@ -336,38 +389,43 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return AutoSelect.getSelected();
-      /* switch(mAutoCommands2) {
-        case RIGHT2:
-          return Right;
-        case MIDDLE2:
-          return Middle;
-        case LEFT2:
-          return Left;
-        case POTATO:
-          return Potato;
-        case RIGHT3:
-          return Double;
-        case MIDDLE4:
-          return MiddleFar;
-        default:
-          return Right;
-     } */
   }
 
-  public Command getAutCommand(){
+  public Command getAutCommand() {
     return AutoSelect.getSelected();
   }
-  
+
   // Getter Methods
 
-  public Drivetrain getDrivetrain() { return sDrivetrain; }
-  public Intake getIntake() { return sIntake; }
-  public Shooter getShooter() { return sShooter; }
-  public Conveyor getConveyor() { return sConveyor; }
-  public Climb getClimb() { return sClimb; }
-  public LimeLight getLimeLight() { return sLimeLight; }
+  public Drivetrain getDrivetrain() {
+    return sDrivetrain;
+  }
 
-  public Joystick getStick() { return stick; }
-  public Joystick getController() { return controller; }
-  
+  public Shoulder getShoulder() {
+    return sShoulder;
+  }
+
+  public Wrist getWrist() {
+    return sWrist;
+  }
+
+  public LimeLight getLimeLight() {
+    return sLimeLight;
+  }
+
+  public PhotonVision getPhotonVision() {
+    return sPhotonVision;
+  }
+
+  public Joystick getStick() {
+    return coopStick2;
+  }
+
+  public Joystick getController() {
+    return coopStick1;
+  }
+
+  public XboxController getOpController() {
+    return OpController;
+  }
 }
