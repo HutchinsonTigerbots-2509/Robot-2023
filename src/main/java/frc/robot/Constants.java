@@ -63,7 +63,7 @@ public final class Constants {
 
     // ***** Shoulder Constants ***** //
     public static final int kShoulderID = 4;
-    public static final double kShoulderGearRatio = 240; // gear box ratio is 144:1...
+    public static final double kShoulderGearRatio = 240; 
     public static final double kShoulderSpeed = 1;
     public static final int kArmCounterID = 0;
     public static final double kShoudlerOffSet = 183;

@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -40,8 +41,9 @@ public class Drivetrain extends SubsystemBase {
   public MecanumDrive drivetrain =
       new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 
-  // Nav-X
+  // Nav-X & Gyros
   private AHRS navx = new AHRS();
+  private ADXRS450_Gyro dtgyro = new ADXRS450_Gyro();
 
   // Parking Brake Cylinders
   private DoubleSolenoid parkingBrake =
@@ -273,7 +275,7 @@ public class Drivetrain extends SubsystemBase {
    * @return value from -180 to 180 degrees.
    */
   public double getAngle() {
-    return navx.getYaw();
+    return dtgyro.getAngle();
   }
 
   public double getSpeed() {
