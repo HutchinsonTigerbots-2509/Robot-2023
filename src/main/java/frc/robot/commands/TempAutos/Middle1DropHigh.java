@@ -62,7 +62,7 @@ public class Middle1DropHigh extends InstantCommand {
                     new ShoulderMoveToPosition(-200, shoulder),
                     new ElbowMoveToPosition(25, elbow))
                 .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.3),
@@ -80,7 +80,7 @@ public class Middle1DropHigh extends InstantCommand {
                     new ShoulderMoveToPosition(-200, shoulder),
                     new ElbowMoveToPosition(25, elbow))
                 .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(1),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.3),

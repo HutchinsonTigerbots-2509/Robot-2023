@@ -61,8 +61,8 @@ public class PotatoLow extends InstantCommand {
                     new ElbowMoveToPosition(30, elbow),
                     new WristMoveToPosition(0, wrist))
                 .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator)
-                .withTimeout(1),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront - 6, travelator)
+                .withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new ShoulderMoveToPosition(-133, shoulder),
@@ -79,8 +79,8 @@ public class PotatoLow extends InstantCommand {
                     new ElbowMoveToPosition(30, elbow),
                     new WristMoveToPosition(0, wrist))
                 .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront - 3.5, travelator)
-                .withTimeout(1),
+            new TravelatorMoveToPosition(opConstants.kTravelatorFront - 6, travelator)
+                .withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new ShoulderMoveToPosition(-133, shoulder),

@@ -64,7 +64,7 @@ public class Middle1DropLow extends InstantCommand {
                     new WristMoveToPosition(0, wrist))
                 .withTimeout(2),
             new TravelatorMoveToPosition(opConstants.kTravelatorFront - 6, travelator)
-                .withTimeout(1),
+                .withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.3),
@@ -84,7 +84,7 @@ public class Middle1DropLow extends InstantCommand {
                     new WristMoveToPosition(0, wrist))
                 .withTimeout(2),
             new TravelatorMoveToPosition(opConstants.kTravelatorFront - 6, travelator)
-                .withTimeout(1),
+                .withTimeout(2),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.3),

@@ -273,15 +273,15 @@ public class RobotContainer {
     travelatorBackwardBtn = new JoystickButton(coopStick2, 3);
     travelatorBackwardBtn.whileTrue(sTravelator.cmdMoveBackward());
 
-    travelAutoFrontBtn = new POVButton(coopStick1, 0);
-    travelAutoFrontBtn.onTrue(
-        new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
+    // travelAutoFrontBtn = new POVButton(coopStick1, 0);
+    // travelAutoFrontBtn.onTrue(
+    //     new TravelatorMoveToPosition(opConstants.kTravelatorFront, sTravelator));
 
-    travelAutoBackBtn = new POVButton(coopStick1, 180);
-    travelAutoBackBtn.onTrue(
-        new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
+    // travelAutoBackBtn = new POVButton(coopStick1, 180);
+    // travelAutoBackBtn.onTrue(
+    //     new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
 
-    travelLevelingBtn = new JoystickButton(coopStick1, 2);
+    travelLevelingBtn = new JoystickButton(coopStick1, 11);
     travelLevelingBtn.onTrue(new TravelatorLeveling(sTravelator, sDrivetrain));
 
     // Wrist Buttons
@@ -336,10 +336,10 @@ public class RobotContainer {
     // Grab at station button
 
     presetStationBtn = new JoystickButton(coopStick1, 1);
-    presetStationBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
+    presetStationBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack + 3, sTravelator));
     presetStationBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
-    presetStationBtn.onTrue(new ShoulderMoveToPosition(-133, sShoulder));
-    presetStationBtn.onTrue(new ElbowMoveToPositionTele(30, sElbow));
+    presetStationBtn.onTrue(new ShoulderMoveToPosition(-165, sShoulder));
+    presetStationBtn.onTrue(new ElbowMoveToPositionTele(65, sElbow));
     presetStationBtn.onTrue(new WristMoveToPosition(0, sWrist));
 
     // Preset the robot to safe driving position
