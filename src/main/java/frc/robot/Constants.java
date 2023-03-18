@@ -69,7 +69,7 @@ public final class Constants {
     public static final double kShoudlerOffSet = 183;
 
     // ** Elbow Constants */
-    public static final int kArmElbowID = 11;
+    public static final int kArmElbowID = 12;
     public static final double kElbowSpeed = 1;
     public static final int kElbowEncoder1ID = 4;
     public static final int kElbowEncoder2ID = 5;

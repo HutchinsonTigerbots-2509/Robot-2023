@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
-import frc.robot.subsystems.Arms.Wrist;
+import frc.robot.subsystems.Arms.Grabber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
 
@@ -27,7 +27,7 @@ public class DoNothin extends InstantCommand {
   Dislocator dislocator;
   Elbow elbow;
   Shoulder shoulder;
-  Wrist wrist;
+  Grabber grabber;
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
@@ -36,14 +36,14 @@ public class DoNothin extends InstantCommand {
       Dislocator pDislocator,
       Elbow pElbow,
       Shoulder pShoulder,
-      Wrist pWrist,
+      Grabber pGrabber,
       Travelator pTravelator) {
 
     drivetrain = pDrivetrain;
     dislocator = pDislocator;
     elbow = pElbow;
     shoulder = pShoulder;
-    wrist = pWrist;
+    grabber = pGrabber;
     travelator = pTravelator;
 
     blueCommandSequence = Commands.sequence();

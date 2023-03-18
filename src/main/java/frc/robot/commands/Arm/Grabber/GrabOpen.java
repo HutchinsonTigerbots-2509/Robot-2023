@@ -5,17 +5,17 @@
 package frc.robot.commands.Arm.Grabber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Arms.Wrist;
+import frc.robot.subsystems.Arms.Grabber;
 
 public class GrabOpen extends CommandBase {
   /** Creates a new GrabClose. */
-  private Wrist wrist;
+  private Grabber grabber;
 
-  public GrabOpen(Wrist pWrist) {
+  public GrabOpen(Grabber pGrabber) {
 
-    wrist = pWrist;
+    grabber = pGrabber;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(wrist);
+    addRequirements(grabber);
   }
 
   // Called when the command is initially scheduled.
@@ -25,7 +25,7 @@ public class GrabOpen extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    wrist.GrabOpen();
+    grabber.GrabOpen();
   }
 
   // Called once the command ends or is interrupted.

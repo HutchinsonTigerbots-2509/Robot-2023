@@ -14,14 +14,13 @@ import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
-import frc.robot.subsystems.Arms.Wrist;
+import frc.robot.subsystems.Arms.Grabber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
 
@@ -36,7 +35,7 @@ public class Middle1DropHigh extends InstantCommand {
   Dislocator dislocator;
   Elbow elbow;
   Shoulder shoulder;
-  Wrist wrist;
+  Grabber grabber;
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
@@ -45,14 +44,14 @@ public class Middle1DropHigh extends InstantCommand {
       Dislocator pDislocator,
       Elbow pElbow,
       Shoulder pShoulder,
-      Wrist pWrist,
+      Grabber pGrabber,
       Travelator pTravelator) {
 
     drivetrain = pDrivetrain;
     dislocator = pDislocator;
     elbow = pElbow;
     shoulder = pShoulder;
-    wrist = pWrist;
+    grabber = pGrabber;
     travelator = pTravelator;
 
     blueCommandSequence =
@@ -63,14 +62,13 @@ public class Middle1DropHigh extends InstantCommand {
                     new ElbowMoveToPosition(25, elbow))
                 .withTimeout(2),
             new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
-            new GrabOpen(wrist).withTimeout(1),
+            new GrabOpen(grabber).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.3),
                 new ShoulderMoveToPosition(-330, shoulder),
                 new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
                 new DislocatorMoveToPosition(0, dislocator),
-                new ElbowMoveToPosition(154, elbow),
-                new WristMoveToPosition(0, wrist)).withTimeout(2.5),
+                new ElbowMoveToPosition(154, elbow)).withTimeout(2.5),
             new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     redCommandSequence =
@@ -78,17 +76,15 @@ public class Middle1DropHigh extends InstantCommand {
             Commands.parallel(
                     new DislocatorMoveToPosition(22, dislocator),
                     new ShoulderMoveToPosition(-200, shoulder),
-                    new ElbowMoveToPosition(25, elbow))
-                .withTimeout(2),
+                    new ElbowMoveToPosition(25, elbow)).withTimeout(2),
             new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
-            new GrabOpen(wrist).withTimeout(1),
+            new GrabOpen(grabber).withTimeout(1),
             Commands.parallel(
                 new DriveAuto(pDrivetrain, -.3),
                 new ShoulderMoveToPosition(-330, shoulder),
                 new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
                 new DislocatorMoveToPosition(0, dislocator),
-                new ElbowMoveToPosition(154, elbow),
-                new WristMoveToPosition(0, wrist)).withTimeout(2.5),
+                new ElbowMoveToPosition(154, elbow)).withTimeout(2.5),
             new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     // Use addRequirements() here to declare subsystem dependencies.
