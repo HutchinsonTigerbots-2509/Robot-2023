@@ -5,8 +5,8 @@
 package frc.robot.subsystems.Arms;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.Encoder;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -14,22 +14,13 @@ import frc.robot.Constants.opConstants;
 
 public class Elbow extends SubsystemBase {
 
-  public WPI_TalonSRX armElbow = new WPI_TalonSRX(opConstants.kArmElbowID);
+  public WPI_TalonFX armElbow = new WPI_TalonFX(opConstants.kArmElbowID);
   // public Encoder ElbowEncoder = new Encoder(6, 7);
-  private Encoder ElbowEncoder =
-      new Encoder(
-          opConstants.kElbowEncoder1ID,
-          opConstants.kElbowEncoder2ID,
-          false,
-          Encoder.EncodingType.k4X);
 
   /** Creates a new Elbow. */
   public Elbow() {
-    ElbowEncoder.setDistancePerPulse(4.4);
-    ElbowEncoder.setMinRate(1);
-    ElbowEncoder.setReverseDirection(false);
-    ElbowEncoder.setSamplesToAverage(5);
-    ElbowEncoder.reset();
+    armElbow.setSelectedSensorPosition(0);
+    armElbow.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
@@ -41,11 +32,7 @@ public class Elbow extends SubsystemBase {
 
   /** The Elbow */
   public void ResetElbowEncoder() {
-    ElbowEncoder.setDistancePerPulse(4.4);
-    ElbowEncoder.setMinRate(1);
-    ElbowEncoder.setReverseDirection(false);
-    ElbowEncoder.setSamplesToAverage(5);
-    ElbowEncoder.reset();
+    armElbow.setSelectedSensorPosition(0);
   }
 
   public Command cmdResetElbowEncoder() {
@@ -84,6 +71,7 @@ public class Elbow extends SubsystemBase {
 
   // Gets the position for the Elbow to move
   public double getElbowPose() {
-    return ElbowEncoder.getDistance() - opConstants.kElbowOffSet;
+    return (armElbow.getSelectedSensorPosition() / (2048 * opConstants.kElbowGearRatio / 360))
+        - opConstants.kElbowOffSet;
   }
 }

@@ -12,8 +12,8 @@ import frc.robot.subsystems.Arms.Elbow;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ElbowMoveToPositionTele extends PIDCommand {
-  static final double kP = 0.5;
-  static final double kI = 0.05;
+  static final double kP = 0.01;
+  static final double kI = 0.005;
   static final double kD = 0.0;
 
   /** Creates a new WristMoveToPosition. */
@@ -28,19 +28,19 @@ public class ElbowMoveToPositionTele extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          elbow.ElbowMove(-output);
+          elbow.ElbowMove(output);
         });
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elbow);
     // Configure additional PID options by calling `getController` here.
-    this.getController().setTolerance(4.0);
+    this.getController().setTolerance(1);
     this.getController().setSetpoint(PreferredAngle);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.getController().atSetpoint();
+    return false;
   }
 }
 

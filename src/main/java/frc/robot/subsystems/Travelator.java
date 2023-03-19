@@ -53,6 +53,8 @@ public class Travelator extends SubsystemBase {
       Travelator.setSelectedSensorPosition(opConstants.kTravelatorMax);
       Travelator.set(ControlMode.PercentOutput, 0);
     }
+
+    SmartDashboard.putNumber("Travelator", getTravelatorPos());
   }
 
   public void MoveBackward() {

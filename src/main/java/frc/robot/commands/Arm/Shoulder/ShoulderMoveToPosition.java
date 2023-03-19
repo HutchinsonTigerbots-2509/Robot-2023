@@ -12,7 +12,7 @@ import frc.robot.subsystems.Arms.Shoulder;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ShoulderMoveToPosition extends PIDCommand {
-  static final double kP = 0.3;
+  static final double kP = 0.02;
   static final double kI = 0.005;
   static final double kD = 0.00;
   /** Creates a new Shoulder. */
@@ -32,13 +32,13 @@ public class ShoulderMoveToPosition extends PIDCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shoulder);
     // Configure additional PID options by calling `getController` here.
-    this.getController().setTolerance(4.0);
+    this.getController().setTolerance(1);
     this.getController().setSetpoint(PreferredAngle);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return this.getController().atSetpoint();
+    return false;
   }
 }

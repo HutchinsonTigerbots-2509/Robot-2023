@@ -63,17 +63,16 @@ public final class Constants {
 
     // ***** Shoulder Constants ***** //
     public static final int kShoulderID = 4;
-    public static final double kShoulderGearRatio = 240; 
+    public static final double kShoulderGearRatio = 240; // 100:1 60:25
     public static final double kShoulderSpeed = 1;
     public static final int kArmCounterID = 0;
-    public static final double kShoudlerOffSet = 183;
+    public static final double kShoudlerOffSet = 44;
 
     // ** Elbow Constants */
-    public static final int kArmElbowID = 11;
-    public static final double kElbowSpeed = 1;
-    public static final int kElbowEncoder1ID = 4;
-    public static final int kElbowEncoder2ID = 5;
-    public static final double kElbowOffSet = -155; // -159;
+    public static final int kArmElbowID = 12;
+    public static final double kElbowSpeed = .4;
+    public static final double kElbowOffSet = 136; // -159;
+    public static final double kElbowGearRatio = 100;
 
     // ** Wrist Constants */
     public static final int kArmWristID = 10;

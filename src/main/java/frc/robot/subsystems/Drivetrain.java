@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -40,6 +42,12 @@ public class Drivetrain extends SubsystemBase {
   // Putting all the motors into a Drivetrain
   public MecanumDrive drivetrain =
       new MecanumDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+
+  private PIDController rotController;
+
+  static final double kP = 0.2;
+  static final double kI = 0.001;
+  static final double kD = 0.00;
 
   // Nav-X & Gyros
   private AHRS navx = new AHRS();
@@ -96,6 +104,10 @@ public class Drivetrain extends SubsystemBase {
     rearRightMotor.setNeutralMode(NeutralMode.Brake);
     rearLeftMotor.setNeutralMode(NeutralMode.Brake);
 
+    this.rotController = new PIDController(kP, kI, kD);
+    this.rotController.setTolerance(2);
+    this.rotController.enableContinuousInput(-180, 180);
+
     // Setup Odeometry
     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
@@ -103,6 +115,7 @@ public class Drivetrain extends SubsystemBase {
     // SmartDashboard.putData("Field", field);
     // SmartDashboard.putNumber("Odom X", robotPose.getX());
     // SmartDashboard.putNumber("Odom Y", robotPose.getY());
+    
   }
 
   @Override
@@ -276,6 +289,12 @@ public class Drivetrain extends SubsystemBase {
    */
   public double getAngle() {
     return dtgyro.getAngle();
+  }
+
+  public double getRotSpeed() {
+    double rotSpeed;
+    rotSpeed = rotController.calculate(getAngle());
+    return rotSpeed;
   }
 
   public double getSpeed() {
