@@ -113,6 +113,10 @@ public class Drivetrain extends SubsystemBase {
     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
         new MecanumDriveOdometry(kinematics, navx.getRotation2d(), getWheelPositions(), robotPose);
+    
+    dtgyro.calibrate();
+    dtgyro.reset();
+
     // SmartDashboard.putData("Field", field);
     // SmartDashboard.putNumber("Odom X", robotPose.getX());
     // SmartDashboard.putNumber("Odom Y", robotPose.getY());
@@ -287,7 +291,7 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Returns the current heading of the robot.
    *
-   * @return value from -180 to 180 degrees.
+   * @return value from 0 to 180 degrees.
    */
 
   public double getAngle() {

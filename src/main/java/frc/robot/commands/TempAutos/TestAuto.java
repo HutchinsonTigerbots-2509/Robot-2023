@@ -59,12 +59,12 @@ public class TestAuto extends InstantCommand {
 
     blueCommandSequence =
     Commands.sequence(
-      new DriveAutoGyro(pDrivetrain, 0, 0, 0)
+      new DriveAutoGyro(pDrivetrain, 0, 0, 180)
         );
 
     redCommandSequence =
     Commands.sequence(
-      new DriveAutoGyro(pDrivetrain, 0, 0, 0)
+      new DriveAutoGyro(pDrivetrain, 0, 0, 180)
         );
 
     // Use addRequirements() here to declare subsystem dependencies.

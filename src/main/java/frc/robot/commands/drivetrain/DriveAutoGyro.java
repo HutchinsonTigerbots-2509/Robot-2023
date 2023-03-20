@@ -4,40 +4,50 @@
 
 package frc.robot.commands.drivetrain;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
+public class DriveAutoGyro extends CommandBase {
+  private final Drivetrain Dt;
+  private double Y;
+  private double X;
+  private double Z;
+  private double ZPos;
 
-// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
-// information, see:
-// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class DriveAutoGyro extends PIDCommand {
+  /** Creates a new DriveTele. */
+  public DriveAutoGyro(Drivetrain pDt, double pX, double pY, double pZPos) {
+    Dt = pDt;
+    X = pX;
+    Y = pY;
+    ZPos = pZPos;
 
-  static final double kP = 0.05;
-  static final double kI = 0.005;
-  static final double kD = 0.00;
-  static final double kF = 0.00;
-
-  /** Creates a new AutoDriveGyro. */
-  public DriveAutoGyro(Drivetrain Dt, double y, double x, double zPos) {
-    super(
-        // The controller that the command will use
-        new PIDController(kP, kI, kD),
-        // This should return the measurement
-        Dt::getAngle,
-        // This should return the setpoint (can also be a constant)
-        zPos,
-        // This uses the output
-        output -> {
-          // Use the output here
-          Dt.mecanumDrive(x, y, output);;
-        });
-    // Use addRequirements() here to declare subsystem dependencies
+    // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Dt);
-    // Configure additional PID options by calling `getController` here.
-    this.getController().setTolerance(2);
-    this.getController().setSetpoint(zPos);
+  }
+
+  // Called when the command is initially scheduled.
+  @Override
+  public void initialize() {}
+
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    if ((Dt.getAngle() + ZPos) < -5) {
+      Z = ((Dt.getAngle() + ZPos) * .007) - .06;
+    } else if ((Dt.getAngle() + ZPos) > 5) {
+      Z = ((Dt.getAngle() * .007) + ZPos) + .06;
+    } else {
+      Z = 0;
+    }
+
+    Dt.mecanumDrive(X, -Y, -Z);
+  }
+
+  // Called once the command ends or is interrupted.
+  @Override
+  public void end(boolean interrupted) {
+    Dt.mecanumDrive(0, 0, 0);
   }
 
   // Returns true when the command should end.

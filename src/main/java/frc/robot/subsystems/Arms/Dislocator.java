@@ -5,6 +5,7 @@
 package frc.robot.subsystems.Arms;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +22,8 @@ public class Dislocator extends SubsystemBase {
 
   public Dislocator() {
     Dislocator.setInverted(false);
+
+    Dislocator.setNeutralMode(NeutralMode.Brake);
   }
 
   @Override
