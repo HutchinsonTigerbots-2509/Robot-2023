@@ -15,7 +15,7 @@ import frc.robot.subsystems.Drivetrain;
 public class DriveAutoGyro extends PIDCommand {
 
   static final double kP = 0.05;
-  static final double kI = 0.01;
+  static final double kI = 0.005;
   static final double kD = 0.00;
   static final double kF = 0.00;
 
@@ -31,13 +31,13 @@ public class DriveAutoGyro extends PIDCommand {
         // This uses the output
         output -> {
           // Use the output here
-          Dt.mecanumDrive(x, y, -output);;
+          Dt.mecanumDrive(x, y, output);;
         });
     // Use addRequirements() here to declare subsystem dependencies
     addRequirements(Dt);
     // Configure additional PID options by calling `getController` here.
-    this.getController().setTolerance(0.25);
-    this.getController().setSetpoint(0);
+    this.getController().setTolerance(2);
+    this.getController().setSetpoint(zPos);
   }
 
   // Returns true when the command should end.

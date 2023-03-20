@@ -10,6 +10,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
+import java.lang.Math;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -135,6 +136,7 @@ public class Drivetrain extends SubsystemBase {
     // SmartDashboard.putNumber("Pitch", navx.getPitch());
     // SmartDashboard.putNumber("X", field.getRobotPose().getX());
     // SmartDashboard.putNumber("Y", field.getRobotPose().getY());
+    SmartDashboard.putNumber("getAngle", getAngle());
     SmartDashboard.updateValues();
   }
 
@@ -287,6 +289,7 @@ public class Drivetrain extends SubsystemBase {
    *
    * @return value from -180 to 180 degrees.
    */
+
   public double getAngle() {
     return dtgyro.getAngle();
   }

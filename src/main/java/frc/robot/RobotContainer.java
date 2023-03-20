@@ -40,6 +40,7 @@ import frc.robot.commands.TempAutos.Station1DropHigh;
 import frc.robot.commands.TempAutos.Station1DropHighPark;
 import frc.robot.commands.TempAutos.Station1DropLow;
 import frc.robot.commands.TempAutos.StationMoveOut;
+import frc.robot.commands.TempAutos.TestAuto;
 import frc.robot.commands.TempAutos.Wall1DropHigh;
 import frc.robot.commands.TempAutos.Wall1DropLow;
 import frc.robot.commands.TempAutos.WallMoveOut;
@@ -195,8 +196,11 @@ public class RobotContainer {
       new PotatoLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
   private PotatoHigh cmdPotatoHigh =
       new PotatoHigh(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+
   private DoNothin cmdDoNothin =
       new DoNothin(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+      private TestAuto cmdTestAuto =
+      new TestAuto(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
 
   // private LeftSingleCharger cmdLeftCharge = new LeftSingleCharger(sDrivetrain);
   // private MiddleSingleCharger cmdMidCharge = new MiddleSingleCharger(sDrivetrain);
@@ -230,8 +234,9 @@ public class RobotContainer {
 
     AutoSelect.addOption("PotatoLow", cmdPotatoLow);
     AutoSelect.addOption("PotatoHigh", cmdPotatoHigh);
-    
+
     AutoSelect.addOption("DoNothin", cmdDoNothin);
+    AutoSelect.addOption("TestAuto(DO NOT USE)", cmdTestAuto);
 
     // ShuffleBoard
     SmartDashboard.putData(AutoSelect); // Adds auto select to dashboard.
