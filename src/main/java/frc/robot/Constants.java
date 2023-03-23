@@ -24,8 +24,8 @@ public final class Constants {
 
   // Joystick ID's
   public static final int kOpStickID = 0;
-  public static final int kCoopStick1ID = 1;
-  public static final int kCoopStick2ID = 2;
+  public static final int kButtonBoardLeftID = 1;
+  public static final int kButtonBoardRightID = 2;
 
   public static final class opConstants {
 
@@ -58,8 +58,9 @@ public final class Constants {
     public static final double kTravelatorMax = 113800;
     public static final double kTravelatorMin = 0;
     public static final double kTravelatorBack = 0;
-    public static final double kTravelatorMiddle = 10;
-    public static final double kTravelatorFront = 19;
+    public static final double kTravelatorMiddle = 8;
+    public static final double kTravelatorFront = 15;
+
 
     // ***** Shoulder Constants ***** //
     public static final int kShoulderID = 4;
@@ -73,6 +74,10 @@ public final class Constants {
     public static final double kElbowSpeed = .4;
     public static final double kElbowOffSet = 136; // -159;
     public static final double kElbowGearRatio = 100;
+    public static final int kElbowLimitSwitchTopID = 4;
+    public static final int kElbowLimitSwitchBottomID = 5;
+    public static final int kElbowMin = -111;
+    public static final int kElbowMax = 31;
 
     // ** Wrist Constants */
     public static final int kArmWristID = 10;

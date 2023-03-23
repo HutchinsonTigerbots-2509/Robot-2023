@@ -13,13 +13,11 @@ import frc.robot.Constants.opConstants;
 import frc.robot.commands.Arm.MoveToPos;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
-import frc.robot.commands.Arm.Grabber.GrabClose;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
 import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
-import frc.robot.commands.drivetrain.DriveAutoGyro;
 import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
@@ -31,7 +29,7 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Station2Drop extends InstantCommand {
+public class Middle1DropHighChase extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
@@ -43,7 +41,7 @@ public class Station2Drop extends InstantCommand {
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
-  public Station2Drop(
+  public Middle1DropHighChase(
       Drivetrain pDrivetrain,
       Dislocator pDislocator,
       Elbow pElbow,
@@ -60,38 +58,24 @@ public class Station2Drop extends InstantCommand {
 
     blueCommandSequence =
     Commands.sequence(
-      new MoveToPos(shoulder,dislocator, elbow, travelator, -44, 23, 0, 22, true, .5).withTimeout(2),
-      new GrabOpen(wrist).withTimeout(1),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -43, 0, -136, 0, false, .5).withTimeout(2),
-      new DriveAuto(drivetrain, -.3).withTimeout(3.2),
-      new DriveAuto(pDrivetrain, 0, -.3, 0).withTimeout(.5),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, 115, 5, -65, 0, false, .5).withTimeout(3),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(.3),
-      new GrabClose(wrist).withTimeout(.5),
-      new DriveAuto(pDrivetrain, 0, .3, 0).withTimeout(.5),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -44, 0, -155, 0, false, .5).withTimeout(3),
-      new DriveAuto(drivetrain, .3).withTimeout(3.5),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 5, 13, true, .5).withTimeout(2),
-      new GrabOpen(wrist).withTimeout(1)
-
-        );
+      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
+        new GrabOpen(wrist).withTimeout(1),
+        new DriveAuto(drivetrain, -.3).withTimeout(.4),
+        new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -125, 0, false, .5).withTimeout(3),
+        new DriveAuto(pDrivetrain, 0).withTimeout(2),
+        new DriveAuto(drivetrain, 0, .6, 0).withTimeout(1.2),
+        new DriveAuto(pDrivetrain, 0).withTimeout(1),
+        new DriveAuto(drivetrain, -.3).withTimeout(2.5));
 
     redCommandSequence =
     Commands.sequence(
-      new MoveToPos(shoulder,dislocator, elbow, travelator, -44, 23, 0, 22, true, .5).withTimeout(2),
-      new GrabOpen(wrist).withTimeout(1),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -43, 0, -136, 0, false, .5).withTimeout(2),
-      new DriveAuto(drivetrain, -.3).withTimeout(3.2),
-      new DriveAuto(pDrivetrain, 0, -.3, 0).withTimeout(.5),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, 115, 5, -65, 0, false, .5).withTimeout(3),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(.3),
-      new GrabClose(wrist).withTimeout(.5),
-      new DriveAuto(pDrivetrain, 0, .3, 0).withTimeout(.5),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -44, 0, -155, 0, false, .5).withTimeout(3),
-      new DriveAuto(drivetrain, .3).withTimeout(3.5),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 5, 13, true, .5).withTimeout(2),
-      new GrabOpen(wrist).withTimeout(1)
-        );
+      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
+        new GrabOpen(wrist).withTimeout(1),
+        new DriveAuto(drivetrain, -.3).withTimeout(.4),
+        new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -125, 0, false, .5).withTimeout(3),
+        new DriveAuto(drivetrain, 0, .6, 0).withTimeout(1.2),
+        new DriveAuto(pDrivetrain, 0).withTimeout(3),
+        new DriveAuto(drivetrain, -.3).withTimeout(2));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

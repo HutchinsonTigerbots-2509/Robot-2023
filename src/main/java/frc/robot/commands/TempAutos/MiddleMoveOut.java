@@ -51,16 +51,16 @@ public class MiddleMoveOut extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-        Commands.sequence(
-            new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
-            new DriveAuto(drivetrain, -.3).withTimeout(2.5),
-            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
+    Commands.sequence(
+      new DriveAuto(pDrivetrain, -.3).withTimeout(3.5),
+      new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
+      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     redCommandSequence =
-        Commands.sequence(
-            new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
-            new DriveAuto(drivetrain, -.3).withTimeout(2.5),
-            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
+    Commands.sequence(
+      new DriveAuto(pDrivetrain, -.3).withTimeout(3.5),
+      new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
+      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

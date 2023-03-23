@@ -1,0 +1,9 @@
+Grab = new MoveToPos(shoulder, dislocator, elbow, travelator, -118, 22, 40, 2, true, 0)
+
+Drop Bottom = new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -111, 7, false, 0)
+Drop Middle = new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 3, 12, true, 1)
+Drop Top = new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1)
+
+Balancing = new MoveToPos(shoulder, dislocator, elbow, travelator, -70, 3, -131, 0, false, 0)
+Station = new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 0, -6, 3, true, 0)
+Tuck = new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -131, 0, false, .5)

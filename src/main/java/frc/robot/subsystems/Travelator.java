@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -45,12 +46,12 @@ public class Travelator extends SubsystemBase {
     SmartDashboard.updateValues();
 
     if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
-      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMin);
+      Travelator.setSelectedSensorPosition(opConstants.kTravelatorBack * (2048 * opConstants.kTravelatorGearRatio / 2.70203));
       Travelator.set(ControlMode.PercentOutput, 0);
     }
 
     if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
-      Travelator.setSelectedSensorPosition(opConstants.kTravelatorMax);
+      Travelator.setSelectedSensorPosition(opConstants.kTravelatorFront * (2048 * opConstants.kTravelatorGearRatio / 2.70203));
       Travelator.set(ControlMode.PercentOutput, 0);
     }
 
@@ -58,6 +59,7 @@ public class Travelator extends SubsystemBase {
   }
 
   public void MoveBackward() {
+    SmartDashboard.putBoolean("TravelatorForwardFunk", false);
     if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
       Travelator.set(ControlMode.PercentOutput, 0);
     } else {
@@ -66,10 +68,25 @@ public class Travelator extends SubsystemBase {
   }
 
   public void MoveForward() {
+    SmartDashboard.putBoolean("TravelatorForwardFunk", true);
     if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
       Travelator.set(ControlMode.PercentOutput, 0);
     } else {
       Travelator.set(ControlMode.PercentOutput, opConstants.kTravelatorSpeed);
+    }
+  }
+
+  public void MoveTele(Joystick buttonBoard) {
+    if (buttonBoard.getRawAxis(1) > .5) {
+      MoveForward();
+      SmartDashboard.putBoolean("TravelatorForward", true);
+    }
+    else if (buttonBoard.getRawAxis(1) < -.5) {
+      MoveBackward();
+      SmartDashboard.putBoolean("TravelatorForward", false);
+    }
+    else {
+      Stop();
     }
   }
 
@@ -99,6 +116,7 @@ public class Travelator extends SubsystemBase {
    * @return
    */
   public Command cmdMoveForward() {
+    SmartDashboard.putBoolean("TravelatorForwardCmd", true);
     return this.runEnd(this::MoveForward, this::Stop);
   }
 
@@ -108,6 +126,7 @@ public class Travelator extends SubsystemBase {
    * @return
    */
   public Command cmdMoveBackward() {
+    SmartDashboard.putBoolean("TravelatorForwardCmd", false);
     return this.runEnd(this::MoveBackward, this::Stop);
   }
 }

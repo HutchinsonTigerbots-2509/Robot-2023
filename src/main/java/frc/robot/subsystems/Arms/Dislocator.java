@@ -8,6 +8,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -79,6 +80,18 @@ public class Dislocator extends SubsystemBase {
   public double getDislocatorPos() {
     return (Dislocator.getSelectedSensorPosition() / (2048 * 48 / 6.25))
         * 3.66666666666666666; // BS numbers ignore we just needed what we want
+  }
+
+  public void MoveTele(Joystick buttonBoard) {
+    if (buttonBoard.getRawAxis(1) < -.5) {
+      DislocatorForward();
+    }
+    else if (buttonBoard.getRawAxis(1) > .5) {
+      DislocatorBackward();
+    }
+    else {
+      DislocatorStop();
+    }
   }
 
   public void DislocatorMove(double Speed) {

@@ -38,7 +38,9 @@ public class MoveToPos extends SequentialCommandGroup {
     
     if (ElbowOn == false) {
       addCommands(
-        new ShoulderMoveToPosition(ShoulderPos, sShoulder).withTimeout(wait),
+        Commands.parallel(
+        new ShoulderMoveToPosition(ShoulderPos, sShoulder),
+        new TravelatorMoveToPosition(TravelatorPos, sTravelator)).withTimeout(wait),
         Commands.parallel(
           new ShoulderMoveToPosition(ShoulderPos, sShoulder),
           new TravelatorMoveToPosition(TravelatorPos, sTravelator),
@@ -51,7 +53,8 @@ public class MoveToPos extends SequentialCommandGroup {
       addCommands(
       Commands.parallel(
         new ShoulderMoveToPosition(ShoulderPos, sShoulder),
-        new ElbowMoveToPosition(ElbowPos, sElbow)).withTimeout(wait),
+        new ElbowMoveToPosition(ElbowPos, sElbow),
+        new TravelatorMoveToPosition(TravelatorPos, pTravelator)).withTimeout(wait),
       Commands.parallel(
         new ShoulderMoveToPosition(ShoulderPos, sShoulder),
         new TravelatorMoveToPosition(TravelatorPos, sTravelator),
@@ -61,4 +64,6 @@ public class MoveToPos extends SequentialCommandGroup {
     );
     }
   }
+
+  
 }

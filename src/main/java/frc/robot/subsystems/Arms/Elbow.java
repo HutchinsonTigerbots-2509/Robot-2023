@@ -7,6 +7,8 @@ package frc.robot.subsystems.Arms;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -15,11 +17,15 @@ import frc.robot.Constants.opConstants;
 public class Elbow extends SubsystemBase {
 
   public WPI_TalonFX armElbow = new WPI_TalonFX(opConstants.kArmElbowID);
+  public DigitalInput LimitSwitch5 = new DigitalInput(opConstants.kElbowLimitSwitchTopID);
+  public DigitalInput LimitSwitch6 = new DigitalInput(opConstants.kElbowLimitSwitchBottomID);
+
   // public Encoder ElbowEncoder = new Encoder(6, 7);
 
   /** Creates a new Elbow. */
   public Elbow() {
-    armElbow.setSelectedSensorPosition(0);
+    armElbow.setSelectedSensorPosition(opConstants.kElbowMin * (2048 * opConstants.kElbowGearRatio / 360));
+    armElbow.setInverted(false);
     armElbow.setNeutralMode(NeutralMode.Brake);
   }
 
@@ -27,7 +33,19 @@ public class Elbow extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Elbow", getElbowPose());
+    SmartDashboard.putNumber("ElbowDirectEncoder", armElbow.getSelectedSensorPosition());
     SmartDashboard.updateValues();
+
+    if (!LimitSwitch6.get()) {
+      armElbow.setSelectedSensorPosition(opConstants.kElbowMax * (2048 * opConstants.kElbowGearRatio / 360));
+      armElbow.set(ControlMode.PercentOutput, 0);
+    }
+
+    if (!LimitSwitch5.get()) {
+      armElbow.setSelectedSensorPosition(opConstants.kElbowMin * (2048 * opConstants.kElbowGearRatio / 360));
+      armElbow.set(ControlMode.PercentOutput, 0);
+    }
+
   }
 
   /** The Elbow */
@@ -41,8 +59,11 @@ public class Elbow extends SubsystemBase {
 
   // Moves the Elbow forward
   public void armElbowForward() {
-    armElbow.set(-opConstants.kElbowSpeed);
-  }
+    if (!LimitSwitch5.get()) {
+      armElbow.set(ControlMode.PercentOutput, 0);
+    } else {
+      armElbow.set(ControlMode.PercentOutput, -opConstants.kElbowSpeed);
+    }  }
 
   // Command to use elbow forward function
   public Command cmdArmElbowForward() {
@@ -51,7 +72,11 @@ public class Elbow extends SubsystemBase {
 
   // Moves the Elbow backwards
   public void armElbowBackward() {
-    armElbow.set(opConstants.kElbowSpeed);
+    if (!LimitSwitch6.get()) {
+      armElbow.set(ControlMode.PercentOutput, 0);
+    } else {
+      armElbow.set(ControlMode.PercentOutput, opConstants.kElbowSpeed);
+    }
   }
 
   // Command to use the Elbow backward function
@@ -66,12 +91,17 @@ public class Elbow extends SubsystemBase {
 
   // Moves the Elbow with the comands for going to a position
   public void ElbowMove(double Speed) {
-    armElbow.set(ControlMode.PercentOutput, Speed);
+    if (Speed > 0 && (!LimitSwitch6.get())) {
+      armElbow.set(ControlMode.PercentOutput, 0);
+    } else if (Speed < 0 && (!LimitSwitch5.get())) {
+      armElbow.set(ControlMode.PercentOutput, 0);
+    } else {
+      armElbow.set(ControlMode.PercentOutput, Speed);;
+    }
   }
 
   // Gets the position for the Elbow to move
   public double getElbowPose() {
-    return (armElbow.getSelectedSensorPosition() / (2048 * opConstants.kElbowGearRatio / 360))
-        - opConstants.kElbowOffSet;
+    return (armElbow.getSelectedSensorPosition() / (2048 * opConstants.kElbowGearRatio / 360));
   }
 }

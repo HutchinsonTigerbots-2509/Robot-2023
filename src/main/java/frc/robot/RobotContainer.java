@@ -23,6 +23,7 @@ import frc.robot.Constants.camConstants;
 import frc.robot.Constants.opConstants;
 import frc.robot.commands.Arm.MoveToPos;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
+import frc.robot.commands.Arm.Dislocator.DislocatorTele;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPositionTele;
 import frc.robot.commands.Arm.Grabber.GrabClose;
@@ -31,6 +32,7 @@ import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.commands.PresetPoses.StartingPosition;
 import frc.robot.commands.TempAutos.DoNothin;
 import frc.robot.commands.TempAutos.Middle1DropHigh;
+import frc.robot.commands.TempAutos.Middle1DropHighChase;
 import frc.robot.commands.TempAutos.Middle1DropHighOut;
 import frc.robot.commands.TempAutos.Middle1DropLow;
 import frc.robot.commands.TempAutos.MiddleMoveOut;
@@ -39,13 +41,18 @@ import frc.robot.commands.TempAutos.PotatoLow;
 import frc.robot.commands.TempAutos.Station1DropHigh;
 import frc.robot.commands.TempAutos.Station1DropHighPark;
 import frc.robot.commands.TempAutos.Station1DropLow;
+import frc.robot.commands.TempAutos.Station1DropLowGrab;
+import frc.robot.commands.TempAutos.Station2Drop;
 import frc.robot.commands.TempAutos.StationMoveOut;
 import frc.robot.commands.TempAutos.TestAuto;
 import frc.robot.commands.TempAutos.Wall1DropHigh;
+import frc.robot.commands.TempAutos.Wall1DropHighGrab;
 import frc.robot.commands.TempAutos.Wall1DropLow;
+import frc.robot.commands.TempAutos.Wall1DropLowGrab;
 import frc.robot.commands.TempAutos.WallMoveOut;
 import frc.robot.commands.Travelator.TravelatorLeveling;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
+import frc.robot.commands.Travelator.TravelatorTele;
 import frc.robot.commands.drivetrain.OperatorDrive;
 import frc.robot.commands.drivetrain.ResetDriveSensors;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -112,17 +119,23 @@ public class RobotContainer {
 
   //  Joysticks
   private XboxController OpController = new XboxController(Constants.kOpStickID);
-  private Joystick coopStick1 = new Joystick(Constants.kCoopStick1ID);
-  private Joystick coopStick2 = new Joystick(Constants.kCoopStick2ID);
+  private Joystick ButtonBoardLeft = new Joystick(Constants.kButtonBoardLeftID);
+  private Joystick ButtonBoardRight = new Joystick(Constants.kButtonBoardRightID);
 
   // Joystick Buttons
-  private Trigger presetDropLowBtn;
+  private Trigger presetDropMiddleBtn;
   private Trigger presetDropHighBtn;
+  private Trigger presetDropHighBackBtn;
+  private Trigger presetDropBottomBtn;
   private Trigger presetGrabBtn;
+  private Trigger presetGrabBtn2;
   private Trigger presetMoveBtn;
+  private Trigger presetMoveBtn2;
   private Trigger presetStartBtn;
   private Trigger presetStationBtn;
   private Trigger presetBalanceBtn;
+  private Trigger manualDriveBtn;
+
 
   // Driving modes
   private Trigger coneDriveBtn;
@@ -190,12 +203,24 @@ public class RobotContainer {
       new StationMoveOut(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
   private MiddleMoveOut cmdMiddleMoveOut =
       new MiddleMoveOut(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Middle1DropHighChase cmdMiddle1DropHighChase =
+      new Middle1DropHighChase(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
   private WallMoveOut cmdWallMoveOut =
       new WallMoveOut(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
   private PotatoLow cmdPotatoLow =
       new PotatoLow(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
   private PotatoHigh cmdPotatoHigh =
       new PotatoHigh(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+
+  private Station1DropLowGrab cmdStation1DropLowGrab =
+      new Station1DropLowGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Wall1DropLowGrab cmdWall1DropLowGrab =
+      new Wall1DropLowGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Wall1DropHighGrab cmdWall1DropHighGrab =
+      new Wall1DropHighGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+
+  private Station2Drop cmdStation2Drop =
+      new Station2Drop(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
 
   private DoNothin cmdDoNothin =
       new DoNothin(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
@@ -212,6 +237,8 @@ public class RobotContainer {
   public RobotContainer() {
     // Default Commands
     sDrivetrain.setDefaultCommand(new OperatorDrive(sDrivetrain, OpController, false));
+    sTravelator.setDefaultCommand(new TravelatorTele(sTravelator, ButtonBoardRight));
+    sDislocator.setDefaultCommand(new DislocatorTele(sDislocator, ButtonBoardLeft));
     // sShoulder.setDefaultCommand(new ShoulderMoveToPositionTemp(sShoulder.getShoulderDesirePos(),
     // sShoulder));
 
@@ -230,10 +257,17 @@ public class RobotContainer {
 
     AutoSelect.addOption("StatMoveOut", cmdStationMoveOut);
     AutoSelect.addOption("MidMoveOut", cmdMiddleMoveOut);
+    AutoSelect.addOption("Mid1HighChase", cmdMiddle1DropHighChase);
     AutoSelect.addOption("WallMoveOut", cmdWallMoveOut);
+
+    AutoSelect.addOption("Station1DropLowGrab", cmdStation1DropLowGrab);
+    AutoSelect.addOption("Wall1DropLowGrab", cmdWall1DropLowGrab);
+    AutoSelect.addOption("Wall1DropHighGrab", cmdWall1DropHighGrab);
 
     AutoSelect.addOption("PotatoLow", cmdPotatoLow);
     AutoSelect.addOption("PotatoHigh", cmdPotatoHigh);
+
+    AutoSelect.addOption("Stat2Drop", cmdStation2Drop);
 
     AutoSelect.addOption("DoNothin", cmdDoNothin);
     AutoSelect.addOption("TestAuto(DO NOT USE)", cmdTestAuto);
@@ -283,21 +317,25 @@ public class RobotContainer {
     toggleGearBtn = new JoystickButton(OpController, 9);
     toggleGearBtn.onTrue(sDrivetrain.cmdToggleGear());
 
+    manualDriveBtn = new JoystickButton(ButtonBoardRight, 9);
+    manualDriveBtn.onTrue(new TravelatorTele(sTravelator, ButtonBoardRight));
+    manualDriveBtn.onTrue(new DislocatorTele(sDislocator, ButtonBoardLeft));
+
     // Shoulder Buttons
 
-    shoulderForwardBtn = new JoystickButton(coopStick2, 4);
+    shoulderForwardBtn = new JoystickButton(ButtonBoardRight, 6);
     shoulderForwardBtn.whileTrue(sShoulder.cmdShoulderForward());
 
-    shoulderBackwardBtn = new JoystickButton(coopStick2, 6);
+    shoulderBackwardBtn = new JoystickButton(ButtonBoardRight, 5);
     shoulderBackwardBtn.whileTrue(sShoulder.cmdShoulderBackward());
 
     // Travelator Buttons
 
-    travelatorForwardBtn = new JoystickButton(coopStick2, 5);
-    travelatorForwardBtn.whileTrue(sTravelator.cmdMoveForward());
+    // travelatorForwardBtn = new JoystickButton(coopStick2, 5);
+    // travelatorForwardBtn.whileTrue(sTravelator.cmdMoveForward());
 
-    travelatorBackwardBtn = new JoystickButton(coopStick2, 3);
-    travelatorBackwardBtn.whileTrue(sTravelator.cmdMoveBackward());
+    // travelatorBackwardBtn = new JoystickButton(coopStick2, 3);
+    // travelatorBackwardBtn.whileTrue(sTravelator.cmdMoveBackward());
 
     // travelAutoFrontBtn = new POVButton(coopStick1, 0);
     // travelAutoFrontBtn.onTrue(
@@ -307,102 +345,83 @@ public class RobotContainer {
     // travelAutoBackBtn.onTrue(
     //     new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
 
-    travelLevelingBtn = new JoystickButton(coopStick1, 11);
+    travelLevelingBtn = new JoystickButton(ButtonBoardLeft, 9);
     travelLevelingBtn.onTrue(new TravelatorLeveling(sTravelator, sDrivetrain));
 
     // Wrist Buttons
 
-    armWristForwardBtn = new POVButton(coopStick2, 90);
-    armWristForwardBtn.whileTrue(sWrist.cmdWristForward());
+    grabBtn = new JoystickButton(ButtonBoardLeft, 10);
+    grabBtn.onTrue(sWrist.GrabToggle());
 
-    armWristBackwardBtn = new POVButton(coopStick2, 270);
-    armWristBackwardBtn.whileTrue(sWrist.cmdWristBackward());
-
-    armWristZeroBtn = new POVButton(coopStick2, 0);
-    armWristZeroBtn.onTrue(new WristMoveToPosition(0, sWrist));
-
-    armWristNinetyBtn = new POVButton(coopStick2, 180);
-    armWristNinetyBtn.onTrue(new WristMoveToPosition(90, sWrist));
-
-    grabBtn = new JoystickButton(coopStick2, 1);
+    grabBtn = new JoystickButton(ButtonBoardRight, 10);
     grabBtn.onTrue(sWrist.GrabToggle());
 
     // Elbow Buttons
 
-    ElbowForwardBtn = new JoystickButton(coopStick1, 6);
+    ElbowForwardBtn = new JoystickButton(ButtonBoardLeft,6);
     ElbowForwardBtn.whileTrue(sElbow.cmdArmElbowForward());
 
-    ElbowBackwardBtn = new JoystickButton(coopStick1, 4);
+    ElbowBackwardBtn = new JoystickButton(ButtonBoardLeft, 5);
     ElbowBackwardBtn.whileTrue(sElbow.cmdArmElbowBackward());
-
-    // Dislocate your arm!
-
-    DislocatorForwardBtn = new JoystickButton(coopStick1, 5);
-    DislocatorForwardBtn.whileTrue(sDislocator.cmdDislocatorMoveForward());
-
-    DislocatorBackwardBtn = new JoystickButton(coopStick1, 3);
-    DislocatorBackwardBtn.whileTrue(sDislocator.cmdDislocatorMoveBackward());
 
     // Preset Buttons
 
-    presetStartBtn = new JoystickButton(coopStick1, 7);
+    presetStartBtn = new JoystickButton(ButtonBoardLeft, 1);
     presetStartBtn.onTrue(sWrist.cmdResetWristEncoder());
     presetStartBtn.onTrue(sElbow.cmdResetElbowEncoder());
     presetStartBtn.onTrue(sShoulder.cmdResetShoulderEncoder());
 
     // Preset the robot to grab upright
 
-    presetGrabBtn = new JoystickButton(OpController, 3);
+    presetGrabBtn = new JoystickButton(ButtonBoardLeft, 4);
+
+    // Numbers before Drey
+
+    // presetGrabBtn.onTrue(new TravelatorMoveToPosition(2, sTravelator));
+    // presetGrabBtn.onTrue(new DislocatorMoveToPosition(22, sDislocator));
+    // presetGrabBtn.onTrue(new ShoulderMoveToPosition(-124, sShoulder));
+    // presetGrabBtn.onTrue(new ElbowMoveToPositionTele(45, sElbow));
+
     presetGrabBtn.onTrue(new TravelatorMoveToPosition(2, sTravelator));
-    presetGrabBtn.onTrue(new DislocatorMoveToPosition(22, sDislocator));
-    presetGrabBtn.onTrue(new ShoulderMoveToPosition(-124, sShoulder));
-    presetGrabBtn.onTrue(new ElbowMoveToPositionTele(45, sElbow));
+    presetGrabBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -118, 22, 40, 2, true, 0));
 
     // Grab at station button
 
-    presetStationBtn = new JoystickButton(coopStick1, 1);
-    presetStationBtn.onTrue(new TravelatorMoveToPosition(3, sTravelator));
-    presetStationBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
-    presetStationBtn.onTrue(new ShoulderMoveToPosition(-46, sShoulder));
-    presetStationBtn.onTrue(new ElbowMoveToPositionTele(-6, sElbow));
+    presetStationBtn = new JoystickButton(ButtonBoardLeft, 2);
+    presetStationBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -46, 0, -6, 3, true, 0));
 
     // Preset the robot to safe driving position
 
-    presetMoveBtn = new JoystickButton(OpController, 2);
-    presetMoveBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -43, 0, -136, 0, false, .5));
-    // presetMoveBtn.onTrue(new ShoulderMoveToPosition(-43, sShoulder));
-    // presetMoveBtn.onTrue(new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
-    // presetMoveBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
+    presetMoveBtn = new JoystickButton(ButtonBoardLeft, 11);
+    presetMoveBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -50, 0, -131, 0, false, .5));
+
+    presetMoveBtn2 = new JoystickButton(ButtonBoardRight, 11);
+    presetMoveBtn2.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -50, 0, -131, 0, false, .5));
 
     // Preset the robot to drop a cone on the lower pole
 
-    presetDropLowBtn = new JoystickButton(OpController, 1);
-    presetDropLowBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -50, 0, 5, 13, true, .5));
-    // presetDropLowBtn.onTrue(
-    //     new TravelatorMoveToPosition(12, sTravelator));
-    // presetDropLowBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
-    // presetDropLowBtn.onTrue(new ShoulderMoveToPosition(-50, sShoulder));
-    // presetDropLowBtn.onTrue(new ElbowMoveToPositionTele(-2, sElbow));
+    presetDropBottomBtn = new JoystickButton(ButtonBoardRight, 4);
+    presetDropBottomBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -50, 0, -111, 7, false, 0));
+
+    presetDropMiddleBtn = new JoystickButton(ButtonBoardRight, 3);
+    presetDropMiddleBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -50, 0, 3, 12, true, 1));
 
     // Preset the robot to drop a cone on the higher pole
 
-    presetDropHighBtn = new JoystickButton(OpController, 4);
-    presetDropHighBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -50, 23, 35, 22, true, .5));
-    // presetDropHighBtn.onTrue(
-    //     new TravelatorMoveToPosition(22, sTravelator));
-    // presetDropHighBtn.onTrue(new DislocatorMoveToPosition(23, sDislocator));
-    // presetDropHighBtn.onTrue(new ShoulderMoveToPosition(-38, sShoulder));\
-    // presetDropHighBtn.onTrue(new ElbowMoveToPositionTele(-6, sElbow));
+    presetDropHighBtn = new JoystickButton(ButtonBoardRight, 2);
+    presetDropHighBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -46, 23, 10, 17, true, 1));
+
+    // Preset the robot to drop a cone on the higher pole from the back
+
+    presetDropHighBackBtn = new JoystickButton(ButtonBoardLeft, 7);
+    presetDropHighBackBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, 46, 23, -10, 0, true, 1));
+
+
 
     // Preset to start balancing on the Charge Station
 
-    presetBalanceBtn = new JoystickButton(coopStick2, 2);
-    presetBalanceBtn.onTrue(
-        new TravelatorMoveToPosition(opConstants.kTravelatorBack, sTravelator));
-    presetBalanceBtn.onTrue(new DislocatorMoveToPosition(0, sDislocator));
-    presetBalanceBtn.onTrue(new ShoulderMoveToPosition(-75, sShoulder));
-    presetBalanceBtn.onTrue(new ElbowMoveToPositionTele(-130, sElbow));
-    presetBalanceBtn.onTrue(new GrabClose(sWrist));
+    presetBalanceBtn = new JoystickButton(OpController, 1);
+    presetBalanceBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -70, 3, -131, 0, false, 0));
   }
 
   // Getter Methods
@@ -421,7 +440,7 @@ public class RobotContainer {
 
   // Getter Methods
 
-  public Drivetrain getDrivetrain() {
+  public Drivetrain getDrivsetrain() {
     return sDrivetrain;
   }
 
@@ -441,12 +460,12 @@ public class RobotContainer {
     return sPhotonVision;
   }
 
-  public Joystick getStick() {
-    return coopStick2;
+  public Joystick getButtonBoardLeft() {
+    return ButtonBoardLeft;
   }
 
-  public Joystick getController() {
-    return coopStick1;
+  public Joystick getButtonBoardRight() {
+    return ButtonBoardRight;
   }
 
   public XboxController getOpController() {

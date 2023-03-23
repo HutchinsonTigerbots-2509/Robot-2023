@@ -49,10 +49,7 @@ public class Robot extends TimedRobot {
     mRobotContainer = new RobotContainer();
 
     sPhotonVision = mRobotContainer.getPhotonVision();
-    sDrivetrain = mRobotContainer.getDrivetrain();
 
-    stick = mRobotContainer.getStick();
-    controller = mRobotContainer.getController();
 
     sPhotonVision.setReferencePose(new Pose2d());
   }

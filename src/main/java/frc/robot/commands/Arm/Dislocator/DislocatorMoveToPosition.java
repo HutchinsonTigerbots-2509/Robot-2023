@@ -12,8 +12,8 @@ import frc.robot.subsystems.Arms.Dislocator;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class DislocatorMoveToPosition extends PIDCommand {
-  static final double kP = 0.2;
-  static final double kI = 0.0;
+  static final double kP = 0.15;
+  static final double kI = 0.05;
   static final double kD = 0.0;
   /** Creates a new DislocatorMoveToPosition. */
   public DislocatorMoveToPosition(double PreferredPosition, Dislocator dislocator) {

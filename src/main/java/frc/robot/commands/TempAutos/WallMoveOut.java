@@ -47,9 +47,9 @@ public class WallMoveOut extends InstantCommand {
     wrist = pWrist;
     travelator = pTravelator;
 
-    blueCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.3).withTimeout(3.25));
+    blueCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.4).withTimeout(3.25));
 
-    redCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.3).withTimeout(3.25));
+    redCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.4).withTimeout(3.25));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

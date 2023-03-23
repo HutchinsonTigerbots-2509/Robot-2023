@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.opConstants;
+import frc.robot.commands.Arm.MoveToPos;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
@@ -56,40 +57,24 @@ public class Middle1DropHigh extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-        Commands.sequence(
-            Commands.parallel(
-                    new DislocatorMoveToPosition(22, dislocator),
-                    new ShoulderMoveToPosition(-200, shoulder),
-                    new ElbowMoveToPosition(25, elbow))
-                .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
-            new GrabOpen(wrist).withTimeout(1),
-            Commands.parallel(
-                new DriveAuto(pDrivetrain, -.3),
-                new ShoulderMoveToPosition(-330, shoulder),
-                new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
-                new DislocatorMoveToPosition(0, dislocator),
-                new ElbowMoveToPosition(154, elbow),
-                new WristMoveToPosition(0, wrist)).withTimeout(2.5),
-            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
+    Commands.sequence(
+      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
+        new GrabOpen(wrist).withTimeout(1),
+        new DriveAuto(pDrivetrain, -.3).withTimeout(.2),
+        Commands.parallel(
+            new DriveAuto(pDrivetrain, -.3),
+            new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -125, 0, false, .5)).withTimeout(2.5),
+        new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     redCommandSequence =
-        Commands.sequence(
-            Commands.parallel(
-                    new DislocatorMoveToPosition(22, dislocator),
-                    new ShoulderMoveToPosition(-200, shoulder),
-                    new ElbowMoveToPosition(25, elbow))
-                .withTimeout(2),
-            new TravelatorMoveToPosition(opConstants.kTravelatorFront, travelator).withTimeout(2),
-            new GrabOpen(wrist).withTimeout(1),
-            Commands.parallel(
-                new DriveAuto(pDrivetrain, -.3),
-                new ShoulderMoveToPosition(-330, shoulder),
-                new TravelatorMoveToPosition(opConstants.kTravelatorMiddle, travelator),
-                new DislocatorMoveToPosition(0, dislocator),
-                new ElbowMoveToPosition(154, elbow),
-                new WristMoveToPosition(0, wrist)).withTimeout(2.5),
-            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
+    Commands.sequence(
+      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
+        new GrabOpen(wrist).withTimeout(1),
+        new DriveAuto(pDrivetrain, -.3).withTimeout(.2),
+        Commands.parallel(
+            new DriveAuto(pDrivetrain, -.3),
+            new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -125, 0, false, .5)).withTimeout(2.5),
+        new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
