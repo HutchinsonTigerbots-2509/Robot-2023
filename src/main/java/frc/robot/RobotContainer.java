@@ -388,6 +388,10 @@ public class RobotContainer {
     presetGrabBtn.onTrue(new TravelatorMoveToPosition(2, sTravelator));
     presetGrabBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -118, 22, 40, 2, true, 0));
 
+    presetGrabBtn2 = new JoystickButton(OpController, 1);
+    presetGrabBtn2.onTrue(new TravelatorMoveToPosition(2, sTravelator));
+    presetGrabBtn2.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -118, 22, 40, 2, true, 0));
+
     // Grab at station button
 
     presetStationBtn = new JoystickButton(ButtonBoardLeft, 2);
@@ -423,7 +427,7 @@ public class RobotContainer {
 
     // Preset to start balancing on the Charge Station
 
-    presetBalanceBtn = new JoystickButton(OpController, 1);
+    presetBalanceBtn = new JoystickButton(OpController, 4);
     presetBalanceBtn.onTrue(new MoveToPos(sShoulder, sDislocator, sElbow, sTravelator, -70, 3, -131, 0, false, 0));
   }
 

@@ -6,6 +6,7 @@ package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Arms.Shoulder;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
@@ -54,7 +55,8 @@ public class MoveToPos extends SequentialCommandGroup {
       Commands.parallel(
         new ShoulderMoveToPosition(ShoulderPos, sShoulder),
         new ElbowMoveToPosition(ElbowPos, sElbow),
-        new TravelatorMoveToPosition(TravelatorPos, pTravelator)).withTimeout(wait),
+        new TravelatorMoveToPosition(TravelatorPos, pTravelator),
+        new WaitCommand(wait)).withTimeout(wait),
       Commands.parallel(
         new ShoulderMoveToPosition(ShoulderPos, sShoulder),
         new TravelatorMoveToPosition(TravelatorPos, sTravelator),
