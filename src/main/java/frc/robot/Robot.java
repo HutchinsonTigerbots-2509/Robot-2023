@@ -54,7 +54,6 @@ public class Robot extends TimedRobot {
     stick = mRobotContainer.getStick();
     controller = mRobotContainer.getController();
 
-    sPhotonVision.setReferencePose(new Pose2d());
   }
 
   /**
@@ -71,7 +70,6 @@ public class Robot extends TimedRobot {
     // running subsystem periodic() methods.  This must be called from the robot's periodic block in
     // order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    sPhotonVision.PoseEstimating();
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

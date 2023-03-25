@@ -101,12 +101,9 @@ public final class Constants {
 
   public static final class camConstants {
 
-    public static final NetworkTable PhotonTable =
-        NetworkTableInstance.getDefault().getTable("photonvision");
-    public static final NetworkTable LimelightOneTable =
-        NetworkTableInstance.getDefault().getTable("limelight-one");
-    public static final NetworkTable LimelightTwoTable =
-        NetworkTableInstance.getDefault().getTable("limelight-two");
+    public static final NetworkTable PhotonTable = NetworkTableInstance.getDefault().getTable("photonvision");
+    public static final NetworkTable LimelightOneTable = NetworkTableInstance.getDefault().getTable("limelight-one");
+    public static final NetworkTable LimelightTwoTable = NetworkTableInstance.getDefault().getTable("limelight-two");
 
     // Network
     public static final String kPhotonCameraID = "OV5746"; // Name of Camera on Network
@@ -176,10 +173,6 @@ public final class Constants {
     //     new AprilTagFieldLayout(null, kFieldLength, kFieldWidth);
 
     public static Transform3d robotToCamera =
-        new Transform3d(new Translation3d(0, 0, 0), new Rotation3d(0, 0, 0));
-    public static String kPhotonTargetPose;
-    public static String kPhotonTargetXID;
-
-    public static final String kPhotonTargetPixelsX = "targetPixelsX";
+        new Transform3d(new Translation3d(0, kCameraHeight, kCameraAngle), new Rotation3d(0, 0, 0));
   }
 }

@@ -287,7 +287,7 @@ public class Drivetrain extends SubsystemBase {
   /**
    * Returns the current heading of the robot.
    *
-   * @return value from -180 to 180 degrees.
+   * @return value from 0 to infinity and beyond!.
    */
 
   public double getAngle() {

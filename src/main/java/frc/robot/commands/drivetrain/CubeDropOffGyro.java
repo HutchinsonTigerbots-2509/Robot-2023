@@ -30,7 +30,7 @@ public class CubeDropOffGyro extends CommandBase {
     OpController = pController;
     this.rotController = new PIDController(kP, kI, kD);
     this.rotController.setTolerance(2);
-    this.rotController.enableContinuousInput(-180, 180);
+    this.rotController.enableContinuousInput(0, 360);
     // Use addRequirements() here to declare pDt dependencies.
     addRequirements(Dt);
     addRequirements(photonvision);
@@ -54,6 +54,8 @@ public class CubeDropOffGyro extends CommandBase {
       } else {
         X = 0;
       }
+
+    
 
       SmartDashboard.putNumber("Photon X", photonvision.fetchTargetX());
 
