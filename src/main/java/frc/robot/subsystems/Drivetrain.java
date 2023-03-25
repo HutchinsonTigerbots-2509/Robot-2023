@@ -55,6 +55,7 @@ public class Drivetrain extends SubsystemBase {
   // Nav-X & Gyros
   private AHRS navx = new AHRS();
   private AnalogGyro dtgyro = new AnalogGyro(0);
+  private PigeonIMU pigeon = new PigeonIMU(0);
 
   // Parking Brake Cylinders
   private DoubleSolenoid parkingBrake =
@@ -143,6 +144,7 @@ public class Drivetrain extends SubsystemBase {
     // SmartDashboard.putNumber("X", field.getRobotPose().getX());
     // SmartDashboard.putNumber("Y", field.getRobotPose().getY());
     SmartDashboard.putNumber("getAngle", getAngle());
+    SmartDashboard.putNumber("PigeonGyro", pigeon.getYaw());
     SmartDashboard.updateValues();
   }
 

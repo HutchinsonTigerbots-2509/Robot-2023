@@ -16,7 +16,7 @@ import frc.robot.subsystems.Travelator;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TravelatorMoveToPosition extends PIDCommand {
-  static final double kP = 0.035;
+  static final double kP = 0.045;
   static final double kI = 0.008;
   static final double kD = 0.00;
   static final double kF = 0.00;

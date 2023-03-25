@@ -244,32 +244,35 @@ public class RobotContainer {
 
     // Create auto chooser
 
+    // Station Autos
     AutoSelect.setDefaultOption("Stat1DropLow", cmdStation1DropLow);
-    AutoSelect.addOption("Mid1DropLow", cmdMiddle1DropLow);
-    AutoSelect.addOption("Wall1DropLow", cmdWall1DropLow);
-
+    AutoSelect.addOption("Station1DropLowGrab", cmdStation1DropLowGrab);
     AutoSelect.addOption("Stat1DropHigh", cmdStation1DropHigh);
-    AutoSelect.addOption("Mid1DropHigh", cmdMiddle1DropHigh);
-    AutoSelect.addOption("Wall1DropHigh", cmdWall1DropHigh);
-    AutoSelect.addOption("Mid1DropHighOut", cmdMiddle1DropHighOut);
-
     AutoSelect.addOption("Stat1DropHighPark", cmdStation1DropHighPark);
-
     AutoSelect.addOption("StatMoveOut", cmdStationMoveOut);
+
+    // Middle Autos
+    AutoSelect.addOption("Mid1DropLow", cmdMiddle1DropLow);
+    AutoSelect.addOption("Mid1DropHigh", cmdMiddle1DropHigh);
+    AutoSelect.addOption("Mid1DropHighOut", cmdMiddle1DropHighOut);
     AutoSelect.addOption("MidMoveOut", cmdMiddleMoveOut);
+
+    // Wall Autos
+    AutoSelect.addOption("Wall1DropLow", cmdWall1DropLow);
+    AutoSelect.addOption("Wall1DropLowGrab", cmdWall1DropLowGrab);
+    AutoSelect.addOption("Wall1DropHigh", cmdWall1DropHigh);
+    AutoSelect.addOption("Wall1DropHighGrab", cmdWall1DropHighGrab);
     AutoSelect.addOption("Mid1HighChase", cmdMiddle1DropHighChase);
     AutoSelect.addOption("WallMoveOut", cmdWallMoveOut);
 
-    AutoSelect.addOption("Station1DropLowGrab", cmdStation1DropLowGrab);
-    AutoSelect.addOption("Wall1DropLowGrab", cmdWall1DropLowGrab);
-    AutoSelect.addOption("Wall1DropHighGrab", cmdWall1DropHighGrab);
-
+    // Potato Autos
     AutoSelect.addOption("PotatoLow", cmdPotatoLow);
     AutoSelect.addOption("PotatoHigh", cmdPotatoHigh);
 
-    AutoSelect.addOption("Stat2Drop", cmdStation2Drop);
-
+    // Nothing Auto
     AutoSelect.addOption("DoNothin", cmdDoNothin);
+
+    // Test Autos
     AutoSelect.addOption("TestAuto(DO NOT USE)", cmdTestAuto);
 
     // ShuffleBoard
