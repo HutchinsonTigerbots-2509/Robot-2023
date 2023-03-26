@@ -4,41 +4,46 @@
 
 package frc.robot.commands.PresetPoses;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
+import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
-import frc.robot.subsystems.Arms.Wrist;
+import frc.robot.subsystems.Travelator;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class DropHighPosition extends InstantCommand {
+public class DropHighPosition extends SequentialCommandGroup {
 
   private Dislocator dislocator;
   private Elbow elbow;
   private Shoulder shoulder;
-  private Wrist wrist;
+  private Travelator travelator;
 
-  public DropHighPosition(Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder, Wrist pWrist) {
+  public DropHighPosition(
+      Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder, Travelator pTravelator) {
     this.dislocator = pDislocator;
     this.elbow = pElbow;
     this.shoulder = pShoulder;
-    this.wrist = pWrist;
+    this.travelator = pTravelator;
 
     // Use addRequirements() here to declare subsystem dependencies.
-  }
-
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {
-    new DislocatorMoveToPosition(-22, dislocator);
-    new ShoulderMoveToPosition(-199.5, shoulder);
-    new ElbowMoveToPosition(27.5, elbow);
-    new WristMoveToPosition(0, wrist);
+    this.addCommands(
+        Commands.parallel(
+            new ShoulderMoveToPosition(-46, shoulder),
+            new ElbowMoveToPosition(10, elbow),
+            new WaitCommand(0.25)
+                .andThen(new TravelatorMoveToPosition(20, travelator).withTimeout(1.2)),
+            new WaitCommand(0.5).andThen(new DislocatorMoveToPosition(23, dislocator)))
+        // Commands.parallel(
+        //   new DislocatorMoveToPosition(23, dislocator),
+        //   new ShoulderMoveToPosition(-46, shoulder))
+        );
   }
 }

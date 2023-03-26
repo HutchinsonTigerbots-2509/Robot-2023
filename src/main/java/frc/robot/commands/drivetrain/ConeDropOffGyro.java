@@ -22,7 +22,6 @@ public class ConeDropOffGyro extends CommandBase {
   static final double kD = 0.00;
   static final double minSpeed = 0.12;
 
-
   /** Creates a new DriveTele. */
   public ConeDropOffGyro(XboxController pController, Drivetrain subsystem, LimeLight pLimeLight) {
     Dt = subsystem;

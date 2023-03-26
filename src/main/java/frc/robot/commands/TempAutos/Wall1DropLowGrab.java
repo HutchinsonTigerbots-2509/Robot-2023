@@ -9,15 +9,11 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.opConstants;
-import frc.robot.commands.Arm.MoveToPos;
-import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabClose;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
-import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
-import frc.robot.commands.Travelator.TravelatorMoveToPosition;
+import frc.robot.commands.PresetPoses.DropLowPosition;
+import frc.robot.commands.PresetPoses.GrabBackPosition;
+import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
@@ -57,32 +53,34 @@ public class Wall1DropLowGrab extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 3, 12, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new DriveAuto(drivetrain, -.3).withTimeout(.5),
-      Commands.parallel(
-        new DriveAuto(drivetrain, -.4).withTimeout(2.4),
-        new MoveToPos(shoulder, dislocator, elbow, travelator, 145, 5, -42, 0, false, .5)).withTimeout(3),
-      new DriveAuto(drivetrain, -.3).withTimeout(.4),
-      new GrabClose(wrist).withTimeout(.5),
-      Commands.parallel(
-        new DriveAuto(drivetrain, .4).withTimeout(2.4),
-        new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -131, 0, false, .5)).withTimeout(4));
+        Commands.sequence(
+            new DropLowPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3),
+            new GrabOpen(wrist).withTimeout(1),
+            new DriveAuto(drivetrain, -.3).withTimeout(.5),
+            Commands.parallel(
+                    new DriveAuto(drivetrain, -.4).withTimeout(2.4),
+                    new GrabBackPosition(pDislocator, pElbow, pShoulder, pTravelator))
+                .withTimeout(3),
+            new DriveAuto(drivetrain, -.3).withTimeout(.4),
+            new GrabClose(wrist).withTimeout(.5),
+            Commands.parallel(
+                    new DriveAuto(drivetrain, .4).withTimeout(2.4),
+                    new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator))
+                .withTimeout(4));
 
     redCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 3, 12, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new DriveAuto(drivetrain, -.3).withTimeout(.5),
-      Commands.parallel(
-        new DriveAuto(drivetrain, -.4).withTimeout(2.4),
-        new MoveToPos(shoulder, dislocator, elbow, travelator, 145, 5, -42, 0, false, .5)).withTimeout(3),
-      new DriveAuto(drivetrain, -.3).withTimeout(.4),
-      new GrabClose(wrist).withTimeout(.5),
-      Commands.parallel(
-        new DriveAuto(drivetrain, .4).withTimeout(2.4),
-        new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -131, 0, false, .5)).withTimeout(4));
+        Commands.sequence(
+            new DropLowPosition(pDislocator, pElbow, pShoulder, pTravelator),
+            new GrabOpen(wrist).withTimeout(1),
+            new DriveAuto(drivetrain, -.3).withTimeout(.5),
+            Commands.parallel(
+                new DriveAuto(drivetrain, -.4).withTimeout(2.4),
+                new GrabBackPosition(pDislocator, pElbow, pShoulder, pTravelator)),
+            new DriveAuto(drivetrain, -.3).withTimeout(.4),
+            new GrabClose(wrist).withTimeout(.5),
+            Commands.parallel(
+                new DriveAuto(drivetrain, .4).withTimeout(2.4),
+                new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator)));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

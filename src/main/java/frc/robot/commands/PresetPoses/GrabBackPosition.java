@@ -4,8 +4,7 @@
 
 package frc.robot.commands.PresetPoses;
 
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
@@ -19,14 +18,14 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class GrabPosition extends SequentialCommandGroup {
+public class GrabBackPosition extends ParallelCommandGroup {
 
   private Dislocator dislocator;
   private Elbow elbow;
   private Shoulder shoulder;
   private Travelator travelator;
 
-  public GrabPosition(
+  public GrabBackPosition(
       Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder, Travelator pTravelator) {
     this.dislocator = pDislocator;
     this.elbow = pElbow;
@@ -35,11 +34,9 @@ public class GrabPosition extends SequentialCommandGroup {
 
     // Use addRequirements() here to declare subsystem dependencies.
     this.addCommands(
-        Commands.parallel(
-            new DislocatorMoveToPosition(22, dislocator),
-            new ShoulderMoveToPosition(-118, shoulder),
-            new ElbowMoveToPosition(40, elbow)),
-        new WaitCommand(1),
-        new TravelatorMoveToPosition(2, travelator));
+        new WaitCommand(0.5).andThen(new DislocatorMoveToPosition(4.7, dislocator)),
+        new WaitCommand(0.5).andThen(new ShoulderMoveToPosition(153, shoulder)),
+        new WaitCommand(0.5).andThen(new ElbowMoveToPosition(-47, elbow)),
+        new TravelatorMoveToPosition(0, travelator));
   }
 }

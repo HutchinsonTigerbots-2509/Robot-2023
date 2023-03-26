@@ -23,6 +23,7 @@ public class Shoulder extends SubsystemBase {
 
   /** Creates a new arm. * */
   public Shoulder() {
+
     Shoulder.setNeutralMode(NeutralMode.Brake);
 
     // Shoulder.setSelectedSensorPosition(-35 * (2048 * opConstants.kShoulderGearRatio / 360));

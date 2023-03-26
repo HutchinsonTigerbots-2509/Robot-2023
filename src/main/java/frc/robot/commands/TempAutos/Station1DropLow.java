@@ -4,13 +4,12 @@
 
 package frc.robot.commands.TempAutos;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.Arm.MoveToPos;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
+import frc.robot.commands.PresetPoses.DropLowPosition;
+import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
@@ -50,18 +49,11 @@ public class Station1DropLow extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 3, 12, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -131, 0, false, .5).withTimeout(3),
-      new DriveAuto(pDrivetrain, -.4).withTimeout(1.5));
-
-    redCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 3, 12, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -131, 0, false, .5).withTimeout(3),
-      new DriveAuto(pDrivetrain, -.4).withTimeout(1.5));
+        Commands.sequence(
+            new DropLowPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3),
+            new GrabOpen(wrist).withTimeout(1),
+            new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3),
+            new DriveAuto(pDrivetrain, -.4).withTimeout(1.5));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
@@ -70,10 +62,6 @@ public class Station1DropLow extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getAlliance() == Alliance.Blue) {
-      blueCommandSequence.schedule();
-    } else {
-      redCommandSequence.schedule();
-    }
+    blueCommandSequence.schedule();
   }
 }

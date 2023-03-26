@@ -4,19 +4,12 @@
 
 package frc.robot.commands.TempAutos;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.opConstants;
-import frc.robot.commands.Arm.MoveToPos;
-import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
-import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
-import frc.robot.commands.Travelator.TravelatorMoveToPosition;
+import frc.robot.commands.PresetPoses.DropHighPosition;
+import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -31,7 +24,6 @@ import frc.robot.subsystems.Travelator;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Middle1DropHighOut extends InstantCommand {
   private Command blueCommandSequence;
-  private Command redCommandSequence;
 
   Drivetrain drivetrain;
   Dislocator dislocator;
@@ -57,31 +49,18 @@ public class Middle1DropHighOut extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(.2),
-        Commands.parallel(
-            new DriveAuto(pDrivetrain, -.5),
-            new MoveToPos(shoulder, dislocator, elbow, travelator, -70, 3, -125, 0, false, .5)
-            ).withTimeout(2.5),
+        Commands.sequence(
+            new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2.6),
+            new GrabOpen(wrist).withTimeout(1),
+            Commands.parallel(
+                    // new DriveAuto(pDrivetrain, -.3).withTimeout(.2),
+                    new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator))
+                .withTimeout(1.5),
+            new DriveAuto(pDrivetrain, -.4).withTimeout(3),
             new DriveAuto(pDrivetrain, 0).withTimeout(.5),
             new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
-        new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
-            
+            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
-    redCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(.2),
-        Commands.parallel(
-            new DriveAuto(pDrivetrain, -.5),
-            new MoveToPos(shoulder, dislocator, elbow, travelator, -70, 3, -125, 0, false, .5)
-            ).withTimeout(2.5),
-            new DriveAuto(pDrivetrain, 0).withTimeout(.5),
-            new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
-        new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }
@@ -89,10 +68,6 @@ public class Middle1DropHighOut extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getAlliance() == Alliance.Blue) {
-      blueCommandSequence.schedule();
-    } else {
-      redCommandSequence.schedule();
-    }
+    blueCommandSequence.schedule();
   }
 }

@@ -85,11 +85,9 @@ public class Dislocator extends SubsystemBase {
   public void MoveTele(Joystick buttonBoard) {
     if (buttonBoard.getRawAxis(1) < -.5) {
       DislocatorForward();
-    }
-    else if (buttonBoard.getRawAxis(1) > .5) {
+    } else if (buttonBoard.getRawAxis(1) > .5) {
       DislocatorBackward();
-    }
-    else {
+    } else {
       DislocatorStop();
     }
   }

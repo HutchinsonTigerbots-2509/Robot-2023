@@ -4,19 +4,12 @@
 
 package frc.robot.commands.TempAutos;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.opConstants;
-import frc.robot.commands.Arm.MoveToPos;
-import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
-import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
-import frc.robot.commands.Travelator.TravelatorMoveToPosition;
+import frc.robot.commands.PresetPoses.DropHighPosition;
+import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
@@ -56,23 +49,14 @@ public class Wall1DropHigh extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(.5),
-      Commands.parallel(
-        new DriveAuto(pDrivetrain, -.4).withTimeout(2.25),
-        new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -131, 0, false, .5)));
-
-    redCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -46, 23, 10, 17, true, 1).withTimeout(3),
-      new GrabOpen(wrist).withTimeout(1),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(.5),
-      Commands.parallel(
-        new DriveAuto(pDrivetrain, -.4).withTimeout(2.25),
-        new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -131, 0, false, .5)));
-
+        Commands.sequence(
+            new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3),
+            new GrabOpen(wrist).withTimeout(1),
+            new DriveAuto(pDrivetrain, -.3).withTimeout(.5),
+            Commands.parallel(
+                    new DriveAuto(pDrivetrain, -.4).withTimeout(2.25),
+                    new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator))
+                .withTimeout(.5));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
@@ -81,10 +65,6 @@ public class Wall1DropHigh extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getAlliance() == Alliance.Blue) {
-      blueCommandSequence.schedule();
-    } else {
-      redCommandSequence.schedule();
-    }
+    blueCommandSequence.schedule();
   }
 }

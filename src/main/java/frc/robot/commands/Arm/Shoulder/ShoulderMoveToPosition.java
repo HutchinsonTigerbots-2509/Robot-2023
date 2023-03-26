@@ -32,13 +32,13 @@ public class ShoulderMoveToPosition extends PIDCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shoulder);
     // Configure additional PID options by calling `getController` here.
-    this.getController().setTolerance(1);
+    this.getController().setTolerance(2);
     this.getController().setSetpoint(PreferredAngle);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return this.getController().atSetpoint();
   }
 }

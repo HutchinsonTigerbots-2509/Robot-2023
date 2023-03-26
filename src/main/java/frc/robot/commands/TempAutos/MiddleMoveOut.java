@@ -4,13 +4,9 @@
 
 package frc.robot.commands.TempAutos;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.opConstants;
-import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -25,7 +21,6 @@ import frc.robot.subsystems.Travelator;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class MiddleMoveOut extends InstantCommand {
   private Command blueCommandSequence;
-  private Command redCommandSequence;
 
   Drivetrain drivetrain;
   Dislocator dislocator;
@@ -51,16 +46,10 @@ public class MiddleMoveOut extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-      new DriveAuto(pDrivetrain, -.3).withTimeout(3.5),
-      new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
-      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
-
-    redCommandSequence =
-    Commands.sequence(
-      new DriveAuto(pDrivetrain, -.3).withTimeout(3.5),
-      new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
-      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
+        Commands.sequence(
+            new DriveAuto(pDrivetrain, -.3).withTimeout(3.5),
+            new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
+            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
@@ -69,10 +58,6 @@ public class MiddleMoveOut extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getAlliance() == Alliance.Blue) {
-      blueCommandSequence.schedule();
-    } else {
-      redCommandSequence.schedule();
-    }
+    blueCommandSequence.schedule();
   }
 }

@@ -12,7 +12,7 @@ import frc.robot.subsystems.Arms.Elbow;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ElbowMoveToPosition extends PIDCommand {
-  static final double kP = 0.008;
+  static final double kP = 0.01;
   static final double kI = 0.002;
   static final double kD = 0.0;
 

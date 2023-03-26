@@ -9,17 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.Constants.opConstants;
-import frc.robot.commands.Arm.MoveToPos;
-import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
-import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
-import frc.robot.commands.Arm.Grabber.GrabOpen;
-import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
-import frc.robot.commands.Travelator.TravelatorMoveToPosition;
-import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.commands.drivetrain.DriveAutoGyro;
-import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
@@ -57,15 +47,9 @@ public class TestAuto extends InstantCommand {
     wrist = pWrist;
     travelator = pTravelator;
 
-    blueCommandSequence =
-    Commands.sequence(
-      new DriveAutoGyro(pDrivetrain, 0, 0, 180)
-        );
+    blueCommandSequence = Commands.sequence(new DriveAutoGyro(pDrivetrain, 0, 0, 180));
 
-    redCommandSequence =
-    Commands.sequence(
-      new DriveAutoGyro(pDrivetrain, 0, 0, 180)
-        );
+    redCommandSequence = Commands.sequence(new DriveAutoGyro(pDrivetrain, 0, 0, 180));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

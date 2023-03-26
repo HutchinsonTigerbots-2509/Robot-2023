@@ -7,7 +7,6 @@ package frc.robot.subsystems.Arms;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,7 +23,8 @@ public class Elbow extends SubsystemBase {
 
   /** Creates a new Elbow. */
   public Elbow() {
-    armElbow.setSelectedSensorPosition(opConstants.kElbowMin * (2048 * opConstants.kElbowGearRatio / 360));
+    armElbow.setSelectedSensorPosition(
+        opConstants.kElbowMin * (2048 * opConstants.kElbowGearRatio / 360));
     armElbow.setInverted(false);
     armElbow.setNeutralMode(NeutralMode.Brake);
   }
@@ -37,15 +37,16 @@ public class Elbow extends SubsystemBase {
     SmartDashboard.updateValues();
 
     if (!LimitSwitch6.get()) {
-      armElbow.setSelectedSensorPosition(opConstants.kElbowMax * (2048 * opConstants.kElbowGearRatio / 360));
+      armElbow.setSelectedSensorPosition(
+          opConstants.kElbowMax * (2048 * opConstants.kElbowGearRatio / 360));
       armElbow.set(ControlMode.PercentOutput, 0);
     }
 
     if (!LimitSwitch5.get()) {
-      armElbow.setSelectedSensorPosition(opConstants.kElbowMin * (2048 * opConstants.kElbowGearRatio / 360));
+      armElbow.setSelectedSensorPosition(
+          opConstants.kElbowMin * (2048 * opConstants.kElbowGearRatio / 360));
       armElbow.set(ControlMode.PercentOutput, 0);
     }
-
   }
 
   /** The Elbow */
@@ -63,7 +64,8 @@ public class Elbow extends SubsystemBase {
       armElbow.set(ControlMode.PercentOutput, 0);
     } else {
       armElbow.set(ControlMode.PercentOutput, -opConstants.kElbowSpeed);
-    }  }
+    }
+  }
 
   // Command to use elbow forward function
   public Command cmdArmElbowForward() {
@@ -96,7 +98,8 @@ public class Elbow extends SubsystemBase {
     } else if (Speed < 0 && (!LimitSwitch5.get())) {
       armElbow.set(ControlMode.PercentOutput, 0);
     } else {
-      armElbow.set(ControlMode.PercentOutput, Speed);;
+      armElbow.set(ControlMode.PercentOutput, Speed);
+      ;
     }
   }
 

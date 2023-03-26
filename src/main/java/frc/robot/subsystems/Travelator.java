@@ -46,12 +46,14 @@ public class Travelator extends SubsystemBase {
     SmartDashboard.updateValues();
 
     if (!LimitSwitch1.get() || !LimitSwitch2.get()) {
-      Travelator.setSelectedSensorPosition(opConstants.kTravelatorBack * (2048 * opConstants.kTravelatorGearRatio / 2.70203));
+      Travelator.setSelectedSensorPosition(
+          opConstants.kTravelatorBack * (2048 * opConstants.kTravelatorGearRatio / 2.70203));
       Travelator.set(ControlMode.PercentOutput, 0);
     }
 
     if (!LimitSwitch3.get() || !LimitSwitch4.get()) {
-      Travelator.setSelectedSensorPosition(opConstants.kTravelatorFront * (2048 * opConstants.kTravelatorGearRatio / 2.70203));
+      Travelator.setSelectedSensorPosition(
+          opConstants.kTravelatorFront * (2048 * opConstants.kTravelatorGearRatio / 2.70203));
       Travelator.set(ControlMode.PercentOutput, 0);
     }
 
@@ -80,12 +82,10 @@ public class Travelator extends SubsystemBase {
     if (buttonBoard.getRawAxis(1) > .5) {
       MoveForward();
       SmartDashboard.putBoolean("TravelatorForward", true);
-    }
-    else if (buttonBoard.getRawAxis(1) < -.5) {
+    } else if (buttonBoard.getRawAxis(1) < -.5) {
       MoveBackward();
       SmartDashboard.putBoolean("TravelatorForward", false);
-    }
-    else {
+    } else {
       Stop();
     }
   }

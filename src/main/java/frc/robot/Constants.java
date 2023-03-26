@@ -61,7 +61,6 @@ public final class Constants {
     public static final double kTravelatorMiddle = 8;
     public static final double kTravelatorFront = 15;
 
-
     // ***** Shoulder Constants ***** //
     public static final int kShoulderID = 4;
     public static final double kShoulderGearRatio = 240; // 100:1 60:25

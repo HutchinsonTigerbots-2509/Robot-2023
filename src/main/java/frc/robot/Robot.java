@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Wrist;
-import frc.robot.commands.drivetrain.DriveAutoGyro;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Travelator;
 import frc.robot.subsystems.Vision.PhotonVision;
@@ -50,8 +49,8 @@ public class Robot extends TimedRobot {
 
     sPhotonVision = mRobotContainer.getPhotonVision();
 
-
     sPhotonVision.setReferencePose(new Pose2d());
+    mRobotContainer.getDrivsetrain().resetGyro();
   }
 
   /**

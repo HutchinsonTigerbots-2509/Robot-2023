@@ -19,14 +19,14 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class GrabPosition extends SequentialCommandGroup {
+public class GrabStationPosition extends SequentialCommandGroup {
 
   private Dislocator dislocator;
   private Elbow elbow;
   private Shoulder shoulder;
   private Travelator travelator;
 
-  public GrabPosition(
+  public GrabStationPosition(
       Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder, Travelator pTravelator) {
     this.dislocator = pDislocator;
     this.elbow = pElbow;
@@ -36,10 +36,10 @@ public class GrabPosition extends SequentialCommandGroup {
     // Use addRequirements() here to declare subsystem dependencies.
     this.addCommands(
         Commands.parallel(
-            new DislocatorMoveToPosition(22, dislocator),
-            new ShoulderMoveToPosition(-118, shoulder),
-            new ElbowMoveToPosition(40, elbow)),
-        new WaitCommand(1),
-        new TravelatorMoveToPosition(2, travelator));
+            new ShoulderMoveToPosition(-46, shoulder), new ElbowMoveToPosition(-28, elbow)),
+        new WaitCommand(0.5).andThen(new TravelatorMoveToPosition(3, travelator).withTimeout(1)),
+        Commands.parallel(
+            new ShoulderMoveToPosition(-46, shoulder),
+            new DislocatorMoveToPosition(0, dislocator)));
   }
 }

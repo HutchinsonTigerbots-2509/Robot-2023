@@ -13,6 +13,7 @@ public class DriveAuto extends CommandBase {
   Double X;
   Double Y;
   Double Z;
+  Double StartingAngle = 0.0;
 
   // Slew rate limiters to make joystick inputs more gentle; ex: 1/3 sec from 0 to 1.
   // private final SlewRateLimiter xspeedLimiter;
@@ -41,6 +42,7 @@ public class DriveAuto extends CommandBase {
     this.Y = y;
     this.X = 0.0;
     this.Z = 0.0;
+    this.StartingAngle = drive.getAngle();
     // Creates a SlewRateLimiter that limits the rate of change of the signal to 0.5 units per
     // second
     // this.xspeedLimiter = new SlewRateLimiter(opConstants.kSkewRateLimit);
@@ -52,12 +54,17 @@ public class DriveAuto extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    this.StartingAngle = drive.getAngle();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    drive.mecanumDrive(X, -Y, Z);
+    double zCorr = StartingAngle - drive.getAngle();
+    zCorr *= 0.05;
+
+    drive.mecanumDrive(X, -Y, Z + zCorr);
   }
 
   // Called once the command ends or is interrupted.

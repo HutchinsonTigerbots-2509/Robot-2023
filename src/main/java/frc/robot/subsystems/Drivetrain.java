@@ -7,11 +7,10 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonIMU.CalibrationMode;
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.*;
-import java.lang.Math;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -19,8 +18,6 @@ import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.math.kinematics.MecanumDriveKinematics;
 import edu.wpi.first.math.kinematics.MecanumDriveOdometry;
 import edu.wpi.first.math.kinematics.MecanumDriveWheelPositions;
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-import edu.wpi.first.wpilibj.AnalogGyro;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
@@ -35,6 +32,7 @@ import frc.robot.Constants.opConstants;
 public class Drivetrain extends SubsystemBase {
   public double Strafe;
   private double speedValue = opConstants.kHighGear;
+  private double baseAngle = 0;
 
   // Setting up Motors
   public WPI_TalonFX frontRightMotor = new WPI_TalonFX(opConstants.kFrontRightID);
@@ -54,7 +52,6 @@ public class Drivetrain extends SubsystemBase {
 
   // Nav-X & Gyros
   private AHRS navx = new AHRS();
-  private AnalogGyro dtgyro = new AnalogGyro(0);
   private PigeonIMU pigeon = new PigeonIMU(0);
 
   // Parking Brake Cylinders
@@ -92,6 +89,11 @@ public class Drivetrain extends SubsystemBase {
     this.addChild("Mecanum Drive", drivetrain);
     SmartDashboard.putBoolean("Gear", true);
 
+    navx.calibrate();
+    pigeon.configFactoryDefault();
+    // pigeon.enterCalibrationMode(CalibrationMode.BootTareGyroAccel,500);
+    pigeon.enterCalibrationMode(CalibrationMode.Temperature, 500);
+
     parkingBrake.set(Value.kReverse);
 
     // drivetrain.setSafetyEnabled(false);
@@ -116,14 +118,11 @@ public class Drivetrain extends SubsystemBase {
     robotPose = new Pose2d(0.0, 0.0, new Rotation2d()); // Inital pose of the robot
     odometry =
         new MecanumDriveOdometry(kinematics, navx.getRotation2d(), getWheelPositions(), robotPose);
-    
-    dtgyro.calibrate();
-    dtgyro.reset();
 
     // SmartDashboard.putData("Field", field);
     // SmartDashboard.putNumber("Odom X", robotPose.getX());
     // SmartDashboard.putNumber("Odom Y", robotPose.getY());
-    
+
   }
 
   @Override
@@ -208,15 +207,20 @@ public class Drivetrain extends SubsystemBase {
     drivetrain.driveCartesian(x, y, z);
   }
 
+  public void resetGyro() {
+    // navx.reset();
+
+    // Reset Nav-X
+    baseAngle = navx.getFusedHeading();
+  }
+
   public void resetSensors() {
     // Reset encoder postionN
     frontLeftMotor.setSelectedSensorPosition(0);
     frontRightMotor.setSelectedSensorPosition(0);
     rearLeftMotor.setSelectedSensorPosition(0);
     rearRightMotor.setSelectedSensorPosition(0);
-
-    // Reset Nav-X
-    navx.reset();
+    resetGyro();
   }
 
   public void mecanumDrive(double x, double y, double z, boolean fieldRelative) {
@@ -297,9 +301,9 @@ public class Drivetrain extends SubsystemBase {
    *
    * @return value from 0 to 180 degrees.
    */
-
   public double getAngle() {
-    return dtgyro.getAngle();
+    return navx.getAngle();
+    // return  -(navx.getFusedHeading() - baseAngle);
   }
 
   public double getRotSpeed() {

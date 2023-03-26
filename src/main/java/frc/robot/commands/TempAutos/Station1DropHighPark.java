@@ -4,14 +4,14 @@
 
 package frc.robot.commands.TempAutos;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.commands.Arm.MoveToPos;
 import frc.robot.commands.Arm.Grabber.GrabClose;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
+import frc.robot.commands.PresetPoses.DropHighPosition;
+import frc.robot.commands.PresetPoses.GrabBackPosition;
+import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
 import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -52,32 +52,17 @@ public class Station1DropHighPark extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder,dislocator, elbow, travelator, -50, 23, 35, 22, true, .5).withTimeout(2),
-      new GrabOpen(wrist).withTimeout(1),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -43, 0, -136, 0, false, .5).withTimeout(2),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(3),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, 145, 5, -71, 0, false, .5).withTimeout(2),
-      new GrabClose(pWrist),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -43, 0, -136, 0, false, .5).withTimeout(2),
-      new DriveAuto(pDrivetrain, .3, .4, 0).withTimeout(1),
-      new DriveAuto(pDrivetrain, .3).withTimeout(1),
-      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8)
-        );
-
-    redCommandSequence =
-    Commands.sequence(
-      new MoveToPos(shoulder,dislocator, elbow, travelator, -50, 23, 35, 22, true, .5).withTimeout(2),
-      new GrabOpen(wrist).withTimeout(1),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -43, 0, -136, 0, false, .5).withTimeout(2),
-      new DriveAuto(pDrivetrain, -.3).withTimeout(3),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, 145, 5, -71, 0, false, .5).withTimeout(2),
-      new GrabClose(pWrist),
-      new MoveToPos(shoulder, dislocator, elbow, travelator, -43, 0, -136, 0, false, .5).withTimeout(2),
-      new DriveAuto(pDrivetrain, .3, .4, 0).withTimeout(1),
-      new DriveAuto(pDrivetrain, .3).withTimeout(1),
-      new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8)
-        );
+        Commands.sequence(
+            new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2),
+            new GrabOpen(wrist).withTimeout(1),
+            new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2),
+            new DriveAuto(pDrivetrain, -.3).withTimeout(3),
+            new GrabBackPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2),
+            new GrabClose(pWrist),
+            new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2),
+            new DriveAuto(pDrivetrain, .3, .4, 0).withTimeout(1),
+            new DriveAuto(pDrivetrain, .3).withTimeout(1),
+            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
@@ -86,10 +71,6 @@ public class Station1DropHighPark extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getAlliance() == Alliance.Blue) {
-      blueCommandSequence.schedule();
-    } else {
-      redCommandSequence.schedule();
-    }
+    blueCommandSequence.schedule();
   }
 }

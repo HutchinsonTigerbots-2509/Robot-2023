@@ -4,8 +4,6 @@
 
 package frc.robot.commands.TempAutos;
 
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -49,8 +47,6 @@ public class WallMoveOut extends InstantCommand {
 
     blueCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.4).withTimeout(3.25));
 
-    redCommandSequence = Commands.sequence(new DriveAuto(pDrivetrain, -.4).withTimeout(3.25));
-
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
   }
@@ -58,10 +54,6 @@ public class WallMoveOut extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getAlliance() == Alliance.Blue) {
-      blueCommandSequence.schedule();
-    } else {
-      redCommandSequence.schedule();
-    }
+    blueCommandSequence.schedule();
   }
 }

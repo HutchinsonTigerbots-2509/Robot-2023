@@ -1,4 +1,5 @@
 Grab = new MoveToPos(shoulder, dislocator, elbow, travelator, -118, 22, 40, 2, true, 0)
+Grab Back = new MoveToPos(shoulder, dislocatorm elbow, travelator, 145, 5, -71, 0, false, .5)
 
 Drop Bottom = new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, -111, 7, false, 0)
 Drop Middle = new MoveToPos(shoulder, dislocator, elbow, travelator, -50, 0, 3, 12, true, 1)

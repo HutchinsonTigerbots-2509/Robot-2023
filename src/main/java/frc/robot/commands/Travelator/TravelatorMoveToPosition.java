@@ -4,22 +4,19 @@
 
 package frc.robot.commands.Travelator;
 
-import edu.wpi.first.hal.simulation.ConstBufferCallback;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 import frc.robot.Constants;
-import frc.robot.Constants.opConstants;
 import frc.robot.subsystems.Travelator;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class TravelatorMoveToPosition extends PIDCommand {
-  static final double kP = 0.1;
-  static final double kI = 0.008;
+  static final double kP = 0.05;
+  static final double kI = 0.01;
   static final double kD = 0.00;
-  static final double kF = 0.00;
   Joystick buttonBoardRight = new Joystick(Constants.kButtonBoardRightID);
 
   /** Creates a new TravelatorMoveToPosition. */

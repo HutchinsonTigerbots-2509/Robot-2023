@@ -7,11 +7,12 @@ package frc.robot.commands.TempAutos;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.Arm.Grabber.GrabClose;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.PresetPoses.DropLowPosition;
+import frc.robot.commands.PresetPoses.GrabBackPosition;
 import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.drivetrain.DriveAuto;
-import frc.robot.commands.drivetrain.DrivetrainBalancing;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
@@ -22,8 +23,9 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class Middle1DropLow extends InstantCommand {
+public class ConeDropLowGrab extends InstantCommand {
   private Command blueCommandSequence;
+  private Command redCommandSequence;
 
   Drivetrain drivetrain;
   Dislocator dislocator;
@@ -33,7 +35,7 @@ public class Middle1DropLow extends InstantCommand {
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
-  public Middle1DropLow(
+  public ConeDropLowGrab(
       Drivetrain pDrivetrain,
       Dislocator pDislocator,
       Elbow pElbow,
@@ -52,11 +54,17 @@ public class Middle1DropLow extends InstantCommand {
         Commands.sequence(
             new DropLowPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3),
             new GrabOpen(wrist).withTimeout(1),
+            new DriveAuto(drivetrain, -.3).withTimeout(.5),
             Commands.parallel(
-                    new DriveAuto(pDrivetrain, -.3),
+                    new DriveAuto(drivetrain, -.4).withTimeout(2.05),
+                    new GrabBackPosition(pDislocator, pElbow, pShoulder, pTravelator))
+                .withTimeout(3),
+            new DriveAuto(drivetrain, -.3).withTimeout(.6),
+            new GrabClose(wrist).withTimeout(.5),
+            Commands.parallel(
+                    new DriveAuto(drivetrain, .4).withTimeout(2.65),
                     new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator))
-                .withTimeout(2.5),
-            new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
+                .withTimeout(4));
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);
