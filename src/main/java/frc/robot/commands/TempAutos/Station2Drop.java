@@ -76,10 +76,6 @@ public class Station2Drop extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (DriverStation.getAlliance() == Alliance.Blue) {
-      blueCommandSequence.schedule();
-    } else {
-      redCommandSequence.schedule();
-    }
+    blueCommandSequence.schedule();
   }
 }

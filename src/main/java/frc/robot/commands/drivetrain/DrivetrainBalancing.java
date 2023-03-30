@@ -44,9 +44,9 @@ public class DrivetrainBalancing extends CommandBase {
   public void execute() {
     if (Auto = false) {
       if (Dt.getRoll() < -5) {
-        Y = (Dt.getRoll() * .007) - .05;
+        Y = (Dt.getRoll() * .006) - .05;
       } else if (Dt.getRoll() > 5) {
-        Y = (Dt.getRoll() * .007) + .05;
+        Y = (Dt.getRoll() * .006) + .05;
       } else {
         Y = 0;
       }
@@ -55,9 +55,9 @@ public class DrivetrainBalancing extends CommandBase {
 
     } else {
       if (Dt.getRoll() < -5) {
-        Y = (Dt.getRoll() * .007) - .05;
+        Y = (Dt.getRoll() * .006) - .05;
       } else if (Dt.getRoll() > 5) {
-        Y = (Dt.getRoll() * .007) + .05;
+        Y = (Dt.getRoll() * .006) + .05;
       } else {
         Y = 0;
       }

@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.TempAutos;
+package frc.robot.commands.PermAutos;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -24,7 +24,7 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubeDropHighGrab extends InstantCommand {
+public class CubeDropLowGrab extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
@@ -36,7 +36,7 @@ public class CubeDropHighGrab extends InstantCommand {
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
-  public CubeDropHighGrab(
+  public CubeDropLowGrab(
       Drivetrain pDrivetrain,
       Dislocator pDislocator,
       Elbow pElbow,
@@ -57,13 +57,13 @@ public class CubeDropHighGrab extends InstantCommand {
             new GrabOpen(wrist).withTimeout(1),
             new DriveAuto(drivetrain, -.3).withTimeout(.5),
             Commands.parallel(
-                new DriveAuto(drivetrain, -.4).withTimeout(1.80), // 25 taken off
+                new DriveAuto(drivetrain, -.4).withTimeout(1.86), // 25 taken off
                 new GrabBackPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3)),
             new DriveAuto(drivetrain, -.3).withTimeout(0.6),
             new DriveAuto(drivetrain, -.2).withTimeout(0.4),
             new GrabClose(wrist).withTimeout(.5),
             Commands.parallel(
-                    new DriveAuto(drivetrain, .4).withTimeout(2.73),
+                    new DriveAuto(drivetrain, .4).withTimeout(2.78),
                     new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator))
                 .withTimeout(4),
             new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2),

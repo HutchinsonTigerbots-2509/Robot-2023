@@ -36,7 +36,7 @@ public class GrabStationPosition extends SequentialCommandGroup {
     // Use addRequirements() here to declare subsystem dependencies.
     this.addCommands(
         Commands.parallel(
-            new ShoulderMoveToPosition(-46, shoulder), new ElbowMoveToPosition(-28, elbow)),
+            new ShoulderMoveToPosition(-46, shoulder), new ElbowMoveToPosition(0, elbow)),
         new WaitCommand(0.5).andThen(new TravelatorMoveToPosition(3, travelator).withTimeout(1)),
         Commands.parallel(
             new ShoulderMoveToPosition(-46, shoulder),

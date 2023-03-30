@@ -52,7 +52,7 @@ public class Drivetrain extends SubsystemBase {
 
   // Nav-X & Gyros
   private AHRS navx = new AHRS();
-  private PigeonIMU pigeon = new PigeonIMU(0);
+  // private PigeonIMU pigeon = new PigeonIMU(0);
 
   // Parking Brake Cylinders
   private DoubleSolenoid parkingBrake =
@@ -90,9 +90,9 @@ public class Drivetrain extends SubsystemBase {
     SmartDashboard.putBoolean("Gear", true);
 
     navx.calibrate();
-    pigeon.configFactoryDefault();
+    // pigeon.configFactoryDefault();
     // pigeon.enterCalibrationMode(CalibrationMode.BootTareGyroAccel,500);
-    pigeon.enterCalibrationMode(CalibrationMode.Temperature, 500);
+    // pigeon.enterCalibrationMode(CalibrationMode.Temperature, 500);
 
     parkingBrake.set(Value.kReverse);
 
@@ -143,7 +143,7 @@ public class Drivetrain extends SubsystemBase {
     // SmartDashboard.putNumber("X", field.getRobotPose().getX());
     // SmartDashboard.putNumber("Y", field.getRobotPose().getY());
     SmartDashboard.putNumber("getAngle", getAngle());
-    SmartDashboard.putNumber("PigeonGyro", pigeon.getYaw());
+    // SmartDashboard.putNumber("PigeonGyro", pigeon.getYaw());
     SmartDashboard.updateValues();
   }
 

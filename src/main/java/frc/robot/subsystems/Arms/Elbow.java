@@ -34,18 +34,18 @@ public class Elbow extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Elbow", getElbowPose());
     SmartDashboard.putNumber("ElbowDirectEncoder", armElbow.getSelectedSensorPosition());
+    SmartDashboard.putData("Limit 5", LimitSwitch5);
+    SmartDashboard.putData("Limit 6", LimitSwitch6);
     SmartDashboard.updateValues();
 
     if (!LimitSwitch6.get()) {
       armElbow.setSelectedSensorPosition(
           opConstants.kElbowMax * (2048 * opConstants.kElbowGearRatio / 360));
-      armElbow.set(ControlMode.PercentOutput, 0);
     }
 
     if (!LimitSwitch5.get()) {
       armElbow.setSelectedSensorPosition(
           opConstants.kElbowMin * (2048 * opConstants.kElbowGearRatio / 360));
-      armElbow.set(ControlMode.PercentOutput, 0);
     }
   }
 
