@@ -28,7 +28,6 @@ import frc.robot.subsystems.Travelator;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class ConeDropLowGrab extends InstantCommand {
   private Command blueCommandSequence;
-  private Command redCommandSequence;
 
   Drivetrain drivetrain;
   Dislocator dislocator;

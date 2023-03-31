@@ -57,7 +57,7 @@ public class Middle1DropLowOut extends InstantCommand {
                     new CompressPosition(pDislocator, pElbow, pShoulder, pTravelator))
                 .withTimeout(1.5),
             new DriveAuto(pDrivetrain, -.4).withTimeout(2.83),
-            new DriveAuto(pDrivetrain, 0).withTimeout(.5),
+            new DriveAuto(pDrivetrain, 0).withTimeout(.9),
             new DriveAuto(pDrivetrain, .3).withTimeout(1.5),
             new DrivetrainBalancing(drivetrain, 0, 0).withTimeout(8));
 

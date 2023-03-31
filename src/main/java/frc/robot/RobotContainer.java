@@ -23,6 +23,7 @@ import frc.robot.Constants.camConstants;
 import frc.robot.commands.Arm.Dislocator.DislocatorTele;
 import frc.robot.commands.PermAutos.ConeDropLowGrab;
 import frc.robot.commands.PermAutos.CubeDropLowGrab;
+import frc.robot.commands.PermAutos.Middle1DropHigh;
 import frc.robot.commands.PermAutos.Middle1DropHighChase;
 import frc.robot.commands.PermAutos.Middle1DropLowOut;
 import frc.robot.commands.PermAutos.PotatoHigh;
@@ -37,7 +38,6 @@ import frc.robot.commands.PresetPoses.GrabPosition;
 import frc.robot.commands.PresetPoses.GrabStationPosition;
 import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.TempAutos.DoNothin;
-import frc.robot.commands.TempAutos.Middle1DropHigh;
 import frc.robot.commands.TempAutos.Middle1DropHighOut;
 import frc.robot.commands.TempAutos.Middle1DropLow;
 import frc.robot.commands.TempAutos.MiddleMoveOut;
@@ -252,7 +252,7 @@ public class RobotContainer {
 
     // Middle Autos
     // AutoSelect.addOption("Mid1DropLow", cmdMiddle1DropLow);
-    // AutoSelect.addOption("Mid1DropHigh", cmdMiddle1DropHigh);
+    AutoSelect.addOption("Mid1DropHigh", cmdMiddle1DropHigh);
     // AutoSelect.addOption("Middle High Out", cmdMiddle1DropHighOut);
     AutoSelect.addOption("Middle Middle Out", cmdMiddle1DropLowOut);
     // AutoSelect.addOption("MidMoveOut", cmdMiddleMoveOut);
