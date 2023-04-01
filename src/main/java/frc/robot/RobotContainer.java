@@ -36,6 +36,7 @@ import frc.robot.commands.PresetPoses.GrabBackPosition;
 import frc.robot.commands.PresetPoses.GrabDropPosition;
 import frc.robot.commands.PresetPoses.GrabPosition;
 import frc.robot.commands.PresetPoses.GrabStationPosition;
+import frc.robot.commands.PresetPoses.GrabStationPositionBack;
 import frc.robot.commands.PresetPoses.TuckPosition;
 import frc.robot.commands.TempAutos.DoNothin;
 import frc.robot.commands.TempAutos.Middle1DropHighOut;
@@ -136,6 +137,7 @@ public class RobotContainer {
   private Trigger presetMoveBtn2;
   private Trigger presetStartBtn;
   private Trigger presetStationBtn;
+  private Trigger presetStationBackBtn;
   private Trigger presetBalanceBtn;
   private Trigger manualDriveBtn;
 
@@ -245,14 +247,14 @@ public class RobotContainer {
     // Station Autos
     // AutoSelect.setDefaultOption("Stat1DropLow", cmdStation1DropLow);
     AutoSelect.addOption("Cone Cube", cmdConeDropLowGrab);
-    AutoSelect.addOption("Cube Cube", cmdCubeDropHighGrab);
+    AutoSelect.addOption("The High Ground", cmdCubeDropHighGrab);
     // AutoSelect.addOption("Station High Move", cmdStation1DropHigh);
     // AutoSelect.addOption("Stat1DropHighPark", cmdStation1DropHighPark);
     // AutoSelect.addOption("StatMoveOut", cmdStationMoveOut);
 
     // Middle Autos
     // AutoSelect.addOption("Mid1DropLow", cmdMiddle1DropLow);
-    AutoSelect.addOption("Mid1DropHigh", cmdMiddle1DropHigh);
+    AutoSelect.addOption("Middle Drop High", cmdMiddle1DropHigh);
     // AutoSelect.addOption("Middle High Out", cmdMiddle1DropHighOut);
     AutoSelect.addOption("Middle Middle Out", cmdMiddle1DropLowOut);
     // AutoSelect.addOption("MidMoveOut", cmdMiddleMoveOut);
@@ -401,7 +403,10 @@ public class RobotContainer {
 
     // Grab at station button
 
-    presetStationBtn = new JoystickButton(ButtonBoardLeft, 2);
+    presetStationBackBtn = new JoystickButton(ButtonBoardLeft, 2);
+    presetStationBackBtn.onTrue(new GrabStationPositionBack(sDislocator, sElbow, sShoulder, sTravelator));
+
+    presetStationBtn = new JoystickButton(ButtonBoardRight, 8);
     presetStationBtn.onTrue(new GrabStationPosition(sDislocator, sElbow, sShoulder, sTravelator));
 
     // Preset the robot to safe driving position

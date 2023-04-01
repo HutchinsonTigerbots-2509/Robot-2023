@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.Arm.Grabber.GrabClose;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
+import frc.robot.commands.PresetPoses.DropGroundPosition;
 import frc.robot.commands.PresetPoses.DropHighPosition;
 import frc.robot.commands.PresetPoses.DropLowPosition;
 import frc.robot.commands.PresetPoses.GrabBackPosition;
@@ -53,7 +54,7 @@ public class CubeDropLowGrab extends InstantCommand {
 
     blueCommandSequence =
         Commands.sequence(
-            new DropLowPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3),
+            new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2), // with droplow the timeout is 3
             new GrabOpen(wrist).withTimeout(1),
             new DriveAuto(drivetrain, -.3).withTimeout(.5),
             Commands.parallel(
@@ -66,7 +67,7 @@ public class CubeDropLowGrab extends InstantCommand {
                     new DriveAuto(drivetrain, .4).withTimeout(2.78),
                     new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator))
                 .withTimeout(4),
-            new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2),
+            new DropGroundPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3), // with drophigh the timeout is 2
             new GrabOpen(pWrist));
 
     // Use addRequirements() here to declare subsystem dependencies.
