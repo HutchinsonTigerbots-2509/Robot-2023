@@ -37,7 +37,7 @@ public class TravelatorMoveToPosition extends PIDCommand {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(tv);
     // Configure additional PID options by calling `getController` here.
-    getController().setTolerance(0.5);
+    getController().setTolerance(0.2);
   }
 
   // Returns true when the command should end.

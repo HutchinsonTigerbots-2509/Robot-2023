@@ -4,15 +4,26 @@
 
 package frc.robot.commands.drivetrain;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveAutoGyro extends CommandBase {
+
   private final Drivetrain Dt;
   private double Y;
   private double X;
   private double Z;
   private double ZPos;
+
+  
+  private PIDController rotController;
+
+  static final double kP = 0.02;
+  static final double kI = 0.001;
+  static final double kD = 0.00;
+  static final double minSpeed = 0.12;
+  
 
   /** Creates a new DriveTele. */
   public DriveAutoGyro(Drivetrain pDt, double pX, double pY, double pZPos) {
@@ -20,6 +31,26 @@ public class DriveAutoGyro extends CommandBase {
     X = pX;
     Y = pY;
     ZPos = pZPos;
+
+    this.rotController = new PIDController(kP, kI, kD);
+    this.rotController.setTolerance(2);
+    this.rotController.enableContinuousInput(-180, 180);
+    this.rotController.setSetpoint(ZPos);
+
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(Dt);
+  }
+
+  public DriveAutoGyro(Drivetrain pDt, double pY, double pZPos) {
+    Dt = pDt;
+    X = 0;
+    Y = pY;
+    ZPos = pZPos;
+
+    this.rotController = new PIDController(kP, kI, kD);
+    this.rotController.setTolerance(2);
+    this.rotController.enableContinuousInput(-180, 180);
+    this.rotController.setSetpoint(ZPos);
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Dt);
@@ -32,15 +63,11 @@ public class DriveAutoGyro extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if ((Dt.getAngle() + ZPos) < -5) {
-      Z = ((Dt.getAngle() + ZPos) * .007) - .06;
-    } else if ((Dt.getAngle() + ZPos) > 5) {
-      Z = ((Dt.getAngle() * .007) + ZPos) + .06;
-    } else {
-      Z = 0;
-    }
 
-    Dt.mecanumDrive(X, -Y, -Z);
+    double rotSpeed;
+    rotSpeed = rotController.calculate(Dt.getAngle());
+
+    Dt.mecanumDrive(X, -Y, rotSpeed);
   }
 
   // Called once the command ends or is interrupted.

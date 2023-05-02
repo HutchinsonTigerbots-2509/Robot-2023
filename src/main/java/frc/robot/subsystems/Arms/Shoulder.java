@@ -6,6 +6,8 @@ package frc.robot.subsystems.Arms;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -16,6 +18,9 @@ public class Shoulder extends SubsystemBase {
 
   // Sets up the arm
   public WPI_TalonFX Shoulder = new WPI_TalonFX(opConstants.kShoulderID);
+  
+  public DigitalInput LimitSwitchBack = new DigitalInput(opConstants.kShoulderLimitSwitch1ID);
+  public DigitalInput LimitSwitchFront = new DigitalInput(opConstants.kShoulderLimitSwitch2ID);
 
   Shoulder sShoulder;
 
@@ -34,7 +39,17 @@ public class Shoulder extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Shoulder", getShoulderPos());
+
+    SmartDashboard.putBoolean("Shouler Switch 1", LimitSwitchFront.get());
+    SmartDashboard.putBoolean("Shoulder Switch 2", LimitSwitchBack.get());
     SmartDashboard.updateValues();
+
+    if (!LimitSwitchFront.get()) {
+    }
+
+    if (!LimitSwitchBack.get()) {
+    }
+
   }
 
   public void ResetShoulderEncoder() {

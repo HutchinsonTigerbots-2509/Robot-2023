@@ -6,8 +6,10 @@ package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.opConstants;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.PhotonVision;
 
@@ -18,7 +20,7 @@ public class CubeDropOffGyro extends CommandBase {
   private XboxController OpController;
   private PIDController rotController;
 
-  static final double kP = 0.2;
+  static final double kP = 0.02;
   static final double kI = 0.001;
   static final double kD = 0.00;
   static final double minSpeed = 0.12;
@@ -31,6 +33,7 @@ public class CubeDropOffGyro extends CommandBase {
     this.rotController = new PIDController(kP, kI, kD);
     this.rotController.setTolerance(2);
     this.rotController.enableContinuousInput(-180, 180);
+    this.rotController.setSetpoint(0);
     // Use addRequirements() here to declare pDt dependencies.
     addRequirements(Dt);
     addRequirements(photonvision);
@@ -43,6 +46,7 @@ public class CubeDropOffGyro extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    OpController.setRumble(RumbleType.kLeftRumble, .6);
     double rotSpeed;
     rotSpeed = rotController.calculate(Dt.getAngle());
 
@@ -61,13 +65,14 @@ public class CubeDropOffGyro extends CommandBase {
       Dt.mecanumDrive(X, OpController.getRawAxis(1), rotSpeed);
     } else {
       Dt.mecanumDrive(
-          OpController.getRawAxis(0), OpController.getRawAxis(1), OpController.getRawAxis(4));
+          OpController.getRawAxis(0), OpController.getRawAxis(1), rotSpeed);
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    OpController.setRumble(RumbleType.kLeftRumble, 0);
     Dt.mecanumDrive(0, 0, 0);
   }
 

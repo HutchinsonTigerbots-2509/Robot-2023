@@ -89,12 +89,12 @@ public class Drivetrain extends SubsystemBase {
     this.addChild("Mecanum Drive", drivetrain);
     SmartDashboard.putBoolean("Gear", true);
 
-    navx.calibrate();
     // pigeon.configFactoryDefault();
     // pigeon.enterCalibrationMode(CalibrationMode.BootTareGyroAccel,500);
     // pigeon.enterCalibrationMode(CalibrationMode.Temperature, 500);
 
     parkingBrake.set(Value.kReverse);
+    
 
     // drivetrain.setSafetyEnabled(false);
 
@@ -208,10 +208,13 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public void resetGyro() {
-    // navx.reset();
+    navx.reset();
+    navx.calibrate();
 
-    // Reset Nav-X
-    baseAngle = navx.getFusedHeading();
+  }
+
+  public Command cmdResetGyro() {
+    return this.run(this::resetGyro);
   }
 
   public void resetSensors() {
@@ -302,7 +305,8 @@ public class Drivetrain extends SubsystemBase {
    * @return value from 0 to 180 degrees.
    */
   public double getAngle() {
-    return navx.getAngle();
+    double angle = navx.getAngle();
+    return angle;
     // return  -(navx.getFusedHeading() - baseAngle);
   }
 

@@ -8,11 +8,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.commands.Arm.Dislocator.DislocatorMoveToPosition;
 import frc.robot.commands.Arm.Elbow.ElbowMoveToPosition;
 import frc.robot.commands.Arm.Shoulder.ShoulderMoveToPosition;
-import frc.robot.commands.Arm.Wrist.WristMoveToPosition;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
-import frc.robot.subsystems.Arms.Wrist;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
@@ -22,13 +20,11 @@ public class ZeroPosition extends InstantCommand {
   private Dislocator dislocator;
   private Elbow elbow;
   private Shoulder shoulder;
-  private Wrist wrist;
 
-  public ZeroPosition(Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder, Wrist pWrist) {
+  public ZeroPosition(Dislocator pDislocator, Elbow pElbow, Shoulder pShoulder) {
     this.dislocator = pDislocator;
     this.elbow = pElbow;
     this.shoulder = pShoulder;
-    this.wrist = pWrist;
 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -39,6 +35,5 @@ public class ZeroPosition extends InstantCommand {
     new DislocatorMoveToPosition(0, dislocator);
     new ShoulderMoveToPosition(0, shoulder);
     new ElbowMoveToPosition(0, elbow);
-    new WristMoveToPosition(0, wrist);
   }
 }

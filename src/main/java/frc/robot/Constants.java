@@ -67,6 +67,8 @@ public final class Constants {
     public static final double kShoulderSpeed = 1;
     public static final int kArmCounterID = 0;
     public static final double kShoudlerOffSet = 44;
+    public static final int kShoulderLimitSwitch1ID = 6;
+    public static final int kShoulderLimitSwitch2ID = 7;
 
     // ** Elbow Constants */
     public static final int kArmElbowID = 12;

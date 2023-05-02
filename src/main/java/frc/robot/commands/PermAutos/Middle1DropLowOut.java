@@ -7,6 +7,7 @@ package frc.robot.commands.PermAutos;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.commands.Arm.Grabber.GrabClose;
 import frc.robot.commands.Arm.Grabber.GrabOpen;
 import frc.robot.commands.PresetPoses.CompressPosition;
 import frc.robot.commands.PresetPoses.DropLowPosition;
@@ -53,7 +54,7 @@ public class Middle1DropLowOut extends InstantCommand {
             new DropLowPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2.5),
             new GrabOpen(wrist).withTimeout(1),
             Commands.parallel(
-                    // new DriveAuto(pDrivetrain, -.3).withTimeout(.2),
+                    new GrabClose(pWrist),
                     new CompressPosition(pDislocator, pElbow, pShoulder, pTravelator))
                 .withTimeout(1.5),
             new DriveAuto(pDrivetrain, -.4).withTimeout(2.83),

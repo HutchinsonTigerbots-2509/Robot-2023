@@ -37,7 +37,7 @@ public class CompressPosition extends SequentialCommandGroup {
     addCommands(
         Commands.parallel(
             new DislocatorMoveToPosition(0, dislocator),
-            new ShoulderMoveToPosition(-90, shoulder),
+            new ShoulderMoveToPosition(-85, shoulder),
             new WaitCommand(0.25).andThen(new ElbowMoveToPosition(-131, elbow)).withTimeout(1.5),
             new TravelatorMoveToPosition(0, travelator)));
   }

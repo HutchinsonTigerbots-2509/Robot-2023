@@ -13,8 +13,10 @@ import frc.robot.commands.PresetPoses.DropGroundPosition;
 import frc.robot.commands.PresetPoses.DropHighPosition;
 import frc.robot.commands.PresetPoses.DropLowPosition;
 import frc.robot.commands.PresetPoses.GrabBackPosition;
+import frc.robot.commands.PresetPoses.GrabPosition;
 import frc.robot.commands.PresetPoses.TuckPosition;
-import frc.robot.commands.drivetrain.DriveAuto;
+import frc.robot.commands.drivetrain.DriveAutoGyro;
+import frc.robot.commands.drivetrain.DriveAutoGyro;
 import frc.robot.subsystems.Arms.Dislocator;
 import frc.robot.subsystems.Arms.Elbow;
 import frc.robot.subsystems.Arms.Shoulder;
@@ -25,7 +27,7 @@ import frc.robot.subsystems.Travelator;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class CubeDropLowGrab extends InstantCommand {
+public class CubeDropHighGrab extends InstantCommand {
   private Command blueCommandSequence;
   private Command redCommandSequence;
 
@@ -37,7 +39,7 @@ public class CubeDropLowGrab extends InstantCommand {
   Travelator travelator;
 
   /** Creates a new LeftSingleCharger. */
-  public CubeDropLowGrab(
+  public CubeDropHighGrab(
       Drivetrain pDrivetrain,
       Dislocator pDislocator,
       Elbow pElbow,
@@ -53,22 +55,34 @@ public class CubeDropLowGrab extends InstantCommand {
     travelator = pTravelator;
 
     blueCommandSequence =
-        Commands.sequence(
-            new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2), // with droplow the timeout is 3
-            new GrabOpen(wrist).withTimeout(1),
-            new DriveAuto(drivetrain, -.3).withTimeout(.5),
-            Commands.parallel(
-                new DriveAuto(drivetrain, -.4).withTimeout(1.86), // 25 taken off
-                new GrabBackPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3)),
-            new DriveAuto(drivetrain, -.3).withTimeout(0.6),
-            new DriveAuto(drivetrain, -.2).withTimeout(0.4),
-            new GrabClose(wrist).withTimeout(.5),
-            Commands.parallel(
-                    new DriveAuto(drivetrain, .4).withTimeout(2.78),
-                    new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator))
-                .withTimeout(4),
-            new DropGroundPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3), // with drophigh the timeout is 2
-            new GrabOpen(pWrist));
+    Commands.sequence(
+    new DropHighPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(2), // with droplow the timeout is 3
+    new GrabOpen(wrist).withTimeout(1),
+    Commands.parallel(
+      new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator),
+      new DriveAutoGyro(drivetrain, -.3, 0)).withTimeout(.5),
+    Commands.parallel(
+      new GrabBackPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(3),
+      new DriveAutoGyro(drivetrain, -.6, 2).withTimeout(0.6).andThen(
+      new DriveAutoGyro(drivetrain, -.5, 2).withTimeout(0.4).andThen(
+      new DriveAutoGyro(drivetrain, -.4, 2).withTimeout(0.4).andThen(
+      new DriveAutoGyro(drivetrain, -.3, 2).withTimeout(0.5).andThen(
+      new DriveAutoGyro(drivetrain, -.2, 2).withTimeout(0.5)))))),
+    new GrabClose(wrist).withTimeout(.5),
+    Commands.parallel(
+      new DriveAutoGyro(drivetrain, .4, 2).withTimeout(.3).andThen(
+      new DriveAutoGyro(drivetrain, .8, 2).withTimeout(1).andThen(
+      new DriveAutoGyro(drivetrain, .4, 0).withTimeout(.4))),
+      new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).andThen(
+      new DropGroundPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1).andThen(
+      new GrabOpen(pWrist).withTimeout(.3)))),
+    Commands.parallel(
+      new DriveAutoGyro(drivetrain, -.8, 0).withTimeout(1.45),
+      new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator)),
+    Commands.parallel(
+      new GrabPosition(pDislocator, pElbow, pShoulder, pTravelator),
+      new DriveAutoGyro(drivetrain, 0, -90)).withTimeout(1.5));
+
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(drivetrain);

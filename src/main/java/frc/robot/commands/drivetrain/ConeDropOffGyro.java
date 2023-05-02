@@ -6,6 +6,7 @@ package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision.LimeLight;
@@ -17,7 +18,7 @@ public class ConeDropOffGyro extends CommandBase {
   private XboxController Opcontroller;
   private PIDController rotController;
 
-  static final double kP = 0.2;
+  static final double kP = 0.02;
   static final double kI = 0.001;
   static final double kD = 0.00;
   static final double minSpeed = 0.12;
@@ -30,6 +31,7 @@ public class ConeDropOffGyro extends CommandBase {
     this.rotController = new PIDController(kP, kI, kD);
     this.rotController.setTolerance(2);
     this.rotController.enableContinuousInput(-180, 180);
+    this.rotController.setSetpoint(0);
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(Dt);
     addRequirements(m_Vision);
@@ -42,15 +44,16 @@ public class ConeDropOffGyro extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    Opcontroller.setRumble(RumbleType.kRightRumble, .6);
     double rotSpeed;
     rotSpeed = rotController.calculate(Dt.getAngle());
 
     if (m_Vision.getTargetX() != 0) {
       if (m_Vision.getTargetY() > 5) {
 
-        if ((m_Vision.getTargetX() + 8) < -2) {
+        if ((m_Vision.getTargetX() + 8) < -4) {
           X = ((m_Vision.getTargetX() + 8) * .014) - .15;
-        } else if ((m_Vision.getTargetX() + 8) > 2) {
+        } else if ((m_Vision.getTargetX() + 8) > 4) {
           X = ((m_Vision.getTargetX() + 8) * .014) + .15;
         } else {
           X = 0;
@@ -59,9 +62,9 @@ public class ConeDropOffGyro extends CommandBase {
         Dt.mecanumDrive(X, Opcontroller.getRawAxis(1), rotSpeed);
       } else {
 
-        if (m_Vision.getTargetX() < -2) {
+        if (m_Vision.getTargetX() < -4) {
           X = (m_Vision.getTargetX() * .014) - .15;
-        } else if (m_Vision.getTargetX() > 2) {
+        } else if (m_Vision.getTargetX() > 4) {
           X = (m_Vision.getTargetX() * .014) + .15;
         } else {
           X = 0;
@@ -71,7 +74,7 @@ public class ConeDropOffGyro extends CommandBase {
       }
     } else {
       Dt.mecanumDrive(
-          Opcontroller.getRawAxis(0), Opcontroller.getRawAxis(1), Opcontroller.getRawAxis(4));
+          Opcontroller.getRawAxis(0), Opcontroller.getRawAxis(1), rotSpeed);
     }
   }
 
@@ -79,6 +82,7 @@ public class ConeDropOffGyro extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     Dt.mecanumDrive(0, 0, 0);
+    Opcontroller.setRumble(RumbleType.kRightRumble, 0);
   }
 
   // Returns true when the command should end.

@@ -38,8 +38,9 @@ public class DropGroundPosition extends SequentialCommandGroup {
         Commands.parallel(
             new DislocatorMoveToPosition(0, dislocator),
             new ShoulderMoveToPosition(-50, shoulder),
-            new ElbowMoveToPosition(-111, elbow)).withTimeout(1),
-        new WaitCommand(1),
-        new TravelatorMoveToPosition(7, travelator));
+            new ElbowMoveToPosition(-111, elbow)).withTimeout(.68),
+        new WaitCommand(.3),
+        new TravelatorMoveToPosition(10, travelator));
   }
 }
+

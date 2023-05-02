@@ -33,7 +33,7 @@ public class RotateToAngle extends PIDCommand {
         drive);
     // Use addRequirements() here to declare subsystem dependencies.
     // Configure additional PID options by calling `getController` here.
-    getController().enableContinuousInput(0.0, 360.0);
+    getController().enableContinuousInput(0, 360.0);
     getController().setTolerance(2.0f);
   }
 

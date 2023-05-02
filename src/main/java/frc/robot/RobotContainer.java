@@ -21,13 +21,18 @@ import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.camConstants;
 import frc.robot.commands.Arm.Dislocator.DislocatorTele;
+import frc.robot.commands.Arm.Grabber.GrabClose;
 import frc.robot.commands.PermAutos.ConeDropLowGrab;
-import frc.robot.commands.PermAutos.CubeDropLowGrab;
+import frc.robot.commands.PermAutos.CubeDropHighGrab;
+import frc.robot.commands.PermAutos.CubeHighConeBottomGrab;
 import frc.robot.commands.PermAutos.Middle1DropHigh;
 import frc.robot.commands.PermAutos.Middle1DropHighChase;
 import frc.robot.commands.PermAutos.Middle1DropLowOut;
 import frc.robot.commands.PermAutos.PotatoHigh;
 import frc.robot.commands.PermAutos.PotatoLow;
+import frc.robot.commands.PermAutos.Tripple;
+import frc.robot.commands.PermAutos.WallMega;
+import frc.robot.commands.PresetPoses.CompressPosition;
 import frc.robot.commands.PresetPoses.DropGroundPosition;
 import frc.robot.commands.PresetPoses.DropHighBack;
 import frc.robot.commands.PresetPoses.DropHighPosition;
@@ -55,6 +60,10 @@ import frc.robot.commands.TempAutos.WallMoveOut;
 import frc.robot.commands.Travelator.TravelatorLeveling;
 import frc.robot.commands.Travelator.TravelatorMoveToPosition;
 import frc.robot.commands.Travelator.TravelatorTele;
+import frc.robot.commands.drivetrain.ConeDropOff;
+import frc.robot.commands.drivetrain.ConeDropOffGyro;
+import frc.robot.commands.drivetrain.CubeDropOff;
+import frc.robot.commands.drivetrain.CubeDropOffGyro;
 import frc.robot.commands.drivetrain.OperatorDrive;
 import frc.robot.commands.drivetrain.ResetDriveSensors;
 import frc.robot.subsystems.Arms.Dislocator;
@@ -136,7 +145,7 @@ public class RobotContainer {
   private Trigger presetMoveBtn;
   private Trigger presetMoveBtn2;
   private Trigger presetStartBtn;
-  private Trigger presetStationBtn;
+  private Trigger ResetGyroBtn;
   private Trigger presetStationBackBtn;
   private Trigger presetBalanceBtn;
   private Trigger manualDriveBtn;
@@ -216,8 +225,14 @@ public class RobotContainer {
       new ConeDropLowGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
   private Wall1DropLowGrab cmdWall1DropLowGrab =
       new Wall1DropLowGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
-  private CubeDropLowGrab cmdCubeDropHighGrab =
-      new CubeDropLowGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private CubeDropHighGrab cmdCubeDropHighGrab =
+      new CubeDropHighGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private CubeHighConeBottomGrab cmdCubeHighConeBottomGrab =
+      new CubeHighConeBottomGrab(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private WallMega cmdWallMega =
+      new WallMega(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
+  private Tripple cmdTripple =
+      new Tripple(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
 
   private Station2Drop cmdStation2Drop =
       new Station2Drop(sDrivetrain, sDislocator, sElbow, sShoulder, sWrist, sTravelator);
@@ -247,23 +262,27 @@ public class RobotContainer {
     // Station Autos
     // AutoSelect.setDefaultOption("Stat1DropLow", cmdStation1DropLow);
     AutoSelect.addOption("Cone Cube", cmdConeDropLowGrab);
-    AutoSelect.addOption("The High Ground", cmdCubeDropHighGrab);
+
+    // AutoSelect.addOption("Station Mega Cone", cmdCubeDropHighGrab);
+    AutoSelect.addOption("Station", cmdCubeHighConeBottomGrab);
+    AutoSelect.addOption("Wie track", cmdWallMega);
+    AutoSelect.addOption("Tripple", cmdTripple);
     // AutoSelect.addOption("Station High Move", cmdStation1DropHigh);
     // AutoSelect.addOption("Stat1DropHighPark", cmdStation1DropHighPark);
     // AutoSelect.addOption("StatMoveOut", cmdStationMoveOut);
 
     // Middle Autos
     // AutoSelect.addOption("Mid1DropLow", cmdMiddle1DropLow);
-    AutoSelect.addOption("Middle Drop High", cmdMiddle1DropHigh);
+    AutoSelect.addOption("Middle High", cmdMiddle1DropHigh);
     // AutoSelect.addOption("Middle High Out", cmdMiddle1DropHighOut);
-    AutoSelect.addOption("Middle Middle Out", cmdMiddle1DropLowOut);
+    AutoSelect.addOption("Middle Out", cmdMiddle1DropLowOut);
     // AutoSelect.addOption("MidMoveOut", cmdMiddleMoveOut);
 
     // Wall Autos
     // AutoSelect.addOption("Wall1DropLow", cmdWall1DropLow);
     // AutoSelect.addOption("Wall1DropLowGrab", cmdWall1DropLowGrab);
     // AutoSelect.addOption("Wall1DropHigh", cmdWall1DropHigh);
-    AutoSelect.addOption("Middle High Chase", cmdMiddle1DropHighChase);
+    AutoSelect.addOption("Middle Chase", cmdMiddle1DropHighChase);
     // AutoSelect.addOption("WallMoveOut", cmdWallMoveOut);
 
     // Potato Autos
@@ -312,11 +331,11 @@ public class RobotContainer {
 
     // Driving modes
 
-    // coneDriveBtn = new JoystickButton(OpController, 6);
-    // coneDriveBtn.toggleOnTrue(new ConeDropOff(OpController, sDrivetrain, sLimeLight));
+    cubeDriveBtn = new JoystickButton(OpController, 5);
+    cubeDriveBtn.toggleOnTrue(new CubeDropOffGyro(OpController, sDrivetrain, sPhotonVision));
 
-    // cubeDriveBtn = new JoystickButton(OpController, 5);
-    // cubeDriveBtn.toggleOnTrue(new CubeDropOff(OpController, sDrivetrain, sPhotonVision));
+    coneDriveBtn = new JoystickButton(OpController, 6);
+    coneDriveBtn.toggleOnTrue(new ConeDropOffGyro(OpController, sDrivetrain, sLimeLight));
 
     toggleGearBtn = new JoystickButton(OpController, 9);
     toggleGearBtn.onTrue(sDrivetrain.cmdToggleGear());
@@ -371,27 +390,14 @@ public class RobotContainer {
     // Preset Buttons
 
     presetStartBtn = new JoystickButton(ButtonBoardLeft, 1);
-    presetStartBtn.onTrue(sWrist.cmdResetWristEncoder());
     presetStartBtn.onTrue(sElbow.cmdResetElbowEncoder());
     presetStartBtn.onTrue(sShoulder.cmdResetShoulderEncoder());
 
     // Preset the robot to grab upright
 
     presetGrabBtn = new JoystickButton(ButtonBoardLeft, 4);
-
-    // Numbers before Drey
-
-    // presetGrabBtn.onTrue(new TravelatorMoveToPosition(2, sTravelator));
-    // presetGrabBtn.onTrue(new DislocatorMoveToPosition(22, sDislocator));
-    // presetGrabBtn.onTrue(new ShoulderMoveToPosition(-124, sShoulder));
-    // presetGrabBtn.onTrue(new ElbowMoveToPositionTele(45, sElbow));
-
     presetGrabBtn.onTrue(new TravelatorMoveToPosition(2, sTravelator));
     presetGrabBtn.onTrue(new GrabPosition(sDislocator, sElbow, sShoulder, sTravelator));
-
-    presetGrabBtn2 = new JoystickButton(OpController, 1);
-    presetGrabBtn2.onTrue(new TravelatorMoveToPosition(2, sTravelator));
-    presetGrabBtn2.onTrue(new GrabPosition(sDislocator, sElbow, sShoulder, sTravelator));
 
     presetGrabBackLow = new JoystickButton(ButtonBoardLeft, 8);
     presetGrabBackLow.onTrue(new TravelatorMoveToPosition(2, sTravelator));
@@ -406,8 +412,8 @@ public class RobotContainer {
     presetStationBackBtn = new JoystickButton(ButtonBoardLeft, 2);
     presetStationBackBtn.onTrue(new GrabStationPositionBack(sDislocator, sElbow, sShoulder, sTravelator));
 
-    presetStationBtn = new JoystickButton(ButtonBoardRight, 8);
-    presetStationBtn.onTrue(new GrabStationPosition(sDislocator, sElbow, sShoulder, sTravelator));
+    ResetGyroBtn = new JoystickButton(ButtonBoardRight, 8);
+    ResetGyroBtn.onTrue(sDrivetrain.cmdResetGyro());
 
     // Preset the robot to safe driving position
 
@@ -437,8 +443,9 @@ public class RobotContainer {
 
     // Preset to start balancing on the Charge Station
 
-    presetBalanceBtn = new JoystickButton(OpController, 4);
-    presetBalanceBtn.onTrue(new TuckPosition(sDislocator, sElbow, sShoulder, sTravelator));
+    presetBalanceBtn = new JoystickButton(OpController, 1);
+    presetBalanceBtn.onTrue(new CompressPosition(sDislocator, sElbow, sShoulder, sTravelator));
+    presetBalanceBtn.onTrue(new GrabClose(sWrist));
   }
 
   // Getter Methods
