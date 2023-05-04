@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
     sPhotonVision = mRobotContainer.getPhotonVision();
 
     sPhotonVision.setReferencePose(new Pose2d());
-    mRobotContainer.getDrivsetrain().resetGyro();
+    mRobotContainer.getDrivetrain().resetGyro();
   }
 
   /**

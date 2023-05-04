@@ -75,12 +75,12 @@ public class CubeHighConeBottomGrab extends InstantCommand {
       new DriveAutoGyro(drivetrain, .4, 0).withTimeout(.3).andThen(
       new DriveAutoGyro(drivetrain, .8, 0).withTimeout(1).andThen(
       new DriveAutoGyro(drivetrain, .4, 0).withTimeout(.6))),
-      new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).andThen(
-      new DropGroundPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1.25).andThen(
+      new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1).andThen(
+      new DropGroundPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1.7).andThen(
       new GrabOpen(pWrist).withTimeout(.3)))),
     Commands.parallel(
       new DriveAutoGyro(drivetrain, -.8, 0).withTimeout(1.45),
-      new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator)),
+      new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1.45)),
     Commands.parallel(
       new GrabPosition(pDislocator, pElbow, pShoulder, pTravelator),
       new DriveAutoGyro(drivetrain, 0, -90)).withTimeout(1.5));
@@ -105,12 +105,12 @@ public class CubeHighConeBottomGrab extends InstantCommand {
         new DriveAutoGyro(drivetrain, .4, 0).withTimeout(.3).andThen(
         new DriveAutoGyro(drivetrain, .8, 0).withTimeout(1).andThen(
         new DriveAutoGyro(drivetrain, .4, 0).withTimeout(.6))),
-        new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).andThen(
-        new DropGroundPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1.25).andThen(
+        new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1).andThen(
+        new DropGroundPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1.7).andThen(
         new GrabOpen(pWrist).withTimeout(.3)))),
       Commands.parallel(
         new DriveAutoGyro(drivetrain, -.8, 0).withTimeout(1.45),
-        new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator)),
+        new TuckPosition(pDislocator, pElbow, pShoulder, pTravelator).withTimeout(1.45)),
       Commands.parallel(
         new GrabPosition(pDislocator, pElbow, pShoulder, pTravelator),
         new DriveAutoGyro(drivetrain, 0, 90)).withTimeout(1.5));

@@ -464,7 +464,7 @@ public class RobotContainer {
 
   // Getter Methods
 
-  public Drivetrain getDrivsetrain() {
+  public Drivetrain getDrivetrain() {
     return sDrivetrain;
   }
 
