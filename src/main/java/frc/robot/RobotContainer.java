@@ -265,8 +265,8 @@ public class RobotContainer {
 
     // AutoSelect.addOption("Station Mega Cone", cmdCubeDropHighGrab);
     AutoSelect.addOption("Station", cmdCubeHighConeBottomGrab);
-    AutoSelect.addOption("Wie track", cmdWallMega);
-    AutoSelect.addOption("Tripple", cmdTripple);
+    AutoSelect.addOption("Wire track", cmdWallMega);
+    // AutoSelect.addOption("Tripple", cmdTripple);
     // AutoSelect.addOption("Station High Move", cmdStation1DropHigh);
     // AutoSelect.addOption("Stat1DropHighPark", cmdStation1DropHighPark);
     // AutoSelect.addOption("StatMoveOut", cmdStationMoveOut);
